@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder de embalagem em branco</title>
+  <desc id="desc">Representação temporária para futura fotografia de embalagem em branco.</desc>
+  <rect width="800" height="600" fill="#f8fafc"/>
+  <path d="M270 230l130-72 130 72-130 74z" fill="#fff8cf" stroke="#bd8400" stroke-width="8"/>
+  <path d="M270 230v175l130 74V304zm260 0v175l-130 74V304z" fill="#fff" stroke="#bd8400" stroke-width="8"/>
+  <text x="400" y="535" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" fill="#475467">Imagem do produto em preparação</text>
+</svg>

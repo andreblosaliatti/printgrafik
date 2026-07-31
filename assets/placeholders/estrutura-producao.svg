@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder da área de produção</title><desc id="desc">Espaço reservado para fotografia da área de produção.</desc>
+  <rect width="800" height="560" fill="#eef3f6"/><path d="M80 405V205l160-92 160 92 160-92 160 92v200" fill="#fff" stroke="#078447" stroke-width="9"/><path d="M120 405V280h120v125m80 0V250h160v155m80 0V280h120v125" fill="#e8f7ef" stroke="#078447" stroke-width="7"/><text x="400" y="505" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" fill="#475467">Área de produção — imagem em preparação</text>
+</svg>

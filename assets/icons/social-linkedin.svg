@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">LinkedIn</title>
+  <rect width="512" height="512" rx="74" fill="#0b7fb8"/>
+  <circle cx="141" cy="140" r="43" fill="#fff"/>
+  <rect x="107" y="202" width="68" height="214" rx="12" fill="#fff"/>
+  <path d="M205 202h67v30c22-28 51-34 78-34 67 0 79 44 79 108v110h-70v-98c0-30-.6-69-43-69-43 0-50 33-50 67v100h-61V202Z" fill="#fff"/>
+</svg>

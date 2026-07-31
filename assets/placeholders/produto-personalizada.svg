@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder de embalagem personalizada</title>
+  <desc id="desc">Representação temporária para futura fotografia de embalagem personalizada.</desc>
+  <rect width="800" height="600" fill="#f8fafc"/>
+  <path d="M255 235l145-80 145 80-145 82z" fill="#ffedf6" stroke="#f02686" stroke-width="8"/>
+  <path d="M255 235v165l145 82V317zm290 0v165l-145 82V317z" fill="#fff" stroke="#f02686" stroke-width="8"/>
+  <circle cx="400" cy="380" r="30" fill="#ffedf6" stroke="#f02686" stroke-width="6"/>
+  <text x="400" y="535" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" fill="#475467">Imagem do produto em preparação</text>
+</svg>
