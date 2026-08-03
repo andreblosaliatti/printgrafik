@@ -27,7 +27,7 @@ O projeto é o novo site institucional da PrintGráfik, uma indústria gráfica 
 
 Principais produtos:
 
-- Caixinhas display
+- Caixas display
 - Cartelas blister
 - Embalagens personalizadas
 - Embalagens em branco

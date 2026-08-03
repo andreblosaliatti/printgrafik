@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
-  <title id="title">Placeholder de caixinha display</title>
-  <desc id="desc">Representação temporária para futura fotografia de caixinha display.</desc>
+  <title id="title">Placeholder de caixa display</title>
+  <desc id="desc">Representação temporária para futura fotografia de caixa display.</desc>
   <rect width="800" height="600" fill="#f8fafc"/>
   <path d="M290 165h220l65 85v225H225V250z" fill="#fff" stroke="#078447" stroke-width="8"/>
   <path d="M290 165v115h220V165M225 250h350" fill="none" stroke="#078447" stroke-width="8"/>

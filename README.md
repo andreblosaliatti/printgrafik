@@ -5,6 +5,8 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 ## Implementado
 
 - Home responsiva completa.
+- Página A Empresa completa e alinhada ao mockup `docs/empresa-mock.png`, com história, soluções, estrutura, atendimento, princípios, chamada comercial e movimentos leves durante a rolagem.
+- Página Produtos completa e alinhada ao mockup `docs/mock-produtos.png`, com cinco categorias, materiais, processo do pedido, orientações comerciais, chamada final e movimentos leves durante a rolagem.
 - Cabeçalho compartilhado e menu móvel acessível.
 - Hero com a imagem final da máquina de impressão.
 - Cards de produtos em destaque.
@@ -30,7 +32,9 @@ site-printgrafik/
 ├── css/
 │   ├── tokens.css
 │   ├── components.css
+│   ├── empresa.css
 │   ├── home.css
+│   ├── produtos.css
 │   └── responsive.css
 ├── js/
 │   └── main.js
@@ -39,6 +43,7 @@ site-printgrafik/
 │   ├── hero/
 │   ├── images/
 │   ├── logo/
+│   ├── produtos/
 │   └── placeholders/
 ├── docs/
 └── tests/
@@ -50,24 +55,27 @@ site-printgrafik/
 - `assets/logo/logo-printgrafik.png`: cópia preservada do logo oficial.
 - `assets/logo/logo-printgrafik-600.png`: versão reduzida e otimizada para uso no site, sem alteração de proporção ou cores.
 - `assets/hero/hero-impressao-printgrafik.jpg`: imagem final do hero.
-- `assets/empresa/fachada-printgrafik.jpg`: fotografia real da fachada usada na Home.
+- `assets/empresa/fachada-printgrafik.jpg`: fotografia real da fachada usada na Home e na página A Empresa.
+- `assets/produtos/hero-produtos.jpg`: imagem final do hero da página Produtos.
 - Os arquivos fornecidos originalmente permanecem preservados em `assets/images/`.
 
 ## Placeholders
 
 As fotografias finais abaixo ainda não foram fornecidas e usam SVGs locais claramente identificados:
 
-- Caixinhas Display.
+- Caixas Display.
 - Cartelas Blister.
 - Embalagens Personalizadas.
 - Embalagens em Branco.
+- Solapas e materiais gráficos para embalagens.
 - Área de produção.
 - Máquina de impressão.
 - Operador trabalhando.
+- Atendimento pessoal da equipe.
 - Processo de impressão.
 - Embalagens finalizadas.
 
-Os arquivos estão em `assets/placeholders/` e podem ser substituídos sem alterar a estrutura das páginas.
+Os arquivos estão em `assets/placeholders/` e `assets/produtos/` e podem ser substituídos sem alterar a estrutura das páginas.
 
 ## Dados centralizados
 
@@ -97,7 +105,7 @@ Enquanto estiverem ausentes, os contatos não são exibidos e os botões levam p
 Também permanecem pendentes:
 
 - Fotografias reais de produtos, máquinas, operadores, produção e embalagens finalizadas.
-- Desenvolvimento completo das páginas Empresa, Produtos, Estrutura e Contato.
+- Desenvolvimento completo das páginas Estrutura e Contato.
 - Definição do envio do formulário de contato e proteção antispam.
 - Texto jurídico final da Política de Privacidade.
 
@@ -123,10 +131,13 @@ O teste verifica:
 
 - Existência dos destinos de links e imagens locais.
 - Existência das âncoras da página Produtos.
+- Ausência de IDs duplicados em cada documento HTML.
 - Um único `h1` em cada página.
 - Ausência de rolagem horizontal em 1440, 1280, 1024, 768, 480, 375 e 320 px.
 - Carregamento das imagens requisitadas.
 - Funcionamento do menu móvel, `aria-expanded`, tecla `Escape` e retorno de foco.
+- Responsividade, imagens, navegação ativa e fallback de contato da página A Empresa.
+- Responsividade, cinco categorias, imagens, navegação ativa, fallback de contato, CTA sem botões e movimentos da página Produtos.
 - Erros no console do navegador.
 
 Capturas visuais temporárias são geradas fora do repositório durante o teste.

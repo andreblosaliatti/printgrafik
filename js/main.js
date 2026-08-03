@@ -243,7 +243,20 @@ const pgInitScrollMotion = () => {
     ".pg-feature-card",
     ".pg-purpose-card",
     ".pg-gallery__item",
-    ".pg-cta"
+    ".pg-cta",
+    ".pg-company-panel__copy",
+    ".pg-company-products-visual",
+    ".pg-company-benefit",
+    ".pg-company-stat",
+    ".pg-company-service__media",
+    ".pg-company-service__copy",
+    ".pg-company-purpose-card",
+    ".pg-company-cta",
+    ".pg-product-detail",
+    ".pg-products-material-card",
+    ".pg-products-step",
+    ".pg-products-info-card",
+    ".pg-products-cta"
   ];
 
   revealGroups.forEach((selector) => {
@@ -257,6 +270,24 @@ const pgInitScrollMotion = () => {
   const aboutImage = document.querySelector(".pg-about__image");
   aboutCopy?.classList.add("pg-reveal", "pg-reveal--left");
   aboutImage?.classList.add("pg-reveal", "pg-reveal--right");
+
+  const companyIntroCopy = document.querySelector(".pg-company-intro__copy");
+  const companyIntroImage = document.querySelector(".pg-company-intro__image");
+  companyIntroCopy?.classList.add("pg-reveal", "pg-reveal--left");
+  companyIntroImage?.classList.add("pg-reveal", "pg-reveal--right");
+
+  const productsHeroCopy = document.querySelector(".pg-products-hero__copy");
+  const productsHeroImage = document.querySelector(".pg-products-hero__image");
+  productsHeroCopy?.classList.add("pg-reveal", "pg-reveal--left");
+  productsHeroImage?.classList.add("pg-reveal", "pg-reveal--right");
+
+  document.querySelectorAll(
+    ".pg-company-solutions .pg-company-panel__copy, .pg-company-structure .pg-company-panel__copy, .pg-company-service__media"
+  ).forEach((element) => element.classList.add("pg-reveal--left"));
+
+  document.querySelectorAll(
+    ".pg-company-products-visual, .pg-company-benefit, .pg-company-stat, .pg-company-service__copy"
+  ).forEach((element) => element.classList.add("pg-reveal--right"));
 
   const revealElement = (element) => {
     element.classList.add("pg-reveal--visible");

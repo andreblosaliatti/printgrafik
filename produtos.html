@@ -1,31 +1,209 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Produtos e soluções em embalagens da PrintGráfik."><title>Produtos | PrintGráfik</title>
-  <link rel="stylesheet" href="css/tokens.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/responsive.css"><script src="js/main.js" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Conheça as caixas display, cartelas blister, embalagens personalizadas, embalagens em branco e materiais gráficos produzidos pela PrintGráfik.">
+  <title>Produtos | PrintGráfik</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/produtos.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="js/main.js" defer></script>
 </head>
 <body>
   <a class="pg-skip-link" href="#conteudo">Ir para o conteúdo</a>
-  <header class="pg-header"><div class="pg-container pg-header__inner">
-    <a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial"><img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449"></a>
-    <nav class="pg-nav" id="menu-principal" aria-label="Navegação principal" data-menu data-open="false"><ul class="pg-nav__list"><li><a class="pg-nav__link" href="index.html">Início</a></li><li><a class="pg-nav__link" href="empresa.html">Empresa</a></li><li><a class="pg-nav__link" href="produtos.html" aria-current="page">Produtos</a></li><li><a class="pg-nav__link" href="estrutura.html">Estrutura</a></li><li><a class="pg-nav__link" href="contato.html">Contato</a></li></ul></nav>
-    <div class="pg-header__actions"><a class="pg-button pg-button--small pg-button--pill pg-header__cta" href="contato.html" data-smart-contact><span data-contact-label>Fale com a equipe</span></a><button class="pg-menu-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu" data-menu-toggle><span class="pg-menu-toggle__icon" aria-hidden="true"></span></button></div>
-  </div></header>
-  <main id="conteudo">
-    <section class="pg-page-hero" aria-labelledby="titulo-pagina"><div class="pg-container pg-page-hero__content"><span class="pg-eyebrow">Soluções</span><h1 class="pg-title pg-title--xl" id="titulo-pagina">Nossos produtos</h1><p class="pg-lead">O conteúdo detalhado desta página será desenvolvido em uma próxima etapa. As categorias abaixo já possuem destinos válidos para os links da Home.</p></div></section>
-    <section class="pg-section pg-section--white" aria-labelledby="titulo-categorias"><div class="pg-container"><h2 class="pg-title pg-title--md" id="titulo-categorias">Categorias de embalagens</h2><div class="pg-grid pg-grid--2 pg-purpose-grid">
-      <article class="pg-card pg-card--accent pg-tone-green" id="caixinhas-display"><div class="pg-card__body"><h3 class="pg-card__title">Caixinhas Display</h3><p class="pg-card__text">Informações completas e fotografias serão adicionadas na etapa de desenvolvimento da página Produtos.</p></div></article>
-      <article class="pg-card pg-card--accent pg-tone-blue" id="cartelas-blister"><div class="pg-card__body"><h3 class="pg-card__title">Cartelas Blister</h3><p class="pg-card__text">Informações completas e fotografias serão adicionadas na etapa de desenvolvimento da página Produtos.</p></div></article>
-      <article class="pg-card pg-card--accent pg-tone-magenta" id="embalagens-personalizadas"><div class="pg-card__body"><h3 class="pg-card__title">Embalagens Personalizadas</h3><p class="pg-card__text">Informações completas e fotografias serão adicionadas na etapa de desenvolvimento da página Produtos.</p></div></article>
-      <article class="pg-card pg-card--accent pg-tone-yellow" id="embalagens-em-branco"><div class="pg-card__body"><h3 class="pg-card__title">Embalagens em Branco</h3><p class="pg-card__text">Informações completas e fotografias serão adicionadas na etapa de desenvolvimento da página Produtos.</p></div></article>
-    </div></div></section>
+
+  <header class="pg-header">
+    <div class="pg-container pg-header__inner">
+      <a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial">
+        <img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449">
+      </a>
+      <nav class="pg-nav" id="menu-principal" aria-label="Navegação principal" data-menu data-open="false">
+        <ul class="pg-nav__list">
+          <li><a class="pg-nav__link" href="index.html">Início</a></li>
+          <li><a class="pg-nav__link" href="empresa.html">Empresa</a></li>
+          <li><a class="pg-nav__link" href="produtos.html" aria-current="page">Produtos</a></li>
+          <li><a class="pg-nav__link" href="estrutura.html">Estrutura</a></li>
+          <li><a class="pg-nav__link" href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+      <div class="pg-header__actions">
+        <a class="pg-button pg-button--small pg-button--pill pg-header__cta" href="contato.html" data-smart-contact>
+          <span data-contact-label>Fale com a equipe</span>
+        </a>
+        <button class="pg-menu-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu" data-menu-toggle>
+          <span class="pg-menu-toggle__icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="pg-products-page">
+    <section class="pg-products-hero" aria-labelledby="titulo-pagina">
+      <div class="pg-container pg-products-hero__grid">
+        <div class="pg-products-hero__copy">
+          <h1 class="pg-title pg-title--xl" id="titulo-pagina">Produtos</h1>
+          <span class="pg-products-rule" aria-hidden="true"></span>
+          <p class="pg-products-hero__lead">Embalagens desenvolvidas para valorizar cada produto</p>
+          <p>A PrintGráfik produz embalagens em papel cartão para empresas que buscam proteção, apresentação e identidade visual em uma única solução.</p>
+          <p>Trabalhamos com materiais como Duplex, Triplex e Microondulado, desenvolvendo projetos de acordo com as características do produto, as necessidades da marca e as condições de produção.</p>
+          <p>Cada embalagem é avaliada individualmente para encontrar uma solução funcional, visualmente adequada e compatível com a realidade de cada cliente.</p>
+        </div>
+        <img class="pg-products-hero__image" src="assets/produtos/hero-produtos.jpg" alt="Exemplos de caixas, cartelas blister e embalagens produzidas pela PrintGráfik" width="1000" height="563" fetchpriority="high">
+      </div>
+    </section>
+
+    <nav class="pg-products-index" aria-label="Navegação pelas seções de produtos">
+      <div class="pg-container">
+        <ul>
+          <li><a href="#caixas-display">Caixas Display</a></li>
+          <li><a href="#cartelas-blister">Cartelas Blister</a></li>
+          <li><a href="#embalagens-personalizadas">Embalagens Personalizadas</a></li>
+          <li><a href="#embalagens-em-branco">Embalagens em Branco</a></li>
+          <li><a href="#solapas">Solapas e materiais gráficos</a></li>
+          <li><a href="#materiais">Materiais utilizados</a></li>
+          <li><a href="#processo">Processo do pedido</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="pg-section pg-section--white" aria-label="Categorias de produtos">
+      <div class="pg-container pg-products-grid">
+        <article class="pg-product-detail pg-product-detail--green pg-tone-green" id="caixas-display">
+          <header class="pg-product-detail__header">
+            <span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="m4 7 8-4 8 4-8 4-8-4Z"/><path d="m4 7 8 4 8-4v10l-8 4-8-4V7Z"/><path d="M12 11v10m-5 4v-7h5"/></svg></span>
+            <div><h2>Caixas Display</h2><p>Mais organização e destaque no ponto de venda</p></div>
+          </header>
+          <img class="pg-product-detail__image" src="assets/placeholders/produto-caixa-display.svg" alt="Representação temporária de uma caixa display" width="800" height="600" loading="lazy">
+          <div class="pg-product-detail__copy">
+            <p>As caixas display são desenvolvidas para acondicionar, organizar e apresentar produtos de maneira prática e atrativa.</p>
+            <p>Esse tipo de embalagem pode contribuir para melhorar a exposição dos itens, facilitar o acesso ao produto e reforçar a presença da marca no ponto de venda.</p>
+            <ul><li>Medidas do produto</li><li>Quantidade de unidades</li><li>Formato da embalagem</li><li>Identidade visual</li><li>Tipo de papel cartão</li><li>Impressão e acabamento</li></ul>
+            <p>O cliente pode enviar a arte pronta ou consultar a equipe sobre o desenvolvimento do projeto gráfico.</p>
+          </div>
+          <a class="pg-button pg-button--secondary pg-product-detail__action" href="contato.html" data-smart-contact data-contact-text="Solicitar informações sobre Caixas Display"><span data-contact-label>Solicitar informações sobre Caixas Display</span></a>
+        </article>
+
+        <article class="pg-product-detail pg-product-detail--blue pg-tone-blue" id="cartelas-blister">
+          <header class="pg-product-detail__header">
+            <span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M5 21V5l7-3v19m7 0V9l-7-3M3 21h18M8 8h1m-1 4h1m-1 4h1m6-4h1m-1 4h1"/></svg></span>
+            <div><h2>Cartelas Blister</h2><p>Proteção e apresentação para diferentes produtos</p></div>
+          </header>
+          <img class="pg-product-detail__image" src="assets/placeholders/produto-cartela-blister.svg" alt="Representação temporária de uma cartela blister" width="800" height="600" loading="lazy">
+          <div class="pg-product-detail__copy">
+            <p>As cartelas blister são utilizadas para apresentar produtos de forma organizada e permitir sua visualização dentro da embalagem.</p>
+            <p>A PrintGráfik produz a parte gráfica em papel cartão, que pode ser desenvolvida de acordo com o formato, o tamanho e as informações necessárias para cada produto.</p>
+            <ul><li>Identidade visual da marca</li><li>Informações comerciais</li><li>Instruções de uso</li><li>Dados técnicos</li><li>Código de barras</li><li>Elementos obrigatórios do produto</li></ul>
+            <p>A compatibilidade com a parte plástica e o sistema de fixação deve ser avaliada conforme as especificações do projeto.</p>
+          </div>
+          <a class="pg-button pg-button--secondary pg-product-detail__action" href="contato.html" data-smart-contact data-contact-text="Solicitar informações sobre Cartelas Blister"><span data-contact-label>Solicitar informações sobre Cartelas Blister</span></a>
+        </article>
+
+        <article class="pg-product-detail pg-product-detail--magenta pg-tone-magenta" id="embalagens-personalizadas">
+          <header class="pg-product-detail__header">
+            <span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="m4 7 8-4 8 4-8 4-8-4Z"/><path d="m4 7 8 4 8-4v10l-8 4-8-4V7Z"/><path d="M12 11v10"/></svg></span>
+            <div><h2>Embalagens Personalizadas</h2><p>Uma solução criada para o seu produto e para a sua marca</p></div>
+          </header>
+          <img class="pg-product-detail__image" src="assets/placeholders/produto-personalizada.svg" alt="Representação temporária de uma embalagem personalizada" width="800" height="600" loading="lazy">
+          <div class="pg-product-detail__copy">
+            <p>As embalagens personalizadas são desenvolvidas de acordo com as características do produto, o posicionamento da empresa e a forma como ele será apresentado ao mercado.</p>
+            <ul><li>Dimensões</li><li>Peso</li><li>Forma de armazenamento</li><li>Transporte</li><li>Exposição</li><li>Identidade visual</li><li>Informações impressas</li><li>Acabamentos</li></ul>
+            <p>O cliente pode apresentar uma embalagem existente, enviar uma amostra física, fornecer a arte pronta ou solicitar apoio para estruturar uma nova solução.</p>
+            <p>Antes da produção, os detalhes do projeto são analisados e submetidos à aprovação.</p>
+          </div>
+          <a class="pg-button pg-button--secondary pg-product-detail__action" href="contato.html" data-smart-contact data-contact-text="Desenvolver uma embalagem personalizada"><span data-contact-label>Desenvolver uma embalagem personalizada</span></a>
+        </article>
+
+        <article class="pg-product-detail pg-product-detail--yellow pg-tone-yellow" id="embalagens-em-branco">
+          <header class="pg-product-detail__header">
+            <span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="m4 7 8-4 8 4-8 4-8-4Z"/><path d="m4 7 8 4 8-4v10l-8 4-8-4V7Z"/><path d="M12 11v10m4-1 3 3m0-3-3 3"/></svg></span>
+            <div><h2>Embalagens em Branco</h2><p>Praticidade para aplicações que não exigem impressão</p></div>
+          </header>
+          <img class="pg-product-detail__image" src="assets/placeholders/produto-embalagem-branco.svg" alt="Representação temporária de uma embalagem em branco" width="800" height="600" loading="lazy">
+          <div class="pg-product-detail__copy">
+            <p>A PrintGráfik também produz embalagens em branco para empresas que precisam de uma solução funcional sem impressão personalizada.</p>
+            <ul><li>Organização interna</li><li>Transporte de produtos</li><li>Testes de formato</li><li>Pequenas operações</li><li>Aplicação posterior de etiquetas</li><li>Projetos que não necessitam de identidade visual impressa</li></ul>
+            <p>A disponibilidade de formatos, materiais e quantidades deve ser consultada diretamente com a equipe comercial.</p>
+          </div>
+          <a class="pg-button pg-button--secondary pg-product-detail__action" href="contato.html" data-smart-contact data-contact-text="Consultar embalagens em branco"><span data-contact-label>Consultar embalagens em branco</span></a>
+        </article>
+
+        <article class="pg-product-detail pg-product-detail--purple pg-tone-purple" id="solapas">
+          <header class="pg-product-detail__header">
+            <span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M6 3h9l4 4v14H6V3Z"/><path d="M15 3v5h5M9 12h7m-7 4h7"/></svg></span>
+            <div><h2>Solapas e materiais gráficos para embalagens</h2><p>Informações e identidade integradas ao produto</p></div>
+          </header>
+          <img class="pg-product-detail__image" src="assets/produtos/placeholder-solapas.svg" alt="Representação temporária de solapas e materiais gráficos" width="800" height="600" loading="lazy">
+          <div class="pg-product-detail__copy">
+            <p>Além das caixas e cartelas, a PrintGráfik desenvolve solapas e outros materiais gráficos utilizados na apresentação de produtos.</p>
+            <ul><li>Identificar o produto</li><li>Apresentar informações</li><li>Reforçar a marca</li><li>Complementar embalagens</li><li>Apoiar ações promocionais</li><li>Organizar produtos no ponto de venda</li></ul>
+            <p>Cada aplicação deve ser avaliada conforme o formato, o material e a necessidade do cliente.</p>
+          </div>
+          <a class="pg-button pg-button--secondary pg-product-detail__action" href="contato.html" data-smart-contact data-contact-text="Falar sobre solapas e materiais gráficos"><span data-contact-label>Falar sobre solapas e materiais gráficos</span></a>
+        </article>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--muted pg-products-materials" id="materiais" aria-labelledby="titulo-materiais">
+      <div class="pg-container">
+        <div class="pg-section-heading">
+          <h2 class="pg-title pg-title--md" id="titulo-materiais">Materiais utilizados</h2>
+          <span class="pg-products-rule" aria-hidden="true"></span>
+          <p class="pg-lead">Escolhas adequadas para diferentes tipos de embalagem</p>
+          <p>Os projetos podem ser produzidos em diferentes materiais, conforme a necessidade de resistência, apresentação e acabamento.</p>
+        </div>
+        <div class="pg-products-materials__grid">
+          <article class="pg-products-material-card pg-tone-green"><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 7h18v10H3zM6 4h12v3M6 17v3h12v-3"/></svg></span><div><h3>Duplex</h3><p>Papel cartão com boa estrutura e superfície adequada para impressão, utilizado em diferentes tipos de caixas e embalagens comerciais.</p></div></article>
+          <article class="pg-products-material-card pg-tone-blue"><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18v12H3zM3 10h18m-18 4h18"/></svg></span><div><h3>Triplex</h3><p>Material com melhor acabamento visual em ambos os lados, indicado para projetos em que a parte interna da embalagem também possui importância estética.</p></div></article>
+          <article class="pg-products-material-card pg-tone-yellow"><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="m4 13 2-3 2 6 2-6 2 6 2-6 2 6 2-6 2 3"/></svg></span><div><h3>Microondulado</h3><p>Material que combina papel cartão e estrutura ondulada, oferecendo maior resistência para determinados formatos e aplicações.</p></div></article>
+        </div>
+        <p class="pg-products-materials__note">A escolha final do material depende das características do produto e da análise técnica do projeto.</p>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--white pg-products-process" id="processo" aria-labelledby="titulo-processo">
+      <div class="pg-container">
+        <div class="pg-section-heading pg-section-heading--center">
+          <h2 class="pg-title pg-title--md" id="titulo-processo">Como desenvolvemos seu pedido</h2>
+          <span class="pg-products-rule" aria-hidden="true"></span>
+        </div>
+        <ol class="pg-products-process__grid">
+          <li class="pg-products-step pg-tone-green"><span class="pg-products-step__number">1</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M8 12 4 9l-3 3 5 5 4-4m6-1 4-3 3 3-5 5-4-4"/><path d="m8 12 2-2a3 3 0 0 1 4 0l2 2m-8 4 3 3a2 2 0 0 0 3 0l4-4"/></svg></span><h3>Primeiro contato</h3><p>O cliente apresenta o produto, a quantidade estimada, as medidas e o tipo de embalagem que procura.</p></li>
+          <li class="pg-products-step pg-tone-blue"><span class="pg-products-step__number">2</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg></span><h3>Envio das informações</h3><p>A arte pode ser enviada pronta. Quando necessário, o cliente também pode apresentar uma amostra física ou referências do projeto.</p></li>
+          <li class="pg-products-step pg-tone-magenta"><span class="pg-products-step__number">3</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M6 3h12v18H6zM9 3v3h6V3M9 11h6m-6 4h4"/><path d="m15 17 2 2 4-4"/></svg></span><h3>Avaliação e orçamento</h3><p>A equipe analisa as informações, verifica a viabilidade da produção e prepara uma proposta comercial.</p></li>
+          <li class="pg-products-step pg-tone-yellow"><span class="pg-products-step__number">4</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="10"/></svg></span><h3>Aprovação</h3><p>Antes do início da produção, o cliente aprova as condições, a arte e as especificações definidas para o projeto.</p></li>
+          <li class="pg-products-step pg-tone-purple"><span class="pg-products-step__number">5</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3A1.7 1.7 0 0 0 14 21v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></span><h3>Produção</h3><p>Após a aprovação, o pedido segue para impressão, corte, acabamento e demais etapas previstas.</p></li>
+          <li class="pg-products-step pg-tone-green"><span class="pg-products-step__number">6</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h11v11H3zM14 10h4l3 3v4h-7zM6 17a2 2 0 1 0 4 0m7 0a2 2 0 1 0 4 0"/></svg></span><h3>Entrega</h3><p>O material é finalizado e entregue conforme as condições combinadas com a equipe comercial.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--muted pg-products-guidance" aria-label="Orientações para o pedido">
+      <div class="pg-container pg-products-guidance__grid">
+        <article class="pg-products-info-card pg-tone-green"><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 21h18M5 21V9l5 3V7l5 3V4h4v17M8 17h2m4 0h2"/></svg></span><div><h2>Produção adaptada à necessidade de cada empresa</h2><p>Por possuir uma estrutura de atendimento próxima e flexível, a PrintGráfik consegue avaliar diferentes formas de organizar a produção e a entrega.</p><p>Em determinados projetos, o pedido pode ser dividido em etapas, conforme a necessidade do cliente e as condições acordadas comercialmente.</p><p>Essa possibilidade não é automática e depende da análise de cada pedido.</p></div></article>
+        <article class="pg-products-info-card pg-tone-purple"><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.7 2.7 0 1 1 4.5 2c-1.2 1-2 1.5-2 3m0 3h.01"/></svg></span><div><h2>Não sabe qual embalagem escolher?</h2><p>Não é necessário chegar com todas as especificações definidas.</p><p>Nossa equipe pode entender as características do seu produto, avaliar as referências disponíveis e orientar os próximos passos para a elaboração do orçamento.</p><p>Para agilizar o atendimento, tenha em mãos, quando possível:</p><ul><li>Tipo de produto</li><li>Medidas aproximadas</li><li>Quantidade desejada</li><li>Modelo ou referência</li><li>Arte disponível</li><li>Cidade de entrega</li><li>Prazo estimado</li></ul></div></article>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--white pg-products-cta-section" aria-labelledby="titulo-cta-produtos">
+      <div class="pg-container">
+        <div class="pg-products-cta">
+          <div><h2 class="pg-title pg-title--md" id="titulo-cta-produtos">Vamos encontrar a embalagem adequada para o seu produto?</h2><p>Apresente sua necessidade e converse diretamente com a equipe da PrintGráfik.</p></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="pg-footer"><div class="pg-container pg-footer__grid">
-    <div><a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial"><img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449" loading="lazy"></a><p class="pg-footer__brand-text">Embalagens em papel cartão com qualidade, agilidade e atendimento próximo para empresas.</p></div>
-    <div><h2 class="pg-footer__title">Navegação</h2><ul class="pg-footer__links"><li><a href="index.html">Início</a></li><li><a href="empresa.html">Empresa</a></li><li><a href="produtos.html">Produtos</a></li><li><a href="estrutura.html">Estrutura</a></li><li><a href="contato.html">Contato</a></li></ul></div>
-    <div><h2 class="pg-footer__title">Produtos</h2><ul class="pg-footer__links"><li><a href="#caixinhas-display">Caixinhas Display</a></li><li><a href="#cartelas-blister">Cartelas Blister</a></li><li><a href="#embalagens-personalizadas">Personalizadas</a></li><li><a href="#embalagens-em-branco">Em Branco</a></li></ul></div>
-    <div><h2 class="pg-footer__title">Contato</h2><ul class="pg-footer__contact-list"><li><a href="contato.html">Envie uma mensagem</a></li><li data-contact-item="phone" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="email" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="address" hidden><span data-contact-value></span></li></ul></div>
-    <div class="pg-footer__social-column"><h2 class="pg-footer__title">Siga-nos</h2><div class="pg-socials"><span class="pg-social" data-social="facebook" aria-label="Facebook — link pendente" aria-disabled="true">f</span><span class="pg-social" data-social="instagram" aria-label="Instagram — link pendente" aria-disabled="true">ig</span><span class="pg-social" data-social="linkedin" aria-label="LinkedIn — link pendente" aria-disabled="true">in</span></div></div>
-  </div><div class="pg-container pg-footer__bottom"><span>© <span data-current-year>2026</span> PrintGráfik Indústria Gráfica Ltda. Todos os direitos reservados.</span><span class="pg-footer__credits">Ícones por <a href="https://www.flaticon.com/br/icones-gratis/facebook">Rakib Hassan Rahim e Pixel perfect</a> e <a href="https://www.flaticon.com/br/icones-gratis/linkedin">riajulislam</a> — Flaticon</span><span>Desenvolvido por <a href="https://andreblosaliatti.dev" target="_blank" rel="noopener noreferrer">Andre Blos Aliatti</a></span><a href="politica-de-privacidade.html">Política de Privacidade</a></div></footer>
-</body></html>
+
+  <footer class="pg-footer">
+    <div class="pg-container pg-footer__grid">
+      <div><a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial"><img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449" loading="lazy"></a><p class="pg-footer__brand-text">Embalagens em papel cartão com qualidade, agilidade e atendimento próximo para empresas.</p></div>
+      <div><h2 class="pg-footer__title">Navegação</h2><ul class="pg-footer__links"><li><a href="index.html">Início</a></li><li><a href="empresa.html">Empresa</a></li><li><a href="produtos.html" aria-current="page">Produtos</a></li><li><a href="estrutura.html">Estrutura</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+      <div><h2 class="pg-footer__title">Produtos</h2><ul class="pg-footer__links"><li><a href="#caixas-display">Caixas Display</a></li><li><a href="#cartelas-blister">Cartelas Blister</a></li><li><a href="#embalagens-personalizadas">Personalizadas</a></li><li><a href="#embalagens-em-branco">Em Branco</a></li></ul></div>
+      <div><h2 class="pg-footer__title">Contato</h2><ul class="pg-footer__contact-list"><li><a href="contato.html">Envie uma mensagem</a></li><li data-contact-item="phone" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="whatsapp" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="email" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="address" hidden><span data-contact-value></span></li></ul></div>
+      <div class="pg-footer__social-column"><h2 class="pg-footer__title">Siga-nos</h2><div class="pg-socials"><span class="pg-social" data-social="facebook" aria-label="Facebook — link pendente" aria-disabled="true">f</span><span class="pg-social" data-social="instagram" aria-label="Instagram — link pendente" aria-disabled="true">ig</span><span class="pg-social" data-social="linkedin" aria-label="LinkedIn — link pendente" aria-disabled="true">in</span></div></div>
+    </div>
+    <div class="pg-container pg-footer__bottom"><span>© <span data-current-year>2026</span> PrintGráfik Indústria Gráfica Ltda. Todos os direitos reservados.</span><span class="pg-footer__credits">Ícones por <a href="https://www.flaticon.com/br/icones-gratis/facebook">Rakib Hassan Rahim e Pixel perfect</a> e <a href="https://www.flaticon.com/br/icones-gratis/linkedin">riajulislam</a> — Flaticon</span><span>Desenvolvido por <a href="https://andreblosaliatti.dev" target="_blank" rel="noopener noreferrer">Andre Blos Aliatti</a></span><a href="politica-de-privacidade.html">Política de Privacidade</a></div>
+  </footer>
+</body>
+</html>

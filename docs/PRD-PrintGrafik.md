@@ -266,7 +266,7 @@ Critérios:
 
 Exibir quatro cards:
 
-1. Caixinhas Display.
+1. Caixas Display.
 2. Cartelas Blister.
 3. Embalagens Personalizadas.
 4. Embalagens em Branco.
@@ -402,7 +402,7 @@ Apresentar as principais soluções produzidas pela empresa.
 
 ### Categorias
 
-#### Caixinhas Display
+#### Caixas Display
 
 Apresentar:
 

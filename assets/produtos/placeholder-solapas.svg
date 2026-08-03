@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Representação de solapas e materiais gráficos</title>
+  <desc id="desc">Ilustração temporária de três materiais gráficos impressos para apresentação de produtos.</desc>
+  <rect width="800" height="600" rx="32" fill="#f8fafc"/>
+  <g transform="translate(170 95) rotate(-7 120 190)">
+    <rect width="240" height="380" rx="18" fill="#fff" stroke="#7f3fe5" stroke-width="8"/>
+    <rect x="36" y="45" width="168" height="72" rx="12" fill="#f2ebff"/>
+    <path d="M44 166h152M44 206h152M44 246h112" stroke="#7f3fe5" stroke-width="10" stroke-linecap="round" opacity=".62"/>
+  </g>
+  <g transform="translate(390 120) rotate(8 110 175)">
+    <rect width="220" height="350" rx="18" fill="#fff" stroke="#0a9b50" stroke-width="8"/>
+    <circle cx="110" cy="88" r="42" fill="#e8f7ef" stroke="#0a9b50" stroke-width="7"/>
+    <path d="M42 174h136M42 214h136M42 254h92" stroke="#0a9b50" stroke-width="10" stroke-linecap="round" opacity=".62"/>
+  </g>
+</svg>

@@ -13,6 +13,9 @@ const localReferencePattern = /(?:href|src)="([^"]+)"/g;
 for (const htmlFile of htmlFiles) {
   const html = readFileSync(join(root, htmlFile), "utf8");
   if ((html.match(/<h1\b/g) || []).length !== 1) failures.push(`${htmlFile}: deve possuir exatamente um h1`);
+  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+  const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
+  if (duplicateIds.length) failures.push(`${htmlFile}: IDs duplicados: ${[...new Set(duplicateIds)].join(", ")}`);
   for (const [, reference] of html.matchAll(localReferencePattern)) {
     if (/^(?:https?:|mailto:|tel:)/.test(reference)) continue;
     if (reference.startsWith("#")) {
@@ -147,12 +150,15 @@ if (!target) {
     await send("Runtime.evaluate", {
       awaitPromise: true,
       expression: `(async () => {
+        const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
         for (let y = 0; y < document.documentElement.scrollHeight; y += window.innerHeight) {
           window.scrollTo(0, y);
           await new Promise((resolve) => setTimeout(resolve, 70));
         }
         window.scrollTo(0, 0);
         await new Promise((resolve) => setTimeout(resolve, 150));
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
       })()`
     });
     if (width === 1440 || width === 375) await delay(1300);
@@ -163,13 +169,15 @@ if (!target) {
         clientWidth: document.documentElement.clientWidth,
         h1Count: document.querySelectorAll('h1').length,
         brokenImages: [...document.images].filter((img) => img.complete && img.naturalWidth === 0).map((img) => img.src),
-        menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none'
+        menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
+        finalCtaButtons: document.querySelectorAll('.pg-cta .pg-button').length
       }))()`
     });
     const result = evaluation.result.value;
     if (result.scrollWidth > result.clientWidth) failures.push(`${width}px: rolagem horizontal (${result.scrollWidth} > ${result.clientWidth})`);
     if (result.h1Count !== 1) failures.push(`${width}px: quantidade de h1 inválida`);
     if (result.brokenImages.length) failures.push(`${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
+    if (result.finalCtaButtons !== 0) failures.push(`${width}px: o CTA final da Home não deve possuir botões`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
       const menuResult = await send("Runtime.evaluate", {
@@ -212,6 +220,152 @@ if (!target) {
         }
       });
       writeFileSync(join(screenshotDir, `home-${width}.png`), Buffer.from(capture.data, "base64"));
+    }
+  }
+
+  for (const width of widths) {
+    await send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 480 });
+    await send("Page.navigate", { url: `http://127.0.0.1:${sitePort}/empresa.html` });
+    await delay(550);
+    await send("Runtime.evaluate", {
+      awaitPromise: true,
+      expression: `(async () => {
+        const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+        for (let y = 0; y < document.documentElement.scrollHeight; y += window.innerHeight) {
+          window.scrollTo(0, y);
+          await new Promise((resolve) => setTimeout(resolve, 60));
+        }
+        window.scrollTo(0, 0);
+        await new Promise((resolve) => setTimeout(resolve, 120));
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
+      })()`
+    });
+    const evaluation = await send("Runtime.evaluate", {
+      returnByValue: true,
+      expression: `(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        h1Count: document.querySelectorAll('h1').length,
+        brokenImages: [...document.images].filter((img) => img.complete && img.naturalWidth === 0).map((img) => img.src),
+        menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
+        activePage: document.querySelector('.pg-nav__link[aria-current="page"]')?.getAttribute('href'),
+        finalCtaButtons: document.querySelectorAll('.pg-company-cta .pg-button').length,
+        hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
+      }))()`
+    });
+    const result = evaluation.result.value;
+    if (result.scrollWidth > result.clientWidth) failures.push(`empresa ${width}px: rolagem horizontal (${result.scrollWidth} > ${result.clientWidth})`);
+    if (result.h1Count !== 1) failures.push(`empresa ${width}px: quantidade de h1 inválida`);
+    if (result.brokenImages.length) failures.push(`empresa ${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
+    if (result.activePage !== "empresa.html") failures.push(`empresa ${width}px: estado ativo da navegação incorreto`);
+    if (result.finalCtaButtons !== 0) failures.push(`empresa ${width}px: o CTA final não deve possuir botões`);
+    if (result.hiddenReveals.length !== 0) failures.push(`empresa ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
+    if (width <= 768 && !result.menuButtonVisible) failures.push(`empresa ${width}px: botão do menu móvel não está visível`);
+    if (width === 375) {
+      const menuResult = await send("Runtime.evaluate", {
+        returnByValue: true,
+        expression: `(() => {
+          const button = document.querySelector('[data-menu-toggle]');
+          const menu = document.querySelector('[data-menu]');
+          button.click();
+          const opened = button.getAttribute('aria-expanded') === 'true' && menu.dataset.open === 'true';
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+          return { opened, closed: button.getAttribute('aria-expanded') === 'false' && menu.dataset.open === 'false', focused: document.activeElement === button };
+        })()`
+      });
+      const menu = menuResult.result.value;
+      if (!menu.opened || !menu.closed || !menu.focused) failures.push("empresa 375px: interação acessível do menu móvel falhou");
+    }
+    if (width === 1440 || width === 375) {
+      const metrics = await send("Page.getLayoutMetrics");
+      const capture = await send("Page.captureScreenshot", {
+        format: "png",
+        captureBeyondViewport: true,
+        clip: {
+          x: 0,
+          y: 0,
+          width: metrics.cssContentSize.width,
+          height: metrics.cssContentSize.height,
+          scale: 1
+        }
+      });
+      writeFileSync(join(screenshotDir, `empresa-${width}.png`), Buffer.from(capture.data, "base64"));
+    }
+  }
+
+  for (const width of widths) {
+    await send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 480 });
+    await send("Page.navigate", { url: `http://127.0.0.1:${sitePort}/produtos.html` });
+    await delay(550);
+    await send("Runtime.evaluate", {
+      awaitPromise: true,
+      expression: `(async () => {
+        const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+        for (let y = 0; y < document.documentElement.scrollHeight; y += window.innerHeight) {
+          window.scrollTo(0, y);
+          await new Promise((resolve) => setTimeout(resolve, 60));
+        }
+        window.scrollTo(0, 0);
+        await new Promise((resolve) => setTimeout(resolve, 120));
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
+      })()`
+    });
+    const evaluation = await send("Runtime.evaluate", {
+      returnByValue: true,
+      expression: `(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        h1Count: document.querySelectorAll('h1').length,
+        brokenImages: [...document.images].filter((img) => img.complete && img.naturalWidth === 0).map((img) => img.src),
+        menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
+        activePage: document.querySelector('.pg-nav__link[aria-current="page"]')?.getAttribute('href'),
+        productCards: document.querySelectorAll('.pg-product-detail').length,
+        contactFallbacks: [...document.querySelectorAll('.pg-product-detail [data-smart-contact]')].every((link) => link.getAttribute('href') === 'contato.html'),
+        finalCtaButtons: document.querySelectorAll('.pg-products-cta .pg-button').length,
+        hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
+      }))()`
+    });
+    const result = evaluation.result.value;
+    if (result.scrollWidth > result.clientWidth) failures.push(`produtos ${width}px: rolagem horizontal (${result.scrollWidth} > ${result.clientWidth})`);
+    if (result.h1Count !== 1) failures.push(`produtos ${width}px: quantidade de h1 inválida`);
+    if (result.brokenImages.length) failures.push(`produtos ${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
+    if (result.activePage !== "produtos.html") failures.push(`produtos ${width}px: estado ativo da navegação incorreto`);
+    if (result.productCards !== 5) failures.push(`produtos ${width}px: quantidade de categorias inválida (${result.productCards})`);
+    if (!result.contactFallbacks) failures.push(`produtos ${width}px: fallback de contato incorreto`);
+    if (result.finalCtaButtons !== 0) failures.push(`produtos ${width}px: o CTA final não deve possuir botões`);
+    if (result.hiddenReveals.length !== 0) failures.push(`produtos ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
+    if (width <= 768 && !result.menuButtonVisible) failures.push(`produtos ${width}px: botão do menu móvel não está visível`);
+    if (width === 375) {
+      const menuResult = await send("Runtime.evaluate", {
+        returnByValue: true,
+        expression: `(() => {
+          const button = document.querySelector('[data-menu-toggle]');
+          const menu = document.querySelector('[data-menu]');
+          button.click();
+          const opened = button.getAttribute('aria-expanded') === 'true' && menu.dataset.open === 'true';
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+          return { opened, closed: button.getAttribute('aria-expanded') === 'false' && menu.dataset.open === 'false', focused: document.activeElement === button };
+        })()`
+      });
+      const menu = menuResult.result.value;
+      if (!menu.opened || !menu.closed || !menu.focused) failures.push("produtos 375px: interação acessível do menu móvel falhou");
+    }
+    if (width === 1440 || width === 375) {
+      const metrics = await send("Page.getLayoutMetrics");
+      const capture = await send("Page.captureScreenshot", {
+        format: "png",
+        captureBeyondViewport: true,
+        clip: {
+          x: 0,
+          y: 0,
+          width: metrics.cssContentSize.width,
+          height: metrics.cssContentSize.height,
+          scale: 1
+        }
+      });
+      writeFileSync(join(screenshotDir, `produtos-${width}.png`), Buffer.from(capture.data, "base64"));
     }
   }
 
