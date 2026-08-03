@@ -6,6 +6,7 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 
 - Home responsiva completa.
 - Página A Empresa completa e alinhada ao mockup `docs/empresa-mock.png`, com história, soluções, estrutura, atendimento, princípios, chamada comercial e movimentos leves durante a rolagem.
+- Localização da empresa com dados oficiais e mapa incorporado do Google Maps.
 - Página Produtos completa e alinhada ao mockup `docs/mock-produtos.png`, com cinco categorias, materiais, processo do pedido, orientações comerciais, chamada final e movimentos leves durante a rolagem.
 - Cabeçalho compartilhado e menu móvel acessível.
 - Hero com a imagem final da máquina de impressão.
@@ -14,7 +15,8 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 - Indicadores, diferenciais, missão, visão e valores.
 - Galeria temporária da estrutura.
 - Chamada final para contato.
-- Rodapé com navegação, produtos, contatos configuráveis e redes sociais desativadas enquanto não confirmadas.
+- Rodapé com navegação, produtos, contatos configuráveis, Instagram ativo e redes ainda não confirmadas desativadas.
+- Telefone, e-mail, endereço e Instagram oficiais exibidos nos pontos de contato do site.
 - Páginas internas mínimas para evitar links quebrados.
 - Suporte a navegação por teclado, foco visível e `prefers-reduced-motion`.
 - Teste automatizado local de links, imagens, console, menu móvel e responsividade.
@@ -55,6 +57,7 @@ site-printgrafik/
 - `assets/logo/logo-printgrafik.png`: cópia preservada do logo oficial.
 - `assets/logo/logo-printgrafik-600.png`: versão reduzida e otimizada para uso no site, sem alteração de proporção ou cores.
 - `assets/hero/hero-impressao-printgrafik.jpg`: imagem final do hero.
+- `assets/hero/hero-impressao-mobile.jpg`: versão vertical do hero usada em telas de até 820 px.
 - `assets/empresa/fachada-printgrafik.jpg`: fotografia real da fachada usada na Home e na página A Empresa.
 - `assets/produtos/hero-produtos.jpg`: imagem final do hero da página Produtos.
 - Os arquivos fornecidos originalmente permanecem preservados em `assets/images/`.
@@ -89,18 +92,22 @@ Dados institucionais atuais:
 - Mais de 10 serviços.
 - Mais de 500 clientes satisfeitos.
 
+Dados de contato confirmados:
+
+- Telefone: `(19) 9.9144-0661`.
+- E-mail: `printgrafik@printgrafik.com.br`.
+- Endereço: Rodovia Antonio Forti, nº 2400 — Bairro Morro Amarelo — Capivari/SP.
+- Instagram: `@printgrafik_industriagrafica`.
+
 ## Pendências
 
 Itens marcados com `TODO` no objeto de configuração e que precisam de confirmação:
 
-- Telefone.
 - WhatsApp.
-- E-mail.
-- Endereço.
 - Horário de atendimento.
-- URLs oficiais de Facebook, Instagram e LinkedIn.
+- URLs oficiais de Facebook e LinkedIn.
 
-Enquanto estiverem ausentes, os contatos não são exibidos e os botões levam para a página interna de contato. As redes sociais permanecem visualmente desativadas.
+Enquanto WhatsApp estiver ausente, os botões correspondentes levam para a página interna de contato. Facebook e LinkedIn permanecem visualmente desativados.
 
 Também permanecem pendentes:
 

@@ -191,6 +191,10 @@
     grid-template-columns: 1fr;
   }
 
+  .pg-company-location {
+    grid-template-columns: 1fr;
+  }
+
   .pg-company-purpose-card {
     min-height: auto;
   }
@@ -298,6 +302,13 @@
     gap: var(--pg-space-8);
   }
 
+  .pg-company-intro__lead {
+    font-size: var(--pg-fs-24);
+    font-weight: 850;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+  }
+
   .pg-company-intro__image {
     border-radius: var(--pg-radius-lg);
   }
@@ -333,6 +344,14 @@
 
   .pg-company-cta {
     padding: var(--pg-space-8);
+  }
+
+  .pg-company-location__copy {
+    padding: var(--pg-space-6);
+  }
+
+  .pg-company-location__map {
+    min-height: 340px;
   }
 
   .pg-products-index ul {
@@ -459,6 +478,10 @@
   .pg-company-purpose-card,
   .pg-company-cta {
     padding: var(--pg-space-6);
+  }
+
+  .pg-company-location__map {
+    min-height: 280px;
   }
 
   .pg-company-purpose-card .pg-icon {

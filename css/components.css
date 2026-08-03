@@ -521,6 +521,12 @@
   margin-top: var(--pg-space-6);
 }
 
+.pg-page-placeholder__card .pg-footer__contact-list {
+  gap: var(--pg-space-3);
+  margin-top: var(--pg-space-6);
+  font-size: var(--pg-fs-16);
+}
+
 .pg-reveal {
   opacity: 0;
   transform: translateY(24px);

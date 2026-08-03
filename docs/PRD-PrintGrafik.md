@@ -734,12 +734,9 @@ A empresa deve fornecer ou confirmar:
 - Lista final de produtos.
 - Materiais utilizados.
 - Diferenciais confirmados.
-- Telefone.
 - WhatsApp.
-- E-mail.
-- Endereço.
 - Horários.
-- Instagram e outras redes.
+- Facebook, LinkedIn e outras redes ainda não confirmadas.
 - Nome dos responsáveis comerciais.
 - Texto final da política de privacidade.
 - Número correto de clientes atendidos.
@@ -752,6 +749,10 @@ A empresa deve fornecer ou confirmar:
 - Área fabril: 2.000 m².
 - Serviços: mais de 10.
 - Clientes satisfeitos: mais de 500.
+- Telefone: (19) 9.9144-0661.
+- E-mail: printgrafik@printgrafik.com.br.
+- Endereço: Rodovia Antonio Forti, nº 2400 — Bairro Morro Amarelo — Capivari/SP.
+- Instagram: @printgrafik_industriagrafica.
 
 Todos os números devem ser confirmados antes da publicação.
 

@@ -169,6 +169,7 @@ if (!target) {
         clientWidth: document.documentElement.clientWidth,
         h1Count: document.querySelectorAll('h1').length,
         brokenImages: [...document.images].filter((img) => img.complete && img.naturalWidth === 0).map((img) => img.src),
+        heroImage: document.querySelector('.pg-hero__image')?.currentSrc,
         menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
         finalCtaButtons: document.querySelectorAll('.pg-cta .pg-button').length
       }))()`
@@ -177,6 +178,8 @@ if (!target) {
     if (result.scrollWidth > result.clientWidth) failures.push(`${width}px: rolagem horizontal (${result.scrollWidth} > ${result.clientWidth})`);
     if (result.h1Count !== 1) failures.push(`${width}px: quantidade de h1 inválida`);
     if (result.brokenImages.length) failures.push(`${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
+    const expectedHeroImage = width <= 820 ? "hero-impressao-mobile.jpg" : "hero-impressao-printgrafik.jpg";
+    if (!result.heroImage?.endsWith(expectedHeroImage)) failures.push(`${width}px: imagem incorreta no hero da Home (${result.heroImage})`);
     if (result.finalCtaButtons !== 0) failures.push(`${width}px: o CTA final da Home não deve possuir botões`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
@@ -251,6 +254,11 @@ if (!target) {
         menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
         activePage: document.querySelector('.pg-nav__link[aria-current="page"]')?.getAttribute('href'),
         finalCtaButtons: document.querySelectorAll('.pg-company-cta .pg-button').length,
+        locationVisible: !document.querySelector('[data-map-container]')?.hidden,
+        mapSource: document.querySelector('[data-map-embed]')?.getAttribute('src'),
+        phoneHref: document.querySelector('.pg-company-location [data-contact-item="phone"] a')?.getAttribute('href'),
+        emailHref: document.querySelector('.pg-company-location [data-contact-item="email"] a')?.getAttribute('href'),
+        instagramHref: document.querySelector('[data-social="instagram"]')?.getAttribute('href'),
         hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
       }))()`
     });
@@ -260,6 +268,10 @@ if (!target) {
     if (result.brokenImages.length) failures.push(`empresa ${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
     if (result.activePage !== "empresa.html") failures.push(`empresa ${width}px: estado ativo da navegação incorreto`);
     if (result.finalCtaButtons !== 0) failures.push(`empresa ${width}px: o CTA final não deve possuir botões`);
+    if (!result.locationVisible || !result.mapSource?.startsWith("https://www.google.com/maps?")) failures.push(`empresa ${width}px: mapa da localização não foi configurado`);
+    if (result.phoneHref !== "tel:19991440661") failures.push(`empresa ${width}px: telefone oficial incorreto`);
+    if (result.emailHref !== "mailto:printgrafik@printgrafik.com.br") failures.push(`empresa ${width}px: e-mail oficial incorreto`);
+    if (result.instagramHref !== "https://www.instagram.com/printgrafik_industriagrafica/") failures.push(`empresa ${width}px: Instagram oficial incorreto`);
     if (result.hiddenReveals.length !== 0) failures.push(`empresa ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`empresa ${width}px: botão do menu móvel não está visível`);
     if (width === 375) {

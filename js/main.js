@@ -9,18 +9,16 @@ const PG_SITE_CONFIG = Object.freeze({
     clients: "500+"
   }),
   contacts: Object.freeze({
-    // TODO: preencher somente após confirmação oficial.
-    phone: null,
+    phone: "(19) 9.9144-0661",
     whatsapp: null,
-    email: null,
-    address: null,
+    email: "printgrafik@printgrafik.com.br",
+    address: "Rodovia Antonio Forti, nº 2400 — Bairro Morro Amarelo — Capivari/SP",
     businessHours: null,
     whatsappMessage: "Olá! Acessei o site da PrintGráfik e gostaria de informações sobre embalagens para minha empresa."
   }),
   social: Object.freeze({
-    // TODO: preencher somente após confirmação das URLs oficiais.
     facebook: null,
-    instagram: null,
+    instagram: "https://www.instagram.com/printgrafik_industriagrafica/",
     linkedin: null
   })
 });
@@ -103,9 +101,31 @@ const pgApplyContacts = () => {
       item.hidden = false;
     });
   });
+
+  if (contacts.address) {
+    const encodedAddress = encodeURIComponent(contacts.address);
+    document.querySelectorAll("[data-map-link]").forEach((link) => {
+      link.href = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+      link.hidden = false;
+    });
+    document.querySelectorAll("[data-map-embed]").forEach((frame) => {
+      if (!frame.getAttribute("src")) {
+        frame.src = `https://www.google.com/maps?q=${encodedAddress}&output=embed`;
+      }
+    });
+    document.querySelectorAll("[data-map-container]").forEach((container) => {
+      container.hidden = false;
+    });
+  }
 };
 
 const pgApplySocialLinks = () => {
+  const networkLabels = {
+    facebook: "Facebook da PrintGráfik",
+    instagram: "Instagram da PrintGráfik",
+    linkedin: "LinkedIn da PrintGráfik"
+  };
+
   Object.entries(PG_SITE_CONFIG.social).forEach(([network, url]) => {
     document.querySelectorAll(`[data-social="${network}"]`).forEach((placeholder) => {
       placeholder.innerHTML = PG_SOCIAL_ICONS[network] || "";
@@ -115,10 +135,18 @@ const pgApplySocialLinks = () => {
       link.href = url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-      link.setAttribute("aria-label", placeholder.getAttribute("aria-label") || network);
+      link.setAttribute("aria-label", networkLabels[network] || network);
       link.dataset.social = network;
       link.innerHTML = placeholder.innerHTML;
       placeholder.replaceWith(link);
+    });
+
+    document.querySelectorAll(`[data-social-profile="${network}"]`).forEach((profileLink) => {
+      if (!url) return;
+      profileLink.href = url;
+      profileLink.target = "_blank";
+      profileLink.rel = "noopener noreferrer";
+      profileLink.hidden = false;
     });
   });
 };
@@ -251,6 +279,8 @@ const pgInitScrollMotion = () => {
     ".pg-company-service__media",
     ".pg-company-service__copy",
     ".pg-company-purpose-card",
+    ".pg-company-location__copy",
+    ".pg-company-location__map",
     ".pg-company-cta",
     ".pg-product-detail",
     ".pg-products-material-card",
@@ -282,11 +312,11 @@ const pgInitScrollMotion = () => {
   productsHeroImage?.classList.add("pg-reveal", "pg-reveal--right");
 
   document.querySelectorAll(
-    ".pg-company-solutions .pg-company-panel__copy, .pg-company-structure .pg-company-panel__copy, .pg-company-service__media"
+    ".pg-company-solutions .pg-company-panel__copy, .pg-company-structure .pg-company-panel__copy, .pg-company-service__media, .pg-company-location__copy"
   ).forEach((element) => element.classList.add("pg-reveal--left"));
 
   document.querySelectorAll(
-    ".pg-company-products-visual, .pg-company-benefit, .pg-company-stat, .pg-company-service__copy"
+    ".pg-company-products-visual, .pg-company-benefit, .pg-company-stat, .pg-company-service__copy, .pg-company-location__map"
   ).forEach((element) => element.classList.add("pg-reveal--right"));
 
   const revealElement = (element) => {
