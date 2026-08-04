@@ -5,15 +5,17 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 ## Implementado
 
 - Home responsiva completa.
-- Página A Empresa completa e alinhada ao mockup `docs/empresa-mock.png`, com história, soluções, estrutura, atendimento, princípios, chamada comercial e movimentos leves durante a rolagem.
+- Página A Empresa completa e alinhada ao mockup `docs/empresa-mock.png`, com história, soluções, atendimento, princípios, localização, chamada comercial e movimentos leves durante a rolagem.
 - Localização da empresa com dados oficiais e mapa incorporado do Google Maps.
 - Página Produtos completa e alinhada ao mockup `docs/mock-produtos.png`, com cinco categorias, materiais, processo do pedido, orientações comerciais, chamada final e movimentos leves durante a rolagem.
+- Hero da página Produtos com vídeo real do processo de produção, controles nativos, autoplay mudo e thumbnail local.
+- Página Estrutura completa e alinhada ao mockup `docs/mock-estrutura.png`, com hero, acompanhamento próximo, seis etapas produtivas, equipamentos, qualidade, galeria e chamada comercial.
 - Cabeçalho compartilhado e menu móvel acessível.
 - Hero com a imagem final da máquina de impressão.
 - Cards de produtos em destaque.
 - Seção institucional com a fotografia real da fachada.
 - Indicadores, diferenciais, missão, visão e valores.
-- Galeria temporária da estrutura.
+- Galeria da Home atualizada com quatro fotografias reais da estrutura e apenas um placeholder pendente para operador.
 - Chamada final para contato.
 - Rodapé com navegação, produtos, contatos configuráveis, Instagram ativo e redes ainda não confirmadas desativadas.
 - Telefone, e-mail, endereço e Instagram oficiais exibidos nos pontos de contato do site.
@@ -35,6 +37,7 @@ site-printgrafik/
 │   ├── tokens.css
 │   ├── components.css
 │   ├── empresa.css
+│   ├── estrutura.css
 │   ├── home.css
 │   ├── produtos.css
 │   └── responsive.css
@@ -46,6 +49,7 @@ site-printgrafik/
 │   ├── images/
 │   ├── logo/
 │   ├── produtos/
+│   ├── estrutura/
 │   └── placeholders/
 ├── docs/
 └── tests/
@@ -59,8 +63,28 @@ site-printgrafik/
 - `assets/hero/hero-impressao-printgrafik.jpg`: imagem final do hero.
 - `assets/hero/hero-impressao-mobile.jpg`: versão vertical do hero usada em telas de até 820 px.
 - `assets/empresa/fachada-printgrafik.jpg`: fotografia real da fachada usada na Home e na página A Empresa.
-- `assets/produtos/hero-produtos.jpg`: imagem final do hero da página Produtos.
+- `assets/empresa/fachada-printgrafik-estrutura.jpg`: versão 1280 × 720 e 16:9 otimizada para o hero da página Estrutura; o original foi preservado.
+- `assets/produtos/hero-produtos.jpg`: imagem estática preservada como alternativa para a página Produtos.
+- `assets/produtos/producao.mp4`: vídeo real exibido no hero da página Produtos.
+- `assets/produtos/hero-produtos.jpg`: thumbnail exibido antes do início da reprodução do vídeo.
+- `assets/produtos/video-caixa-placeholder.svg`: placeholder anterior preservado como alternativa local.
+- `assets/estrutura/`: doze fotografias reais da fábrica, dos equipamentos e das áreas produtivas.
 - Os arquivos fornecidos originalmente permanecem preservados em `assets/images/`.
+
+Na página Estrutura são usadas a fachada otimizada e oito fotografias reais:
+
+- `assets/estrutura/impressora-offset-man-roland.jpeg`: card Impressão offset.
+- `assets/estrutura/corte-vinco-frontal.jpeg`: card Corte.
+- `assets/estrutura/corte-vinco-acabamento.jpeg`: card Corte, vinco e acabamento.
+- `assets/estrutura/area-interna-producao.jpeg`: card Área interna de produção.
+- `assets/estrutura/linha-impressao-offset.jpeg`: galeria, Linha de impressão.
+- `assets/estrutura/parque-grafico.jpeg`: galeria, Parque gráfico.
+- `assets/estrutura/impressora-offset-detalhe.jpeg`: galeria, Equipamentos de produção.
+- `assets/estrutura/galpao-producao.jpeg`: galeria, Galpão de produção.
+
+As vistas `estrutura-interna-fabrica.jpeg`, `impressora-offset-lateral.jpeg`, `impressora-offset-man-roland-frontal.jpeg` e `impressora-offset-visao-ampla.jpeg` permanecem como alternativas ou são usadas na Home. A última mostra a área externa apesar do nome e, por isso, não foi descrita como equipamento na página Estrutura. O arquivo `guilhotina-polar.jpeg` citado como alternativa no briefing não foi fornecido; o card Corte usa `corte-vinco-frontal.jpeg`.
+
+Os JPEGs de `assets/estrutura/` foram mantidos nos arquivos originais porque já possuem tamanho reduzido, entre aproximadamente 100 KB e 140 KB; uma conversão adicional não produziria ganho material para esta etapa.
 
 ## Placeholders
 
@@ -71,12 +95,8 @@ As fotografias finais abaixo ainda não foram fornecidas e usam SVGs locais clar
 - Embalagens Personalizadas.
 - Embalagens em Branco.
 - Solapas e materiais gráficos para embalagens.
-- Área de produção.
-- Máquina de impressão.
 - Operador trabalhando.
 - Atendimento pessoal da equipe.
-- Processo de impressão.
-- Embalagens finalizadas.
 
 Os arquivos estão em `assets/placeholders/` e `assets/produtos/` e podem ser substituídos sem alterar a estrutura das páginas.
 
@@ -91,6 +111,15 @@ Dados institucionais atuais:
 - 2.000 m² de área fabril.
 - Mais de 10 serviços.
 - Mais de 500 clientes satisfeitos.
+
+### Distribuição editorial
+
+- A Home concentra o resumo numérico institucional: tempo de atuação, área fabril, serviços e clientes.
+- A página Empresa prioriza história, soluções, atendimento, princípios e localização, sem repetir o bloco de indicadores.
+- A página Estrutura menciona somente a área fabril e se dedica aos espaços, equipamentos, fluxo produtivo e controle de qualidade.
+- A explicação sobre organização flexível da produção e da entrega fica na página Produtos; na Home aparece apenas como diferencial resumido.
+- Cabeçalho, rodapé e dados de contato permanecem compartilhados por serem elementos globais de navegação e conversão.
+- Entre os banners finais, somente o da Home possui botão; os banners das páginas internas mantêm o texto centralizado e sem ações.
 
 Dados de contato confirmados:
 
@@ -111,10 +140,14 @@ Enquanto WhatsApp estiver ausente, os botões correspondentes levam para a pági
 
 Também permanecem pendentes:
 
-- Fotografias reais de produtos, máquinas, operadores, produção e embalagens finalizadas.
-- Desenvolvimento completo das páginas Estrutura e Contato.
+- Fotografias reais dos produtos e de um operador trabalhando.
+- Desenvolvimento completo da página Contato.
 - Definição do envio do formulário de contato e proteção antispam.
 - Texto jurídico final da Política de Privacidade.
+
+## Vídeo do hero de Produtos
+
+O hero da página Produtos utiliza `assets/produtos/producao.mp4`. O vídeo possui controles nativos, autoplay mudo, `playsinline`, `preload="metadata"` e fallback textual. O arquivo `assets/produtos/hero-produtos.jpg` funciona como thumbnail antes do início da reprodução. O autoplay permanece mudo para ser aceito pelos navegadores e não interromper o visitante com áudio inesperado.
 
 ## Executar localmente
 
@@ -145,6 +178,11 @@ O teste verifica:
 - Funcionamento do menu móvel, `aria-expanded`, tecla `Escape` e retorno de foco.
 - Responsividade, imagens, navegação ativa e fallback de contato da página A Empresa.
 - Responsividade, cinco categorias, imagens, navegação ativa, fallback de contato, CTA sem botões e movimentos da página Produtos.
+- Responsividade, fotografias reais, navegação ativa, carregamento tardio e movimentos da página Estrutura.
+- Presença das seis etapas produtivas, seis itens de acompanhamento, oito critérios de qualidade e CTAs com fallback da página Estrutura.
+- Ausência de repetição do resumo numérico institucional em Empresa e, em Estrutura, presença apenas da área fabril.
+- Presença de quatro fotografias reais e somente um placeholder de estrutura na galeria da Home.
+- Presença e carregamento do vídeo real, thumbnail, controles e autoplay mudo no hero de Produtos.
 - Erros no console do navegador.
 
 Capturas visuais temporárias são geradas fora do repositório durante o teste.

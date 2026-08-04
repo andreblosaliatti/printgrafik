@@ -43,7 +43,8 @@ const mimeTypes = {
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg"
+  ".jpeg": "image/jpeg",
+  ".mp4": "video/mp4"
 };
 
 const server = createServer((request, response) => {
@@ -171,7 +172,9 @@ if (!target) {
         brokenImages: [...document.images].filter((img) => img.complete && img.naturalWidth === 0).map((img) => img.src),
         heroImage: document.querySelector('.pg-hero__image')?.currentSrc,
         menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
-        finalCtaButtons: document.querySelectorAll('.pg-cta .pg-button').length
+        finalCtaButtons: document.querySelectorAll('.pg-cta .pg-button').length,
+        realStructurePhotos: document.querySelectorAll('.pg-gallery__image[src^="assets/estrutura/"]').length,
+        structurePlaceholders: [...document.querySelectorAll('.pg-gallery__image[src^="assets/placeholders/estrutura-"]')].map((img) => img.getAttribute('src'))
       }))()`
     });
     const result = evaluation.result.value;
@@ -180,7 +183,9 @@ if (!target) {
     if (result.brokenImages.length) failures.push(`${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
     const expectedHeroImage = width <= 820 ? "hero-impressao-mobile.jpg" : "hero-impressao-printgrafik.jpg";
     if (!result.heroImage?.endsWith(expectedHeroImage)) failures.push(`${width}px: imagem incorreta no hero da Home (${result.heroImage})`);
-    if (result.finalCtaButtons !== 0) failures.push(`${width}px: o CTA final da Home não deve possuir botões`);
+    if (result.finalCtaButtons !== 1) failures.push(`${width}px: somente o CTA final da Home deve possuir um botão`);
+    if (result.realStructurePhotos !== 4) failures.push(`${width}px: a galeria da Home deve possuir quatro fotografias reais da estrutura`);
+    if (JSON.stringify(result.structurePlaceholders) !== JSON.stringify(["assets/placeholders/estrutura-operador.svg"])) failures.push(`${width}px: a galeria da Home deve manter somente o placeholder de operador`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
       const menuResult = await send("Runtime.evaluate", {
@@ -259,6 +264,7 @@ if (!target) {
         phoneHref: document.querySelector('.pg-company-location [data-contact-item="phone"] a')?.getAttribute('href'),
         emailHref: document.querySelector('.pg-company-location [data-contact-item="email"] a')?.getAttribute('href'),
         instagramHref: document.querySelector('[data-social="instagram"]')?.getAttribute('href'),
+        repeatedInstitutionalNumbers: document.querySelectorAll('[data-institution="historyYears"], [data-institution="factoryArea"], [data-institution="services"], [data-institution="clients"]').length,
         hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
       }))()`
     });
@@ -272,6 +278,7 @@ if (!target) {
     if (result.phoneHref !== "tel:19991440661") failures.push(`empresa ${width}px: telefone oficial incorreto`);
     if (result.emailHref !== "mailto:printgrafik@printgrafik.com.br") failures.push(`empresa ${width}px: e-mail oficial incorreto`);
     if (result.instagramHref !== "https://www.instagram.com/printgrafik_industriagrafica/") failures.push(`empresa ${width}px: Instagram oficial incorreto`);
+    if (result.repeatedInstitutionalNumbers !== 0) failures.push(`empresa ${width}px: resumo numérico institucional repetido fora da Home`);
     if (result.hiddenReveals.length !== 0) failures.push(`empresa ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`empresa ${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
@@ -336,6 +343,15 @@ if (!target) {
         productCards: document.querySelectorAll('.pg-product-detail').length,
         contactFallbacks: [...document.querySelectorAll('.pg-product-detail [data-smart-contact]')].every((link) => link.getAttribute('href') === 'contato.html'),
         finalCtaButtons: document.querySelectorAll('.pg-products-cta .pg-button').length,
+        videoPresent: Boolean(document.querySelector('.pg-product-hero-media .pg-product-hero-video')),
+        videoSource: document.querySelector('.pg-product-hero-video source')?.getAttribute('src'),
+        videoPoster: document.querySelector('.pg-product-hero-video')?.getAttribute('poster'),
+        videoControls: document.querySelector('.pg-product-hero-video')?.controls,
+        videoAutoplay: document.querySelector('.pg-product-hero-video')?.autoplay,
+        videoMuted: document.querySelector('.pg-product-hero-video')?.muted,
+        videoPaused: document.querySelector('.pg-product-hero-video')?.paused,
+        videoError: document.querySelector('.pg-product-hero-video')?.error?.code ?? null,
+        videoPlaceholder: Boolean(document.querySelector('.pg-product-hero-media .pg-video-placeholder')),
         hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
       }))()`
     });
@@ -347,6 +363,11 @@ if (!target) {
     if (result.productCards !== 5) failures.push(`produtos ${width}px: quantidade de categorias inválida (${result.productCards})`);
     if (!result.contactFallbacks) failures.push(`produtos ${width}px: fallback de contato incorreto`);
     if (result.finalCtaButtons !== 0) failures.push(`produtos ${width}px: o CTA final não deve possuir botões`);
+    if (!result.videoPresent || result.videoSource !== "assets/produtos/producao.mp4") failures.push(`produtos ${width}px: vídeo real do hero ausente ou com caminho incorreto`);
+    if (result.videoPoster !== "assets/produtos/hero-produtos.jpg" || !result.videoControls || !result.videoAutoplay || !result.videoMuted) failures.push(`produtos ${width}px: configuração do vídeo ou do thumbnail incorreta`);
+    if (result.videoPaused) failures.push(`produtos ${width}px: autoplay do vídeo não iniciou`);
+    if (result.videoError !== null) failures.push(`produtos ${width}px: navegador reportou erro ${result.videoError} ao carregar o vídeo`);
+    if (result.videoPlaceholder) failures.push(`produtos ${width}px: placeholder antigo do vídeo ainda está visível`);
     if (result.hiddenReveals.length !== 0) failures.push(`produtos ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`produtos ${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
@@ -378,6 +399,96 @@ if (!target) {
         }
       });
       writeFileSync(join(screenshotDir, `produtos-${width}.png`), Buffer.from(capture.data, "base64"));
+    }
+  }
+
+  for (const width of widths) {
+    await send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 480 });
+    await send("Page.navigate", { url: `http://127.0.0.1:${sitePort}/estrutura.html` });
+    await delay(550);
+    await send("Runtime.evaluate", {
+      awaitPromise: true,
+      expression: `(async () => {
+        const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+        for (let y = 0; y < document.documentElement.scrollHeight; y += window.innerHeight) {
+          window.scrollTo(0, y);
+          await new Promise((resolve) => setTimeout(resolve, 60));
+        }
+        window.scrollTo(0, 0);
+        await new Promise((resolve) => setTimeout(resolve, 120));
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
+      })()`
+    });
+    const evaluation = await send("Runtime.evaluate", {
+      returnByValue: true,
+      expression: `(() => {
+        const photos = [...document.querySelectorAll('.pg-structure-card img, .pg-structure-gallery__item img')];
+        return {
+          scrollWidth: document.documentElement.scrollWidth,
+          clientWidth: document.documentElement.clientWidth,
+          h1Count: document.querySelectorAll('h1').length,
+          brokenImages: [...document.images].filter((img) => img.complete && img.naturalWidth === 0).map((img) => img.src),
+          menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
+          activePage: document.querySelector('.pg-nav__link[aria-current="page"]')?.getAttribute('href'),
+          processCards: document.querySelectorAll('.pg-structure-card').length,
+          galleryItems: document.querySelectorAll('.pg-structure-gallery__item').length,
+          followupItems: document.querySelectorAll('.pg-structure-checklist li').length,
+          productionSteps: document.querySelectorAll('.pg-structure-step').length,
+          qualityItems: document.querySelectorAll('.pg-structure-quality__panel li').length,
+          highlights: document.querySelectorAll('.pg-structure-highlight').length,
+          factoryAreaMentions: document.querySelectorAll('[data-institution="factoryArea"]').length,
+          repeatedInstitutionalNumbers: document.querySelectorAll('[data-institution="historyYears"], [data-institution="services"], [data-institution="clients"]').length,
+          uniquePhotos: new Set(photos.map((img) => img.getAttribute('src'))).size,
+          allPhotosLazy: photos.every((img) => img.loading === 'lazy'),
+          pageTitle: document.querySelector('h1')?.textContent.trim(),
+          heroSource: document.querySelector('.pg-structure-hero__image')?.getAttribute('src'),
+          heroLoading: document.querySelector('.pg-structure-hero__image')?.getAttribute('loading'),
+          heroPriority: document.querySelector('.pg-structure-hero__image')?.getAttribute('fetchpriority'),
+          heroButtons: document.querySelectorAll('.pg-structure-hero__actions .pg-button').length,
+          finalCtaButtons: document.querySelectorAll('.pg-structure-cta .pg-button').length,
+          contactFallbacks: [...document.querySelectorAll('.pg-structure-page [data-smart-contact]')].every((link) => link.getAttribute('href') === 'contato.html'),
+          hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
+        };
+      })()`
+    });
+    const result = evaluation.result.value;
+    if (result.scrollWidth > result.clientWidth) failures.push(`estrutura ${width}px: rolagem horizontal (${result.scrollWidth} > ${result.clientWidth})`);
+    if (result.h1Count !== 1) failures.push(`estrutura ${width}px: quantidade de h1 inválida`);
+    if (result.brokenImages.length) failures.push(`estrutura ${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
+    if (result.activePage !== "estrutura.html") failures.push(`estrutura ${width}px: estado ativo da navegação incorreto`);
+    if (result.processCards !== 4 || result.galleryItems !== 4 || result.uniquePhotos !== 8) failures.push(`estrutura ${width}px: devem existir oito fotografias distintas em quatro cards e quatro itens de galeria`);
+    if (result.followupItems !== 6 || result.productionSteps !== 6 || result.qualityItems !== 8 || result.highlights !== 0) failures.push(`estrutura ${width}px: conteúdo ou quantidade de blocos da página incorreto`);
+    if (result.factoryAreaMentions !== 1 || result.repeatedInstitutionalNumbers !== 0) failures.push(`estrutura ${width}px: dados institucionais repetidos além da área fabril`);
+    if (!result.allPhotosLazy) failures.push(`estrutura ${width}px: fotografias abaixo do hero devem usar carregamento tardio`);
+    if (result.pageTitle !== "Estrutura") failures.push(`estrutura ${width}px: título principal incorreto`);
+    if (result.heroSource !== "assets/empresa/fachada-printgrafik-estrutura.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`estrutura ${width}px: configuração da fachada no hero incorreta`);
+    if (result.heroButtons !== 2 || result.finalCtaButtons !== 0 || !result.contactFallbacks) failures.push(`estrutura ${width}px: CTAs ou fallback de contato incorretos`);
+    if (result.hiddenReveals.length !== 0) failures.push(`estrutura ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
+    if (width <= 768 && !result.menuButtonVisible) failures.push(`estrutura ${width}px: botão do menu móvel não está visível`);
+    if (width === 375) {
+      const menuResult = await send("Runtime.evaluate", {
+        returnByValue: true,
+        expression: `(() => {
+          const button = document.querySelector('[data-menu-toggle]');
+          const menu = document.querySelector('[data-menu]');
+          button.click();
+          const opened = button.getAttribute('aria-expanded') === 'true' && menu.dataset.open === 'true';
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+          return { opened, closed: button.getAttribute('aria-expanded') === 'false' && menu.dataset.open === 'false', focused: document.activeElement === button };
+        })()`
+      });
+      const menu = menuResult.result.value;
+      if (!menu.opened || !menu.closed || !menu.focused) failures.push("estrutura 375px: interação acessível do menu móvel falhou");
+    }
+    if (width === 1440 || width === 375) {
+      const metrics = await send("Page.getLayoutMetrics");
+      const capture = await send("Page.captureScreenshot", {
+        format: "png",
+        captureBeyondViewport: true,
+        clip: { x: 0, y: 0, width: metrics.cssContentSize.width, height: metrics.cssContentSize.height, scale: 1 }
+      });
+      writeFileSync(join(screenshotDir, `estrutura-${width}.png`), Buffer.from(capture.data, "base64"));
     }
   }
 

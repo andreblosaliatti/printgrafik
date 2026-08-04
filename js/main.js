@@ -275,7 +275,6 @@ const pgInitScrollMotion = () => {
     ".pg-company-panel__copy",
     ".pg-company-products-visual",
     ".pg-company-benefit",
-    ".pg-company-stat",
     ".pg-company-service__media",
     ".pg-company-service__copy",
     ".pg-company-purpose-card",
@@ -286,7 +285,14 @@ const pgInitScrollMotion = () => {
     ".pg-products-material-card",
     ".pg-products-step",
     ".pg-products-info-card",
-    ".pg-products-cta"
+    ".pg-products-cta",
+    ".pg-structure-card",
+    ".pg-structure-gallery__item",
+    ".pg-structure-followup__copy",
+    ".pg-structure-checklist",
+    ".pg-structure-step",
+    ".pg-structure-quality__panel",
+    ".pg-structure-cta"
   ];
 
   revealGroups.forEach((selector) => {
@@ -307,16 +313,24 @@ const pgInitScrollMotion = () => {
   companyIntroImage?.classList.add("pg-reveal", "pg-reveal--right");
 
   const productsHeroCopy = document.querySelector(".pg-products-hero__copy");
-  const productsHeroImage = document.querySelector(".pg-products-hero__image");
+  const productsHeroMedia = document.querySelector(".pg-product-hero-media");
   productsHeroCopy?.classList.add("pg-reveal", "pg-reveal--left");
-  productsHeroImage?.classList.add("pg-reveal", "pg-reveal--right");
+  productsHeroMedia?.classList.add("pg-reveal", "pg-reveal--right");
+
+  const structureHeroCopy = document.querySelector(".pg-structure-hero__copy");
+  const structureHeroImage = document.querySelector(".pg-structure-hero__image");
+  structureHeroCopy?.classList.add("pg-reveal", "pg-reveal--left");
+  structureHeroImage?.classList.add("pg-reveal", "pg-reveal--right");
+
+  document.querySelector(".pg-structure-followup__copy")?.classList.add("pg-reveal--left");
+  document.querySelector(".pg-structure-checklist")?.classList.add("pg-reveal--right");
 
   document.querySelectorAll(
-    ".pg-company-solutions .pg-company-panel__copy, .pg-company-structure .pg-company-panel__copy, .pg-company-service__media, .pg-company-location__copy"
+    ".pg-company-solutions .pg-company-panel__copy, .pg-company-service__media, .pg-company-location__copy"
   ).forEach((element) => element.classList.add("pg-reveal--left"));
 
   document.querySelectorAll(
-    ".pg-company-products-visual, .pg-company-benefit, .pg-company-stat, .pg-company-service__copy, .pg-company-location__map"
+    ".pg-company-products-visual, .pg-company-benefit, .pg-company-service__copy, .pg-company-location__map"
   ).forEach((element) => element.classList.add("pg-reveal--right"));
 
   const revealElement = (element) => {

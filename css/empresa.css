@@ -88,7 +88,6 @@
 }
 
 .pg-company-solutions > *,
-.pg-company-structure > *,
 .pg-company-service > * {
   min-width: 0;
 }
@@ -146,57 +145,6 @@
   font-size: var(--pg-fs-14);
   font-weight: 700;
   line-height: 1.4;
-}
-
-.pg-company-structure {
-  display: grid;
-  grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.2fr);
-  align-items: center;
-  gap: var(--pg-space-10);
-  padding: var(--pg-space-8);
-}
-
-.pg-company-stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--pg-space-4);
-}
-
-.pg-company-stat {
-  min-width: 0;
-  min-height: 245px;
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  padding: var(--pg-space-5) var(--pg-space-3);
-  border: 1px solid var(--pg-border);
-  border-top: 3px solid var(--pg-card-accent);
-  border-radius: var(--pg-radius-md);
-  background: var(--pg-white);
-  box-shadow: var(--pg-shadow-sm);
-  text-align: center;
-}
-
-.pg-company-stat .pg-icon {
-  width: 64px;
-  margin-bottom: var(--pg-space-5);
-  border: 1px solid color-mix(in srgb, var(--pg-icon-color) 25%, transparent);
-  background: var(--pg-white);
-}
-
-.pg-company-stat strong {
-  color: var(--pg-ink-950);
-  font-size: clamp(1.65rem, 2.4vw, var(--pg-fs-32));
-  letter-spacing: -0.04em;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.pg-company-stat > span:last-child {
-  max-width: 11ch;
-  margin-top: var(--pg-space-3);
-  color: var(--pg-text-muted);
-  font-size: var(--pg-fs-12);
 }
 
 .pg-company-service {

@@ -1,26 +1,173 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Estrutura industrial da PrintGráfik."><title>Estrutura | PrintGráfik</title>
-  <link rel="stylesheet" href="css/tokens.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/responsive.css"><script src="js/main.js" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Conheça a estrutura da PrintGráfik, seus equipamentos, processos de impressão, corte, acabamento e produção de embalagens em papel cartão.">
+  <title>Estrutura | PrintGráfik</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/estrutura.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="js/main.js" defer></script>
 </head>
 <body>
   <a class="pg-skip-link" href="#conteudo">Ir para o conteúdo</a>
-  <header class="pg-header"><div class="pg-container pg-header__inner">
-    <a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial"><img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449"></a>
-    <nav class="pg-nav" id="menu-principal" aria-label="Navegação principal" data-menu data-open="false"><ul class="pg-nav__list"><li><a class="pg-nav__link" href="index.html">Início</a></li><li><a class="pg-nav__link" href="empresa.html">Empresa</a></li><li><a class="pg-nav__link" href="produtos.html">Produtos</a></li><li><a class="pg-nav__link" href="estrutura.html" aria-current="page">Estrutura</a></li><li><a class="pg-nav__link" href="contato.html">Contato</a></li></ul></nav>
-    <div class="pg-header__actions"><a class="pg-button pg-button--small pg-button--pill pg-header__cta" href="contato.html" data-smart-contact><span data-contact-label>Fale com a equipe</span></a><button class="pg-menu-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu" data-menu-toggle><span class="pg-menu-toggle__icon" aria-hidden="true"></span></button></div>
-  </div></header>
-  <main id="conteudo">
-    <section class="pg-page-hero" aria-labelledby="titulo-pagina"><div class="pg-container pg-page-hero__content"><span class="pg-eyebrow">Capacidade produtiva</span><h1 class="pg-title pg-title--xl" id="titulo-pagina">Nossa estrutura</h1><p class="pg-lead">Esta página será desenvolvida em uma próxima etapa com fotografias reais das instalações, máquinas, equipe e processos.</p></div></section>
-    <section class="pg-section pg-page-placeholder" aria-label="Conteúdo em preparação"><div class="pg-container"><div class="pg-card pg-page-placeholder__card"><h2 class="pg-title pg-title--md">Conteúdo em preparação</h2><p class="pg-lead">Uma apresentação inicial da estrutura está disponível na Home, com espaços reservados para as fotografias finais.</p><div class="pg-cluster"><a class="pg-button" href="index.html#titulo-estrutura">Ver apresentação</a><a class="pg-button pg-button--secondary" href="contato.html">Falar com a equipe</a></div></div></div></section>
+
+  <header class="pg-header">
+    <div class="pg-container pg-header__inner">
+      <a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial">
+        <img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449">
+      </a>
+      <nav class="pg-nav" id="menu-principal" aria-label="Navegação principal" data-menu data-open="false">
+        <ul class="pg-nav__list">
+          <li><a class="pg-nav__link" href="index.html">Início</a></li>
+          <li><a class="pg-nav__link" href="empresa.html">Empresa</a></li>
+          <li><a class="pg-nav__link" href="produtos.html">Produtos</a></li>
+          <li><a class="pg-nav__link" href="estrutura.html" aria-current="page">Estrutura</a></li>
+          <li><a class="pg-nav__link" href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+      <div class="pg-header__actions">
+        <a class="pg-button pg-button--small pg-button--pill pg-header__cta" href="contato.html" data-smart-contact>
+          <span data-contact-label>Fale com a equipe</span>
+        </a>
+        <button class="pg-menu-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu" data-menu-toggle>
+          <span class="pg-menu-toggle__icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="pg-structure-page">
+    <section class="pg-structure-hero" aria-labelledby="titulo-pagina">
+      <div class="pg-container pg-structure-hero__grid">
+        <div class="pg-structure-hero__copy">
+          <span class="pg-eyebrow">Nossa estrutura</span>
+          <h1 class="pg-title pg-title--xl" id="titulo-pagina">Estrutura</h1>
+          <span class="pg-structure-rule" aria-hidden="true"></span>
+          <p class="pg-structure-hero__lead">Estrutura preparada para transformar projetos em embalagens</p>
+          <p>A PrintGráfik conta com aproximadamente <span data-institution="factoryArea">2.000 m²</span> de área fabril, reunindo equipe, equipamentos e processos voltados à produção de embalagens em papel cartão.</p>
+          <div class="pg-cluster pg-structure-hero__actions">
+            <a class="pg-button pg-button--small" href="contato.html">Solicitar informações <span aria-hidden="true">→</span></a>
+            <a class="pg-button pg-button--small pg-button--secondary" href="contato.html" data-smart-contact data-contact-text="Falar com a equipe"><span data-contact-label>Falar com a equipe</span></a>
+          </div>
+        </div>
+        <img class="pg-structure-hero__image" src="assets/empresa/fachada-printgrafik-estrutura.jpg" alt="Fachada da fábrica da PrintGráfik em Capivari" width="1280" height="720" fetchpriority="high">
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--white pg-structure-followup" aria-labelledby="titulo-acompanhamento">
+      <div class="pg-container pg-structure-followup__grid">
+        <div class="pg-structure-followup__copy">
+          <span class="pg-eyebrow">Produção própria</span>
+          <h2 class="pg-title pg-title--md" id="titulo-acompanhamento">Produção própria e acompanhamento próximo</h2>
+          <p>Na PrintGráfik, as principais etapas da produção são acompanhadas internamente por uma equipe com experiência no setor gráfico.</p>
+          <p>Essa proximidade permite maior controle sobre o trabalho e torna mais simples a realização de ajustes durante o processo.</p>
+        </div>
+        <ul class="pg-structure-checklist" aria-label="Benefícios do acompanhamento próximo">
+          <li>Acompanhamento em todas as etapas</li>
+          <li>Equipe experiente e especializada</li>
+          <li>Organização e controle de cada pedido</li>
+          <li>Conferência visual dos materiais</li>
+          <li>Comunicação direta com o cliente</li>
+          <li>Flexibilidade para avaliar diferentes necessidades</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--muted pg-structure-flow" aria-labelledby="titulo-processo-estrutura">
+      <div class="pg-container">
+        <div class="pg-section-heading pg-section-heading--center">
+          <span class="pg-eyebrow">Etapas produtivas</span>
+          <h2 class="pg-title pg-title--lg" id="titulo-processo-estrutura">Do projeto à produção</h2>
+        </div>
+        <div class="pg-structure-flow__grid">
+          <article class="pg-structure-step pg-tone-green"><span class="pg-structure-step__number">01</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><h3>Análise</h3><p>A equipe recebe as informações sobre o produto, as medidas, a quantidade e o tipo de embalagem desejado.</p></article>
+          <article class="pg-structure-step pg-tone-blue"><span class="pg-structure-step__number">02</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 4h14v16H5zM8 2v4m8-4v4M8 10h8m-8 4h6"/></svg></span><h3>Preparação</h3><p>São avaliados o formato, o material, a arte e os acabamentos necessários para o projeto.</p></article>
+          <article class="pg-structure-step pg-tone-magenta"><span class="pg-structure-step__number">03</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 9V4h12v5M6 18H4V9h16v9h-2M7 14h10v7H7z"/></svg></span><h3>Impressão</h3><p>A produção gráfica é realizada conforme as definições e a arte aprovadas pelo cliente.</p></article>
+          <article class="pg-structure-step pg-tone-yellow"><span class="pg-structure-step__number">04</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m4 4 16 16M16 4 4 16M8 8l8 8"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/></svg></span><h3>Corte e acabamento</h3><p>O material segue para corte, vinco, dobra e demais acabamentos previstos.</p></article>
+          <article class="pg-structure-step pg-tone-purple"><span class="pg-structure-step__number">05</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span><h3>Conferência</h3><p>As embalagens passam por uma verificação visual antes da finalização do pedido.</p></article>
+          <article class="pg-structure-step pg-tone-green"><span class="pg-structure-step__number">06</span><span class="pg-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m3 7 9-4 9 4-9 4-9-4Z"/><path d="m3 7 9 4 9-4v10l-9 4-9-4V7Z"/></svg></span><h3>Preparação e entrega</h3><p>Os materiais são organizados e preparados conforme as condições combinadas com o cliente.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--white pg-structure-processes" aria-labelledby="titulo-equipamentos">
+      <div class="pg-container">
+        <div class="pg-section-heading">
+          <span class="pg-eyebrow">Produção gráfica</span>
+          <h2 class="pg-title pg-title--lg" id="titulo-equipamentos">Equipamentos e processos</h2>
+          <p class="pg-lead">A estrutura da PrintGráfik reúne equipamentos destinados às principais etapas da produção gráfica de embalagens.</p>
+        </div>
+        <div class="pg-structure-processes__grid">
+          <figure class="pg-structure-card pg-structure-card--offset">
+            <img src="assets/estrutura/impressora-offset-man-roland.jpeg" alt="Impressora offset na área de produção da PrintGráfik" width="720" height="1280" loading="lazy">
+            <figcaption><h3>Impressão offset</h3><p>Utilizada para reproduzir cores, textos e elementos gráficos conforme a arte aprovada.</p></figcaption>
+          </figure>
+          <figure class="pg-structure-card pg-structure-card--cutting">
+            <img src="assets/estrutura/corte-vinco-frontal.jpeg" alt="Equipamento de corte utilizado na produção gráfica" width="720" height="1280" loading="lazy">
+            <figcaption><h3>Corte</h3><p>Etapa responsável por preparar o material nas dimensões definidas para o projeto.</p></figcaption>
+          </figure>
+          <figure class="pg-structure-card pg-structure-card--finishing">
+            <img src="assets/estrutura/corte-vinco-acabamento.jpeg" alt="Equipamento utilizado nas etapas de corte, vinco e acabamento" width="720" height="1280" loading="lazy">
+            <figcaption><h3>Corte, vinco e acabamento</h3><p>Processos que ajudam a formar a estrutura da embalagem e preparar sua montagem.</p></figcaption>
+          </figure>
+          <figure class="pg-structure-card pg-structure-card--production">
+            <img src="assets/estrutura/area-interna-producao.jpeg" alt="Área interna de produção da PrintGráfik" width="720" height="1280" loading="lazy">
+            <figcaption><h3>Área interna de produção</h3><p>Espaço destinado à organização das etapas e ao acompanhamento dos pedidos.</p></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--muted pg-structure-quality" aria-labelledby="titulo-qualidade-estrutura">
+      <div class="pg-container">
+        <div class="pg-section-heading pg-section-heading--center">
+          <span class="pg-eyebrow">Controle do processo</span>
+          <h2 class="pg-title pg-title--lg" id="titulo-qualidade-estrutura">Qualidade em cada etapa</h2>
+          <p class="pg-lead">A qualidade de uma embalagem depende do cuidado aplicado durante todo o processo.</p>
+        </div>
+        <div class="pg-structure-quality__panel">
+          <span class="pg-icon pg-tone-green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="m8 12 3 3 5-6M8 20l-1 3 5-2 5 2-1-3"/></svg></span>
+          <ul><li>Escolha adequada do material</li><li>Qualidade da impressão</li><li>Precisão do corte</li><li>Correção dos vincos</li><li>Funcionamento da montagem</li><li>Legibilidade das informações</li><li>Consistência visual</li><li>Acabamento final</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--white pg-structure-gallery-section" aria-labelledby="titulo-galeria-estrutura">
+      <div class="pg-container">
+        <div class="pg-section-heading pg-section-heading--center">
+          <span class="pg-eyebrow">Parque gráfico</span>
+          <h2 class="pg-title pg-title--lg" id="titulo-galeria-estrutura">Galeria da estrutura</h2>
+        </div>
+        <div class="pg-structure-gallery" aria-label="Galeria da estrutura da PrintGráfik">
+          <figure class="pg-structure-gallery__item pg-structure-gallery__item--line"><img src="assets/estrutura/linha-impressao-offset.jpeg" alt="Linha de impressão offset da PrintGráfik" width="1280" height="720" loading="lazy"><figcaption>Linha de impressão</figcaption></figure>
+          <figure class="pg-structure-gallery__item pg-structure-gallery__item--park"><img src="assets/estrutura/parque-grafico.jpeg" alt="Visão geral do parque gráfico da PrintGráfik" width="720" height="1280" loading="lazy"><figcaption>Parque gráfico</figcaption></figure>
+          <figure class="pg-structure-gallery__item pg-structure-gallery__item--equipment"><img src="assets/estrutura/impressora-offset-detalhe.jpeg" alt="Vista ampla dos equipamentos de produção gráfica da PrintGráfik" width="720" height="1280" loading="lazy"><figcaption>Equipamentos de produção</figcaption></figure>
+          <figure class="pg-structure-gallery__item pg-structure-gallery__item--warehouse"><img src="assets/estrutura/galpao-producao.jpeg" alt="Galpão de produção da PrintGráfik" width="720" height="1280" loading="lazy"><figcaption>Galpão de produção</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--white pg-structure-cta-section" aria-labelledby="titulo-cta-estrutura">
+      <div class="pg-container">
+        <div class="pg-structure-cta">
+          <div><h2 class="pg-title pg-title--md" id="titulo-cta-estrutura">Conheça uma estrutura preparada para atender sua empresa</h2><p>Apresente as características do seu projeto e converse diretamente com a equipe da PrintGráfik.</p></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="pg-footer"><div class="pg-container pg-footer__grid">
-    <div><a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial"><img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449" loading="lazy"></a><p class="pg-footer__brand-text">Embalagens em papel cartão com qualidade, agilidade e atendimento próximo para empresas.</p></div>
-    <div><h2 class="pg-footer__title">Navegação</h2><ul class="pg-footer__links"><li><a href="index.html">Início</a></li><li><a href="empresa.html">Empresa</a></li><li><a href="produtos.html">Produtos</a></li><li><a href="estrutura.html">Estrutura</a></li><li><a href="contato.html">Contato</a></li></ul></div>
-    <div><h2 class="pg-footer__title">Produtos</h2><ul class="pg-footer__links"><li><a href="produtos.html#caixas-display">Caixas Display</a></li><li><a href="produtos.html#cartelas-blister">Cartelas Blister</a></li><li><a href="produtos.html#embalagens-personalizadas">Personalizadas</a></li><li><a href="produtos.html#embalagens-em-branco">Em Branco</a></li></ul></div>
-    <div><h2 class="pg-footer__title">Contato</h2><ul class="pg-footer__contact-list"><li><a href="contato.html">Envie uma mensagem</a></li><li data-contact-item="phone" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="email" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="address" hidden><span data-contact-value></span></li></ul></div>
-    <div class="pg-footer__social-column"><h2 class="pg-footer__title">Siga-nos</h2><div class="pg-socials"><span class="pg-social" data-social="facebook" aria-label="Facebook — link pendente" aria-disabled="true">f</span><span class="pg-social" data-social="instagram" aria-label="Instagram — link pendente" aria-disabled="true">ig</span><span class="pg-social" data-social="linkedin" aria-label="LinkedIn — link pendente" aria-disabled="true">in</span></div></div>
-  </div><div class="pg-container pg-footer__bottom"><span>© <span data-current-year>2026</span> PrintGráfik Indústria Gráfica Ltda. Todos os direitos reservados.</span><span class="pg-footer__credits">Ícones por <a href="https://www.flaticon.com/br/icones-gratis/facebook">Rakib Hassan Rahim e Pixel perfect</a> e <a href="https://www.flaticon.com/br/icones-gratis/linkedin">riajulislam</a> — Flaticon</span><span>Desenvolvido por <a href="https://andreblosaliatti.dev" target="_blank" rel="noopener noreferrer">Andre Blos Aliatti</a></span><a href="politica-de-privacidade.html">Política de Privacidade</a></div></footer>
-</body></html>
+
+  <footer class="pg-footer">
+    <div class="pg-container pg-footer__grid">
+      <div><a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial"><img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449" loading="lazy"></a><p class="pg-footer__brand-text">Embalagens em papel cartão com qualidade, agilidade e atendimento próximo para empresas.</p></div>
+      <div><h2 class="pg-footer__title">Navegação</h2><ul class="pg-footer__links"><li><a href="index.html">Início</a></li><li><a href="empresa.html">Empresa</a></li><li><a href="produtos.html">Produtos</a></li><li><a href="estrutura.html" aria-current="page">Estrutura</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+      <div><h2 class="pg-footer__title">Produtos</h2><ul class="pg-footer__links"><li><a href="produtos.html#caixas-display">Caixas Display</a></li><li><a href="produtos.html#cartelas-blister">Cartelas Blister</a></li><li><a href="produtos.html#embalagens-personalizadas">Personalizadas</a></li><li><a href="produtos.html#embalagens-em-branco">Em Branco</a></li></ul></div>
+      <div><h2 class="pg-footer__title">Contato</h2><ul class="pg-footer__contact-list"><li><a href="contato.html">Envie uma mensagem</a></li><li data-contact-item="phone" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="email" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="address" hidden><span data-contact-value></span></li></ul></div>
+      <div class="pg-footer__social-column"><h2 class="pg-footer__title">Siga-nos</h2><div class="pg-socials"><span class="pg-social" data-social="facebook" aria-label="Facebook — link pendente" aria-disabled="true">f</span><span class="pg-social" data-social="instagram" aria-label="Instagram — link pendente" aria-disabled="true">ig</span><span class="pg-social" data-social="linkedin" aria-label="LinkedIn — link pendente" aria-disabled="true">in</span></div></div>
+    </div>
+    <div class="pg-container pg-footer__bottom"><span>© <span data-current-year>2026</span> PrintGráfik Indústria Gráfica Ltda. Todos os direitos reservados.</span><span class="pg-footer__credits">Ícones por <a href="https://www.flaticon.com/br/icones-gratis/facebook">Rakib Hassan Rahim e Pixel perfect</a> e <a href="https://www.flaticon.com/br/icones-gratis/linkedin">riajulislam</a> — Flaticon</span><span>Desenvolvido por <a href="https://andreblosaliatti.dev" target="_blank" rel="noopener noreferrer">Andre Blos Aliatti</a></span><a href="politica-de-privacidade.html">Política de Privacidade</a></div>
+  </footer>
+</body>
+</html>
