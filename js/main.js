@@ -49,9 +49,15 @@ const pgApplyContacts = () => {
 
   document.querySelectorAll("[data-smart-contact]").forEach((link) => {
     const label = link.querySelector("[data-contact-label]");
-    if (label) label.textContent = link.dataset.contactText || "Falar no WhatsApp";
+    if (label) {
+      label.textContent = whatsappUrl
+        ? link.dataset.contactText || "Falar no WhatsApp"
+        : link.dataset.contactFallbackLabel || link.dataset.contactText || "Falar com a equipe";
+    }
 
-    if (!link.querySelector(".pg-whatsapp-icon")) {
+    if (!whatsappUrl && link.hasAttribute("data-hide-fallback-icon")) {
+      link.querySelector(".pg-whatsapp-icon")?.remove();
+    } else if (!link.querySelector(".pg-whatsapp-icon")) {
       const icon = document.createElement("img");
       icon.className = "pg-whatsapp-icon";
       icon.src = "assets/icons/whatsapp.svg";
@@ -146,6 +152,10 @@ const pgApplySocialLinks = () => {
       profileLink.href = url;
       profileLink.target = "_blank";
       profileLink.rel = "noopener noreferrer";
+      if (!profileLink.textContent.trim()) {
+        const profileName = new URL(url).pathname.split("/").filter(Boolean).at(-1);
+        profileLink.textContent = profileName ? `@${profileName}` : networkLabels[network] || network;
+      }
       profileLink.hidden = false;
     });
   });
@@ -208,6 +218,129 @@ const pgInitMenu = () => {
 const pgSetCurrentYear = () => {
   document.querySelectorAll("[data-current-year]").forEach((element) => {
     element.textContent = String(new Date().getFullYear());
+  });
+};
+
+const pgInitContactForm = () => {
+  const form = document.querySelector("[data-contact-form]");
+  if (!(form instanceof HTMLFormElement)) return;
+
+  const submitButton = form.querySelector("[data-submit-button]");
+  const submitLabel = form.querySelector("[data-submit-label]");
+  const status = form.querySelector("[data-form-status]");
+  const fields = {
+    nome: form.elements.namedItem("nome"),
+    telefone: form.elements.namedItem("telefone"),
+    email: form.elements.namedItem("email"),
+    produto: form.elements.namedItem("produto"),
+    mensagem: form.elements.namedItem("mensagem"),
+    consentimento: form.elements.namedItem("consentimento")
+  };
+
+  const setFieldState = (field, isValid) => {
+    if (!(field instanceof HTMLElement)) return;
+    field.setAttribute("aria-invalid", String(!isValid));
+    const error = form.querySelector(`[data-error-for="${field.id}"]`);
+    if (error) error.hidden = isValid;
+  };
+
+  const validations = {
+    nome: (field) => field.value.trim().length > 0,
+    telefone: (field) => field.value.replace(/\D/g, "").length >= 8,
+    email: (field) => field.value.trim().length > 0 && field.validity.valid,
+    produto: (field) => field.value !== "",
+    mensagem: (field) => field.value.trim().length >= 10,
+    consentimento: (field) => field.checked
+  };
+
+  const validateField = (name) => {
+    const field = fields[name];
+    const isValid = field && validations[name](field);
+    setFieldState(field, Boolean(isValid));
+    return Boolean(isValid);
+  };
+
+  Object.entries(fields).forEach(([name, field]) => {
+    if (!field) return;
+    const eventName = field instanceof HTMLInputElement && field.type === "checkbox" || field instanceof HTMLSelectElement
+      ? "change"
+      : "input";
+    field.addEventListener(eventName, () => {
+      if (field.getAttribute("aria-invalid") === "true") validateField(name);
+      if (status) {
+        status.textContent = "";
+        delete status.dataset.state;
+      }
+    });
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const validationResults = Object.keys(fields).map((name) => ({ name, isValid: validateField(name) }));
+    const invalidField = validationResults.find((result) => !result.isValid)?.name;
+    if (invalidField) {
+      if (status) {
+        status.textContent = "Revise os campos indicados antes de continuar.";
+        status.dataset.state = "error";
+      }
+      fields[invalidField].focus();
+      return;
+    }
+
+    const honeypot = form.elements.namedItem("site");
+    if (honeypot instanceof HTMLInputElement && honeypot.value) {
+      if (status) {
+        status.textContent = "Não foi possível preparar a solicitação. Recarregue a página e tente novamente.";
+        status.dataset.state = "error";
+      }
+      return;
+    }
+
+    const destination = PG_SITE_CONFIG.contacts.email;
+    if (!destination) {
+      if (status) {
+        status.textContent = "O envio ainda não está configurado. Use um dos canais de contato disponíveis.";
+        status.dataset.state = "error";
+      }
+      return;
+    }
+
+    const formData = new FormData(form);
+    const valueOrNotInformed = (name) => String(formData.get(name) || "").trim() || "Não informado";
+    const company = valueOrNotInformed("empresa");
+    const subjectReference = company === "Não informado" ? valueOrNotInformed("nome") : company;
+    const subject = `Solicitação de orçamento — ${subjectReference}`;
+    const body = [
+      "Olá, equipe PrintGráfik!",
+      "",
+      "Gostaria de solicitar uma análise para orçamento.",
+      "",
+      `Nome: ${valueOrNotInformed("nome")}`,
+      `Empresa: ${valueOrNotInformed("empresa")}`,
+      `Telefone ou WhatsApp: ${valueOrNotInformed("telefone")}`,
+      `E-mail: ${valueOrNotInformed("email")}`,
+      `Produto de interesse: ${valueOrNotInformed("produto")}`,
+      `Quantidade estimada: ${valueOrNotInformed("quantidade")}`,
+      `Medidas aproximadas: ${valueOrNotInformed("medidas")}`,
+      "",
+      "Mensagem:",
+      valueOrNotInformed("mensagem")
+    ].join("\n");
+    const mailtoUrl = `mailto:${destination}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    if (submitButton) submitButton.disabled = true;
+    if (submitLabel) submitLabel.textContent = "Preparando e-mail…";
+    if (status) {
+      status.textContent = "Seu aplicativo de e-mail será aberto. Revise a mensagem e conclua o envio por lá.";
+      status.dataset.state = "pending";
+    }
+
+    window.setTimeout(() => {
+      window.location.href = mailtoUrl;
+      if (submitButton) submitButton.disabled = false;
+      if (submitLabel) submitLabel.textContent = "Enviar solicitação";
+    }, 120);
   });
 };
 
@@ -292,7 +425,10 @@ const pgInitScrollMotion = () => {
     ".pg-structure-checklist",
     ".pg-structure-step",
     ".pg-structure-quality__panel",
-    ".pg-structure-cta"
+    ".pg-structure-cta",
+    ".pg-contact-form-card",
+    ".pg-contact-channels",
+    ".pg-contact-note"
   ];
 
   revealGroups.forEach((selector) => {
@@ -321,6 +457,11 @@ const pgInitScrollMotion = () => {
   const structureHeroImage = document.querySelector(".pg-structure-hero__image");
   structureHeroCopy?.classList.add("pg-reveal", "pg-reveal--left");
   structureHeroImage?.classList.add("pg-reveal", "pg-reveal--right");
+
+  const contactHeroCopy = document.querySelector(".pg-contact-hero__copy");
+  const contactHeroImage = document.querySelector(".pg-contact-hero__image");
+  contactHeroCopy?.classList.add("pg-reveal", "pg-reveal--left");
+  contactHeroImage?.classList.add("pg-reveal", "pg-reveal--right");
 
   document.querySelector(".pg-structure-followup__copy")?.classList.add("pg-reveal--left");
   document.querySelector(".pg-structure-checklist")?.classList.add("pg-reveal--right");
@@ -389,5 +530,6 @@ document.addEventListener("DOMContentLoaded", () => {
   pgApplySocialLinks();
   pgInitMenu();
   pgSetCurrentYear();
+  pgInitContactForm();
   pgInitScrollMotion();
 });

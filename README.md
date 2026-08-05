@@ -10,6 +10,7 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 - Página Produtos completa e alinhada ao mockup `docs/mock-produtos.png`, com cinco categorias, materiais, processo do pedido, orientações comerciais, chamada final e movimentos leves durante a rolagem.
 - Hero da página Produtos com vídeo real do processo de produção, controles nativos, autoplay mudo e thumbnail local.
 - Página Estrutura completa e alinhada ao mockup `docs/mock-estrutura.png`, com hero, acompanhamento próximo, seis etapas produtivas, equipamentos, qualidade, galeria e chamada comercial.
+- Página Contato completa e alinhada à versão enxuta de `docs/mock-contato.png`, com hero, formulário de orçamento, canais confirmados e bloco final informativo.
 - Cabeçalho compartilhado e menu móvel acessível.
 - Hero com a imagem final da máquina de impressão.
 - Cards de produtos em destaque.
@@ -19,7 +20,7 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 - Chamada final para contato.
 - Rodapé com navegação, produtos, contatos configuráveis, Instagram ativo e redes ainda não confirmadas desativadas.
 - Telefone, e-mail, endereço e Instagram oficiais exibidos nos pontos de contato do site.
-- Páginas internas mínimas para evitar links quebrados.
+- Página de Política de Privacidade mantida como estrutura temporária até a validação do texto jurídico.
 - Suporte a navegação por teclado, foco visível e `prefers-reduced-motion`.
 - Teste automatizado local de links, imagens, console, menu móvel e responsividade.
 
@@ -36,6 +37,7 @@ site-printgrafik/
 ├── css/
 │   ├── tokens.css
 │   ├── components.css
+│   ├── contato.css
 │   ├── empresa.css
 │   ├── estrutura.css
 │   ├── home.css
@@ -141,9 +143,24 @@ Enquanto WhatsApp estiver ausente, os botões correspondentes levam para a pági
 Também permanecem pendentes:
 
 - Fotografias reais dos produtos e de um operador trabalhando.
-- Desenvolvimento completo da página Contato.
-- Definição do envio do formulário de contato e proteção antispam.
+- Configuração de um endpoint ou serviço aprovado para envio direto do formulário de contato.
 - Texto jurídico final da Política de Privacidade.
+
+## Formulário de contato
+
+O formulário de `contato.html` solicita somente os dados necessários para a análise inicial:
+
+- Nome, telefone ou WhatsApp, e-mail, produto de interesse, mensagem e consentimento são obrigatórios.
+- Empresa, quantidade estimada e medidas aproximadas são opcionais.
+- Não há coleta de CPF, CNPJ, documentos, arquivos ou dados sensíveis.
+- Os dados não são armazenados no navegador nem registrados no console.
+- Um campo honeypot oculto oferece uma barreira antispam simples.
+
+Como ainda não existe endpoint ou serviço externo aprovado, o envio atual valida os campos e prepara uma mensagem por `mailto:` para o e-mail confirmado `printgrafik@printgrafik.com.br`. O visitante precisa revisar e concluir o envio em seu aplicativo de e-mail; o site não apresenta confirmação de entrega.
+
+Para habilitar envio direto antes da publicação, configure um endpoint ou serviço aprovado em `js/main.js`, substitua a etapa de preparação do `mailto:` por uma requisição segura e só apresente sucesso após uma resposta positiva real. Não inclua tokens ou segredos no frontend.
+
+Enquanto o WhatsApp não for confirmado, a chamada correspondente na página Contato direciona ao formulário e apresenta o rótulo “Solicitar orçamento pelo formulário”. WhatsApp e horário permanecem ocultos nos canais de contato; Facebook e LinkedIn aparecem no rodapé como ícones desativados, sem links inventados.
 
 ## Vídeo do hero de Produtos
 
@@ -183,6 +200,8 @@ O teste verifica:
 - Ausência de repetição do resumo numérico institucional em Empresa e, em Estrutura, presença apenas da área fabril.
 - Presença de quatro fotografias reais e somente um placeholder de estrutura na galeria da Home.
 - Presença e carregamento do vídeo real, thumbnail, controles e autoplay mudo no hero de Produtos.
+- Responsividade, fachada, navegação ativa, labels, campos obrigatórios, validação acessível, foco no primeiro erro, canais confirmados e fallbacks da página Contato.
+- Ausência de WhatsApp e horário não confirmados na página Contato, além do método `mailto:` claramente identificado sem sucesso fictício.
 - Erros no console do navegador.
 
 Capturas visuais temporárias são geradas fora do repositório durante o teste.
