@@ -51,6 +51,44 @@
   color: var(--pg-text-muted);
 }
 
+.pg-contact-hero__phones {
+  display: grid;
+  gap: var(--pg-space-3);
+  margin-top: var(--pg-space-6);
+  scroll-margin-top: calc(var(--pg-header-height) + var(--pg-space-6));
+}
+
+.pg-contact-hero__phone {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pg-space-4);
+  min-height: 62px;
+  padding: var(--pg-space-3) var(--pg-space-4);
+  border: 1px solid color-mix(in srgb, var(--pg-green-600) 24%, var(--pg-border));
+  border-radius: var(--pg-radius-sm);
+  background: linear-gradient(135deg, var(--pg-white), var(--pg-green-100));
+}
+
+.pg-contact-hero__phone[hidden] {
+  display: none;
+}
+
+.pg-contact-hero__phone span {
+  color: var(--pg-ink-800);
+  font-size: var(--pg-fs-14);
+  font-weight: 800;
+}
+
+.pg-contact-hero__phone a {
+  color: var(--pg-green-700);
+  font-size: var(--pg-fs-16);
+  font-weight: 850;
+  text-underline-offset: 0.18em;
+  white-space: nowrap;
+}
+
 .pg-contact-hero__benefits {
   display: grid;
   gap: var(--pg-space-3);
@@ -92,7 +130,7 @@
   aspect-ratio: 16 / 9;
   border-radius: var(--pg-radius-xl);
   object-fit: cover;
-  object-position: center;
+  object-position: center 48%;
   box-shadow: var(--pg-shadow-md);
 }
 
@@ -280,6 +318,10 @@
 }
 
 .pg-form-status[data-state="pending"] {
+  color: var(--pg-green-700);
+}
+
+.pg-form-status[data-state="success"] {
   color: var(--pg-green-700);
 }
 

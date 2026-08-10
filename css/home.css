@@ -318,6 +318,10 @@
   object-position: center 38%;
 }
 
+.pg-gallery__item--quality .pg-gallery__image {
+  object-position: center 34%;
+}
+
 .pg-gallery__caption {
   position: absolute;
   inset: auto 0 0;

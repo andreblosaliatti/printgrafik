@@ -184,8 +184,8 @@ if (!target) {
     const expectedHeroImage = width <= 820 ? "hero-impressao-mobile.jpg" : "hero-impressao-printgrafik.jpg";
     if (!result.heroImage?.endsWith(expectedHeroImage)) failures.push(`${width}px: imagem incorreta no hero da Home (${result.heroImage})`);
     if (result.finalCtaButtons !== 1) failures.push(`${width}px: somente o CTA final da Home deve possuir um botão`);
-    if (result.realStructurePhotos !== 4) failures.push(`${width}px: a galeria da Home deve possuir quatro fotografias reais da estrutura`);
-    if (JSON.stringify(result.structurePlaceholders) !== JSON.stringify(["assets/placeholders/estrutura-operador.svg"])) failures.push(`${width}px: a galeria da Home deve manter somente o placeholder de operador`);
+    if (result.realStructurePhotos !== 5) failures.push(`${width}px: a galeria da Home deve possuir cinco fotografias reais da estrutura`);
+    if (result.structurePlaceholders.length !== 0) failures.push(`${width}px: a galeria da Home não deve manter placeholders de estrutura`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
       const menuResult = await send("Runtime.evaluate", {
@@ -363,8 +363,8 @@ if (!target) {
     if (result.productCards !== 5) failures.push(`produtos ${width}px: quantidade de categorias inválida (${result.productCards})`);
     if (!result.contactFallbacks) failures.push(`produtos ${width}px: fallback de contato incorreto`);
     if (result.finalCtaButtons !== 0) failures.push(`produtos ${width}px: o CTA final não deve possuir botões`);
-    if (!result.videoPresent || result.videoSource !== "assets/produtos/producao.mp4") failures.push(`produtos ${width}px: vídeo real do hero ausente ou com caminho incorreto`);
-    if (result.videoPoster !== "assets/produtos/hero-produtos.jpg" || !result.videoControls || !result.videoAutoplay || !result.videoMuted) failures.push(`produtos ${width}px: configuração do vídeo ou do thumbnail incorreta`);
+    if (!result.videoPresent || result.videoSource !== "assets/estrutura/WhatsApp Video 2026-08-07 at 10.45.40.mp4") failures.push(`produtos ${width}px: vídeo real do hero ausente ou com caminho incorreto`);
+    if (result.videoPoster !== "assets/estrutura/impressora-offset-man-roland.jpg" || !result.videoControls || !result.videoAutoplay || !result.videoMuted) failures.push(`produtos ${width}px: configuração do vídeo ou do thumbnail incorreta`);
     if (result.videoPaused) failures.push(`produtos ${width}px: autoplay do vídeo não iniciou`);
     if (result.videoError !== null) failures.push(`produtos ${width}px: navegador reportou erro ${result.videoError} ao carregar o vídeo`);
     if (result.videoPlaceholder) failures.push(`produtos ${width}px: placeholder antigo do vídeo ainda está visível`);
@@ -447,6 +447,13 @@ if (!target) {
           heroPriority: document.querySelector('.pg-structure-hero__image')?.getAttribute('fetchpriority'),
           heroButtons: document.querySelectorAll('.pg-structure-hero__actions .pg-button').length,
           finalCtaButtons: document.querySelectorAll('.pg-structure-cta .pg-button').length,
+          videos: [...document.querySelectorAll('.pg-structure-video-card video')].map((video) => ({
+            source: video.querySelector('source')?.getAttribute('src'),
+            poster: video.getAttribute('poster'),
+            controls: video.controls,
+            autoplay: video.autoplay,
+            preload: video.preload
+          })),
           contactFallbacks: [...document.querySelectorAll('.pg-structure-page [data-smart-contact]')].every((link) => link.getAttribute('href') === 'contato.html'),
           hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
         };
@@ -462,8 +469,9 @@ if (!target) {
     if (result.factoryAreaMentions !== 1 || result.repeatedInstitutionalNumbers !== 0) failures.push(`estrutura ${width}px: dados institucionais repetidos além da área fabril`);
     if (!result.allPhotosLazy) failures.push(`estrutura ${width}px: fotografias abaixo do hero devem usar carregamento tardio`);
     if (result.pageTitle !== "Estrutura") failures.push(`estrutura ${width}px: título principal incorreto`);
-    if (result.heroSource !== "assets/empresa/fachada-printgrafik-estrutura.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`estrutura ${width}px: configuração da fachada no hero incorreta`);
+    if (result.heroSource !== "assets/estrutura/panoramica-parque-grafico.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`estrutura ${width}px: configuração da panorâmica no hero incorreta`);
     if (result.heroButtons !== 2 || result.finalCtaButtons !== 0 || !result.contactFallbacks) failures.push(`estrutura ${width}px: CTAs ou fallback de contato incorretos`);
+    if (result.videos.length !== 4 || result.videos.some((video) => !video.source || !video.poster || !video.controls || video.autoplay || video.preload !== "metadata")) failures.push(`estrutura ${width}px: configuração da galeria de vídeos incorreta`);
     if (result.hiddenReveals.length !== 0) failures.push(`estrutura ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`estrutura ${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
@@ -514,7 +522,7 @@ if (!target) {
       returnByValue: true,
       expression: `(() => {
         const form = document.querySelector('[data-contact-form]');
-        const controls = [...form.querySelectorAll('input:not([name="site"]), select, textarea')];
+        const controls = [...form.querySelectorAll('input:not([name="_honey"]), select, textarea')];
         const productOptions = [...form.querySelectorAll('#produto option')].map((option) => option.textContent.trim());
         form.requestSubmit();
         return {
@@ -527,8 +535,17 @@ if (!target) {
           heroSource: document.querySelector('.pg-contact-hero__image')?.getAttribute('src'),
           heroLoading: document.querySelector('.pg-contact-hero__image')?.getAttribute('loading'),
           heroPriority: document.querySelector('.pg-contact-hero__image')?.getAttribute('fetchpriority'),
-          whatsappFallback: document.querySelector('.pg-contact-hero [data-smart-contact]')?.getAttribute('href'),
-          whatsappFallbackLabel: document.querySelector('.pg-contact-hero [data-contact-label]')?.textContent.trim(),
+          heroTitle: document.querySelector('.pg-contact-hero h1')?.textContent.trim(),
+          heroSmartContacts: document.querySelectorAll('.pg-contact-hero [data-smart-contact]').length,
+          phoneChannels: ['directorPhone', 'salesPhone', 'companyPhone'].map((key) => {
+            const item = document.querySelector('.pg-contact-hero [data-contact-item="' + key + '"]');
+            return {
+              key,
+              label: item?.querySelector('span')?.textContent.trim(),
+              text: item?.querySelector('a')?.textContent.trim(),
+              href: item?.querySelector('a')?.getAttribute('href')
+            };
+          }),
           emailActionPresent: Boolean(document.querySelector('[data-contact-action="email"]')),
           formFields: form.elements.length,
           labeledControls: controls.every((control) => Boolean(document.querySelector('label[for="' + control.id + '"]'))),
@@ -539,7 +556,6 @@ if (!target) {
           productOptions,
           deliveryMethod: form.dataset.deliveryMethod,
           formStatus: document.querySelector('[data-form-status]')?.textContent.trim(),
-          phoneHref: document.querySelector('.pg-contact-channels [data-contact-item="phone"] a')?.getAttribute('href'),
           emailHref: document.querySelector('.pg-contact-channels [data-contact-item="email"] a')?.getAttribute('href'),
           addressText: document.querySelector('.pg-contact-channels [data-contact-item="address"] [data-contact-value]')?.textContent.trim(),
           instagramHref: document.querySelector('.pg-contact-channels [data-social-profile="instagram"]')?.getAttribute('href'),
@@ -558,24 +574,31 @@ if (!target) {
     if (result.h1Count !== 1) failures.push(`contato ${width}px: quantidade de h1 inválida`);
     if (result.activePage !== "contato.html") failures.push(`contato ${width}px: estado ativo da navegação incorreto`);
     if (result.brokenImages.length) failures.push(`contato ${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
-    if (result.heroSource !== "assets/empresa/fachada-printgrafik.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`contato ${width}px: configuração da fachada no hero incorreta`);
-    if (result.whatsappFallback !== "#formulario-orcamento" || result.whatsappFallbackLabel !== "Solicitar orçamento pelo formulário") failures.push(`contato ${width}px: fallback do WhatsApp incorreto`);
+    if (result.heroSource !== "assets/estrutura/desenvolvimento-tecnico-embalagem.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`contato ${width}px: configuração da foto no hero incorreta`);
+    if (result.heroTitle !== "Canais de atendimento" || result.heroSmartContacts !== 0) failures.push(`contato ${width}px: conteúdo principal do hero incorreto`);
+    const expectedPhones = [
+      { key: "directorPhone", label: "Diretor", text: "(19) 99144-0661", href: "tel:19991440661" },
+      { key: "salesPhone", label: "Vendas", text: "(19) 99425-3333", href: "tel:19994253333" },
+      { key: "companyPhone", label: "Empresa", text: "(19) 99246-4807", href: "tel:19992464807" }
+    ];
+    if (JSON.stringify(result.phoneChannels) !== JSON.stringify(expectedPhones)) failures.push(`contato ${width}px: telefones de atendimento incorretos`);
     if (result.emailActionPresent) failures.push(`contato ${width}px: o hero não deve possuir botão de e-mail`);
     if (!result.labeledControls || result.formFields !== 11) failures.push(`contato ${width}px: campos ou labels do formulário incompletos`);
     if (JSON.stringify(result.requiredFields) !== JSON.stringify(expectedRequired)) failures.push(`contato ${width}px: campos obrigatórios incorretos`);
     if (JSON.stringify(result.invalidFields) !== JSON.stringify(expectedRequired) || JSON.stringify(result.visibleErrors) !== JSON.stringify(expectedRequired) || result.focusedField !== "nome") failures.push(`contato ${width}px: validação acessível dos campos obrigatórios falhou`);
     if (!result.formStatus.includes("Revise os campos")) failures.push(`contato ${width}px: resumo de validação ausente`);
     if (result.productOptions.includes("Caixinhas Display") || !result.productOptions.includes("Caixas Display") || result.productOptions[0] !== "Selecione uma opção") failures.push(`contato ${width}px: opções de produto incorretas`);
-    if (result.deliveryMethod !== "mailto") failures.push(`contato ${width}px: método de envio não documentado no formulário`);
-    if (result.phoneHref !== "tel:19991440661" || result.emailHref !== "mailto:printgrafik@printgrafik.com.br" || !result.addressText.includes("Rodovia Antonio Forti") || result.instagramHref !== "https://www.instagram.com/printgrafik_industriagrafica/" || result.instagramText !== "@printgrafik_industriagrafica") failures.push(`contato ${width}px: canais confirmados incorretos`);
+    if (result.deliveryMethod !== "formsubmit-ajax") failures.push(`contato ${width}px: método de envio não documentado no formulário`);
+    if (result.emailHref !== "mailto:printgrafik@printgrafik.com.br" || !result.addressText.includes("Rodovia Antonio Forti") || result.instagramHref !== "https://www.instagram.com/printgrafik_industriagrafica/" || result.instagramText !== "@printgrafik_industriagrafica") failures.push(`contato ${width}px: canais confirmados incorretos`);
     if (JSON.stringify(result.footerSocials) !== JSON.stringify(["facebook", "instagram", "linkedin"])) failures.push(`contato ${width}px: redes sociais do rodapé incompletas`);
     if (result.whatsappVisible || result.hoursVisible) failures.push(`contato ${width}px: canais pendentes não devem ser exibidos`);
     if (result.finalButtons !== 0) failures.push(`contato ${width}px: bloco final não deve possuir botões`);
     if (result.hiddenReveals.length !== 0) failures.push(`contato ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`contato ${width}px: botão do menu móvel não está visível`);
     const validSubmissionEvaluation = await send("Runtime.evaluate", {
+      awaitPromise: true,
       returnByValue: true,
-      expression: `(() => {
+      expression: `(async () => {
         const form = document.querySelector('[data-contact-form]');
         form.elements.nome.value = 'Cliente Teste';
         form.elements.telefone.value = '(19) 99999-9999';
@@ -583,24 +606,46 @@ if (!target) {
         form.elements.produto.value = 'Caixas Display';
         form.elements.mensagem.value = 'Gostaria de avaliar uma embalagem para um novo produto.';
         form.elements.consentimento.checked = true;
-        const originalSetTimeout = window.setTimeout;
-        window.setTimeout = () => 0;
+        const originalFetch = window.fetch;
+        let fetchRequest = null;
+        let resolveFetch;
+        window.fetch = (url, options) => {
+          fetchRequest = { url, method: options.method, headers: options.headers, body: JSON.parse(options.body) };
+          return new Promise((resolve) => {
+            resolveFetch = () => resolve({
+              ok: true,
+              json: async () => ({ success: true, message: 'mocked' })
+            });
+          });
+        };
         form.requestSubmit();
-        const result = {
+        const pending = {
           submitDisabled: form.querySelector('[data-submit-button]').disabled,
           submitLabel: form.querySelector('[data-submit-label]').textContent.trim(),
           status: form.querySelector('[data-form-status]').textContent.trim(),
-          visibleErrors: form.querySelectorAll('[data-error-for]:not([hidden])').length,
-          preservedName: form.elements.nome.value
+          statusState: form.querySelector('[data-form-status]').dataset.state
         };
-        window.setTimeout = originalSetTimeout;
-        form.querySelector('[data-submit-button]').disabled = false;
-        form.querySelector('[data-submit-label]').textContent = 'Enviar solicitação';
+        resolveFetch();
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        const result = {
+          pending,
+          fetchRequest,
+          submitDisabled: form.querySelector('[data-submit-button]').disabled,
+          submitLabel: form.querySelector('[data-submit-label]').textContent.trim(),
+          status: form.querySelector('[data-form-status]').textContent.trim(),
+          statusState: form.querySelector('[data-form-status]').dataset.state,
+          visibleErrors: form.querySelectorAll('[data-error-for]:not([hidden])').length,
+          clearedName: form.elements.nome.value
+        };
+        window.fetch = originalFetch;
         return result;
       })()`
     });
     const validSubmission = validSubmissionEvaluation.result.value;
-    if (!validSubmission.submitDisabled || validSubmission.submitLabel !== "Preparando e-mail…" || !validSubmission.status.includes("aplicativo de e-mail") || validSubmission.visibleErrors !== 0 || validSubmission.preservedName !== "Cliente Teste") failures.push(`contato ${width}px: preparação do envio válido falhou`);
+    if (!validSubmission.pending.submitDisabled || validSubmission.pending.submitLabel !== "Enviando…" || !validSubmission.pending.status.includes("Enviando") || validSubmission.pending.statusState !== "pending") failures.push(`contato ${width}px: estado de envio pendente incorreto`);
+    if (validSubmission.fetchRequest?.url !== "https://formsubmit.co/ajax/printgrafik@printgrafik.com.br" || validSubmission.fetchRequest?.method !== "POST" || validSubmission.fetchRequest?.headers?.["Content-Type"] !== "application/json" || validSubmission.fetchRequest?.body?.nome !== "Cliente Teste" || validSubmission.fetchRequest?.body?.consentimento !== "Aceito" || !validSubmission.fetchRequest?.body?._subject?.includes("Cliente Teste")) failures.push(`contato ${width}px: requisição ao serviço de formulário incorreta`);
+    if (validSubmission.submitDisabled || validSubmission.submitLabel !== "Enviar solicitação" || !validSubmission.status.includes("Solicitação enviada") || validSubmission.statusState !== "success" || validSubmission.visibleErrors !== 0 || validSubmission.clearedName !== "") failures.push(`contato ${width}px: confirmação do envio válido falhou`);
     if (width === 1440 || width === 375) {
       await send("Runtime.evaluate", {
         expression: `(() => {

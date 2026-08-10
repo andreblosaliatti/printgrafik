@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Solicite um orçamento de embalagens em papel cartão, caixas display, cartelas blister e embalagens personalizadas com a PrintGráfik.">
-  <title>Contato e Orçamento | PrintGráfik</title>
+  <meta name="description" content="Fale diretamente com a PrintGráfik por telefone, e-mail ou Instagram e apresente seu projeto de embalagem em papel cartão.">
+  <title>Contato | PrintGráfik</title>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/contato.css">
@@ -29,7 +29,7 @@
         </ul>
       </nav>
       <div class="pg-header__actions">
-        <a class="pg-button pg-button--small pg-button--pill pg-header__cta" href="contato.html#formulario-orcamento" data-smart-contact data-contact-fallback-label="Fale com a equipe">
+        <a class="pg-button pg-button--small pg-button--pill pg-header__cta" href="contato.html#canais-atendimento" data-smart-contact data-contact-fallback-label="Fale com a equipe">
           <span data-contact-label>Fale com a equipe</span>
         </a>
         <button class="pg-menu-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu" data-menu-toggle>
@@ -44,22 +44,24 @@
       <div class="pg-container pg-contact-hero__grid">
         <div class="pg-contact-hero__copy">
           <span class="pg-eyebrow">Contato</span>
-          <h1 class="pg-title pg-title--xl" id="titulo-pagina">Solicite um orçamento</h1>
+          <h1 class="pg-title pg-title--xl" id="titulo-pagina">Canais de atendimento</h1>
           <span class="pg-contact-rule" aria-hidden="true"></span>
-          <p class="pg-contact-hero__lead">Apresente seu projeto e receba uma proposta personalizada da nossa equipe.</p>
-          <p>Fale com a PrintGráfik para desenvolver sua embalagem, tirar dúvidas ou entender qual solução atende melhor sua empresa.</p>
-          <ul class="pg-contact-hero__benefits">
-            <li>Atendimento humano e direto</li>
-            <li>Análise do projeto com atenção</li>
-            <li>Soluções sob medida para sua embalagem</li>
-          </ul>
-          <div class="pg-cluster pg-contact-hero__actions">
-            <a class="pg-button" href="#formulario-orcamento" data-smart-contact data-contact-text="Solicitar orçamento pelo WhatsApp" data-contact-fallback-label="Solicitar orçamento pelo formulário" data-hide-fallback-icon>
-              <span data-contact-label>Solicitar orçamento pelo formulário</span>
-            </a>
+          <div class="pg-contact-hero__phones" id="canais-atendimento" aria-label="Telefones de atendimento">
+            <article class="pg-contact-hero__phone" data-contact-item="directorPhone" hidden>
+              <span>Diretor</span>
+              <a href="contato.html" data-contact-value></a>
+            </article>
+            <article class="pg-contact-hero__phone" data-contact-item="salesPhone" hidden>
+              <span>Vendas</span>
+              <a href="contato.html" data-contact-value></a>
+            </article>
+            <article class="pg-contact-hero__phone" data-contact-item="companyPhone" hidden>
+              <span>Empresa</span>
+              <a href="contato.html" data-contact-value></a>
+            </article>
           </div>
         </div>
-        <img class="pg-contact-hero__image" src="assets/empresa/fachada-printgrafik.jpg" alt="Fachada da indústria gráfica PrintGráfik" width="1672" height="941" fetchpriority="high">
+        <img class="pg-contact-hero__image" src="assets/estrutura/desenvolvimento-tecnico-embalagem.jpg" alt="Profissional da PrintGráfik trabalhando no desenvolvimento técnico de uma embalagem" width="941" height="1672" fetchpriority="high">
       </div>
     </section>
 
@@ -68,11 +70,11 @@
         <section class="pg-contact-form-card" id="formulario-orcamento" aria-labelledby="titulo-formulario">
           <div class="pg-contact-heading">
             <span class="pg-eyebrow">Seu projeto</span>
-            <h2 class="pg-title pg-title--md" id="titulo-formulario">Solicite seu orçamento</h2>
+            <h2 class="pg-title pg-title--md" id="titulo-formulario">Envie os detalhes do seu projeto</h2>
             <p>Preencha as informações disponíveis sobre o seu projeto. Quanto mais detalhes você enviar, mais assertiva será a análise inicial.</p>
           </div>
 
-          <form class="pg-contact-form" method="post" novalidate data-contact-form data-delivery-method="mailto">
+          <form class="pg-contact-form" method="post" novalidate data-contact-form data-delivery-method="formsubmit-ajax">
             <div class="pg-contact-form__grid">
               <div class="pg-form-field">
                 <label class="pg-label" for="nome">Nome <span class="pg-required" aria-hidden="true">*</span><span class="pg-visually-hidden"> (obrigatório)</span></label>
@@ -124,7 +126,7 @@
 
             <div class="pg-form-honeypot" aria-hidden="true">
               <label for="site">Não preencha este campo</label>
-              <input id="site" name="site" type="text" tabindex="-1" autocomplete="off">
+              <input id="site" name="_honey" type="text" tabindex="-1" autocomplete="off">
             </div>
 
             <div class="pg-form-field pg-form-field--consent">
@@ -140,7 +142,7 @@
               <span data-submit-label>Enviar solicitação</span>
             </button>
             <p class="pg-form-status" role="status" aria-live="polite" data-form-status></p>
-            <p class="pg-contact-form__delivery-note">O envio será preparado no seu aplicativo de e-mail. Revise a mensagem antes de enviá-la.</p>
+            <p class="pg-contact-form__delivery-note">O envio é processado pelo FormSubmit e direcionado ao e-mail da PrintGráfik. No primeiro uso, a empresa deverá confirmar a ativação recebida por e-mail.</p>
           </form>
         </section>
 
@@ -154,10 +156,6 @@
             <article class="pg-contact-channel" data-contact-item="whatsapp" hidden>
               <span class="pg-icon pg-tone-green" aria-hidden="true"><img src="assets/icons/whatsapp.svg" alt="" width="64" height="64"></span>
               <div><h3>WhatsApp</h3><a href="contato.html#formulario-orcamento" data-contact-value></a></div>
-            </article>
-            <article class="pg-contact-channel" data-contact-item="phone" hidden>
-              <span class="pg-icon pg-tone-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg></span>
-              <div><h3>Telefone</h3><a href="contato.html" data-contact-value></a></div>
             </article>
             <article class="pg-contact-channel" data-contact-item="email" hidden>
               <span class="pg-icon pg-tone-magenta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
@@ -194,7 +192,7 @@
       <div><a class="pg-logo-link" href="index.html" aria-label="PrintGráfik — página inicial"><img class="pg-logo" src="assets/logo/logo-printgrafik-600.png" alt="PrintGráfik" width="600" height="449" loading="lazy"></a><p class="pg-footer__brand-text">Embalagens em papel cartão com qualidade, agilidade e atendimento próximo para empresas.</p></div>
       <div><h2 class="pg-footer__title">Navegação</h2><ul class="pg-footer__links"><li><a href="index.html">Início</a></li><li><a href="empresa.html">Empresa</a></li><li><a href="produtos.html">Produtos</a></li><li><a href="estrutura.html">Estrutura</a></li><li><a href="contato.html" aria-current="page">Contato</a></li></ul></div>
       <div><h2 class="pg-footer__title">Produtos</h2><ul class="pg-footer__links"><li><a href="produtos.html#caixas-display">Caixas Display</a></li><li><a href="produtos.html#cartelas-blister">Cartelas Blister</a></li><li><a href="produtos.html#embalagens-personalizadas">Personalizadas</a></li><li><a href="produtos.html#embalagens-em-branco">Em Branco</a></li></ul></div>
-      <div><h2 class="pg-footer__title">Contato</h2><ul class="pg-footer__contact-list"><li><a href="#formulario-orcamento">Solicite um orçamento</a></li><li data-contact-item="phone" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="whatsapp" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="email" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="address" hidden><span data-contact-value></span></li></ul></div>
+      <div><h2 class="pg-footer__title">Contato</h2><ul class="pg-footer__contact-list"><li><a href="#canais-atendimento">Canais de atendimento</a></li><li data-contact-item="phone" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="whatsapp" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="email" hidden><a href="contato.html" data-contact-value></a></li><li data-contact-item="address" hidden><span data-contact-value></span></li></ul></div>
       <div class="pg-footer__social-column"><h2 class="pg-footer__title">Siga-nos</h2><div class="pg-socials"><span class="pg-social" data-social="facebook" aria-label="Facebook — link pendente" aria-disabled="true">f</span><span class="pg-social" data-social="instagram" aria-label="Instagram — link pendente" aria-disabled="true">ig</span><span class="pg-social" data-social="linkedin" aria-label="LinkedIn — link pendente" aria-disabled="true">in</span></div></div>
     </div>
     <div class="pg-container pg-footer__bottom"><span>© <span data-current-year>2026</span> PrintGráfik Indústria Gráfica Ltda. Todos os direitos reservados.</span><span class="pg-footer__credits">Ícones por <a href="https://www.flaticon.com/br/icones-gratis/facebook">Rakib Hassan Rahim e Pixel perfect</a> e <a href="https://www.flaticon.com/br/icones-gratis/linkedin">riajulislam</a> — Flaticon</span><span>Desenvolvido por <a href="https://andreblosaliatti.dev" target="_blank" rel="noopener noreferrer">Andre Blos Aliatti</a></span><a href="politica-de-privacidade.html">Política de Privacidade</a></div>

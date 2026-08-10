@@ -1,5 +1,11 @@
 "use strict";
 
+const PG_CONTACT_PHONES = Object.freeze({
+  director: "(19) 99144-0661",
+  sales: "(19) 99425-3333",
+  company: "(19) 99246-4807"
+});
+
 const PG_SITE_CONFIG = Object.freeze({
   institution: Object.freeze({
     foundation: "março de 2000",
@@ -9,9 +15,11 @@ const PG_SITE_CONFIG = Object.freeze({
     clients: "500+"
   }),
   contacts: Object.freeze({
-    phone: "(19) 9.9144-0661",
+    phone: PG_CONTACT_PHONES.director,
+    phones: PG_CONTACT_PHONES,
     whatsapp: null,
     email: "printgrafik@printgrafik.com.br",
+    formEndpoint: "https://formsubmit.co/ajax/printgrafik@printgrafik.com.br",
     address: "Rodovia Antonio Forti, nº 2400 — Bairro Morro Amarelo — Capivari/SP",
     businessHours: null,
     whatsappMessage: "Olá! Acessei o site da PrintGráfik e gostaria de informações sobre embalagens para minha empresa."
@@ -77,6 +85,15 @@ const pgApplyContacts = () => {
   const contactSettings = {
     phone: contacts.phone
       ? { text: contacts.phone, href: `tel:${contacts.phone.replace(/[^\d+]/g, "")}` }
+      : null,
+    directorPhone: contacts.phones?.director
+      ? { text: contacts.phones.director, href: `tel:${contacts.phones.director.replace(/[^\d+]/g, "")}` }
+      : null,
+    salesPhone: contacts.phones?.sales
+      ? { text: contacts.phones.sales, href: `tel:${contacts.phones.sales.replace(/[^\d+]/g, "")}` }
+      : null,
+    companyPhone: contacts.phones?.company
+      ? { text: contacts.phones.company, href: `tel:${contacts.phones.company.replace(/[^\d+]/g, "")}` }
       : null,
     whatsapp: whatsappUrl
       ? { text: contacts.whatsapp, href: whatsappUrl, external: true }
@@ -274,7 +291,7 @@ const pgInitContactForm = () => {
     });
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const validationResults = Object.keys(fields).map((name) => ({ name, isValid: validateField(name) }));
@@ -288,7 +305,7 @@ const pgInitContactForm = () => {
       return;
     }
 
-    const honeypot = form.elements.namedItem("site");
+    const honeypot = form.elements.namedItem("_honey");
     if (honeypot instanceof HTMLInputElement && honeypot.value) {
       if (status) {
         status.textContent = "Não foi possível preparar a solicitação. Recarregue a página e tente novamente.";
@@ -297,8 +314,8 @@ const pgInitContactForm = () => {
       return;
     }
 
-    const destination = PG_SITE_CONFIG.contacts.email;
-    if (!destination) {
+    const endpoint = PG_SITE_CONFIG.contacts.formEndpoint;
+    if (!endpoint) {
       if (status) {
         status.textContent = "O envio ainda não está configurado. Use um dos canais de contato disponíveis.";
         status.dataset.state = "error";
@@ -311,36 +328,48 @@ const pgInitContactForm = () => {
     const company = valueOrNotInformed("empresa");
     const subjectReference = company === "Não informado" ? valueOrNotInformed("nome") : company;
     const subject = `Solicitação de orçamento — ${subjectReference}`;
-    const body = [
-      "Olá, equipe PrintGráfik!",
-      "",
-      "Gostaria de solicitar uma análise para orçamento.",
-      "",
-      `Nome: ${valueOrNotInformed("nome")}`,
-      `Empresa: ${valueOrNotInformed("empresa")}`,
-      `Telefone ou WhatsApp: ${valueOrNotInformed("telefone")}`,
-      `E-mail: ${valueOrNotInformed("email")}`,
-      `Produto de interesse: ${valueOrNotInformed("produto")}`,
-      `Quantidade estimada: ${valueOrNotInformed("quantidade")}`,
-      `Medidas aproximadas: ${valueOrNotInformed("medidas")}`,
-      "",
-      "Mensagem:",
-      valueOrNotInformed("mensagem")
-    ].join("\n");
-    const mailtoUrl = `mailto:${destination}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const submission = Object.fromEntries(formData.entries());
+    submission._subject = subject;
+    submission._template = "table";
+    submission._url = window.location.href;
+    submission.consentimento = "Aceito";
 
     if (submitButton) submitButton.disabled = true;
-    if (submitLabel) submitLabel.textContent = "Preparando e-mail…";
+    if (submitLabel) submitLabel.textContent = "Enviando…";
     if (status) {
-      status.textContent = "Seu aplicativo de e-mail será aberto. Revise a mensagem e conclua o envio por lá.";
+      status.textContent = "Enviando sua solicitação…";
       status.dataset.state = "pending";
     }
 
-    window.setTimeout(() => {
-      window.location.href = mailtoUrl;
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(submission)
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok || result?.success === false || result?.success === "false") {
+        throw new Error("FormSubmit recusou a solicitação.");
+      }
+
+      form.reset();
+      Object.values(fields).forEach((field) => field?.removeAttribute("aria-invalid"));
+      if (status) {
+        status.textContent = "Solicitação enviada. Nossa equipe receberá os dados por e-mail.";
+        status.dataset.state = "success";
+      }
+    } catch {
+      if (status) {
+        status.textContent = "Não foi possível enviar agora. Tente novamente ou use um dos canais de atendimento.";
+        status.dataset.state = "error";
+      }
+    } finally {
       if (submitButton) submitButton.disabled = false;
       if (submitLabel) submitLabel.textContent = "Enviar solicitação";
-    }, 120);
+    }
   });
 };
 
@@ -421,6 +450,7 @@ const pgInitScrollMotion = () => {
     ".pg-products-cta",
     ".pg-structure-card",
     ".pg-structure-gallery__item",
+    ".pg-structure-video-card",
     ".pg-structure-followup__copy",
     ".pg-structure-checklist",
     ".pg-structure-step",
