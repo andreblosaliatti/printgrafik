@@ -59,6 +59,7 @@
   --pg-shadow-sm: 0 8px 24px rgb(16 24 40 / 0.06);
   --pg-shadow-md: 0 18px 50px rgb(16 24 40 / 0.1);
   --pg-shadow-color: 0 20px 60px rgb(22 135 255 / 0.14);
+  --pg-banner-rainbow-image: url("../assets/images/banner-arco-iris.png");
   --pg-container: 1180px;
   --pg-header-height: 84px;
 }

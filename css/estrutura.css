@@ -310,15 +310,14 @@
 }
 
 .pg-structure-cta {
+  display: grid;
+  min-height: clamp(220px, 22vw, 270px);
+  align-items: center;
   overflow: hidden;
   padding: var(--pg-space-8) var(--pg-space-12);
   border-radius: var(--pg-radius-lg);
   color: var(--pg-white);
-  background:
-    radial-gradient(circle at 4% 50%, rgb(23 189 228 / 0.9), transparent 28%),
-    radial-gradient(circle at 96% 50%, rgb(255 159 26 / 0.96), transparent 28%),
-    linear-gradient(100deg, #1476d4 0%, #6e42d5 38%, #ec258d 69%, #ffb000 100%);
-  box-shadow: var(--pg-shadow-md);
+  background: var(--pg-white) var(--pg-banner-rainbow-image) center / calc(100% - clamp(24px, 5vw, 72px)) auto no-repeat;
   text-align: center;
 }
 

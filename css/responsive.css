@@ -1,3 +1,23 @@
+.pg-cta-section > .pg-container,
+.pg-products-cta-section > .pg-container,
+.pg-structure-cta-section > .pg-container,
+.pg-contact-note-section > .pg-container {
+  width: 100%;
+  max-width: none;
+}
+
+.pg-cta,
+.pg-company-cta,
+.pg-products-cta,
+.pg-structure-cta,
+.pg-contact-note {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  border-radius: 0;
+  background-size: 100% auto;
+}
+
 @media (max-width: 1100px) {
   .pg-header__cta {
     display: none;
@@ -653,6 +673,33 @@
 
   .pg-contact-note {
     padding: var(--pg-space-5);
+  }
+
+  .pg-cta,
+  .pg-company-cta,
+  .pg-products-cta,
+  .pg-structure-cta,
+  .pg-contact-note {
+    min-height: 0;
+    color: var(--pg-text);
+    background-position: top center;
+    background-size: 100% auto;
+  }
+
+  .pg-cta__inner,
+  .pg-company-cta,
+  .pg-products-cta,
+  .pg-structure-cta,
+  .pg-contact-note {
+    padding-top: 82px;
+  }
+
+  .pg-cta__text,
+  .pg-company-cta__copy p,
+  .pg-products-cta p,
+  .pg-structure-cta p,
+  .pg-contact-note p {
+    color: var(--pg-text-muted);
   }
 }
 

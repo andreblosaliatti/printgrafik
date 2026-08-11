@@ -58,9 +58,7 @@ const pgApplyContacts = () => {
   document.querySelectorAll("[data-smart-contact]").forEach((link) => {
     const label = link.querySelector("[data-contact-label]");
     if (label) {
-      label.textContent = whatsappUrl
-        ? link.dataset.contactText || "Falar no WhatsApp"
-        : link.dataset.contactFallbackLabel || link.dataset.contactText || "Falar com a equipe";
+      label.textContent = link.dataset.contactFallbackLabel || "Fale com nossa equipe";
     }
 
     if (!whatsappUrl && link.hasAttribute("data-hide-fallback-icon")) {

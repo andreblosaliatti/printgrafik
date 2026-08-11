@@ -5,14 +5,21 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 ## Implementado
 
 - Home responsiva completa.
-- Página A Empresa completa e alinhada ao mockup `docs/empresa-mock.png`, com história, soluções, atendimento, princípios, localização, chamada comercial e movimentos leves durante a rolagem.
+- Página A Empresa completa e alinhada ao mockup `docs/empresa-mock.png`, com texto institucional aprovado no hero, história, soluções, atendimento, princípios, localização, chamada comercial e movimentos leves durante a rolagem.
 - Localização da empresa com dados oficiais e mapa incorporado do Google Maps.
 - Página Produtos completa e alinhada ao mockup `docs/mock-produtos.png`, com cinco categorias, materiais, processo do pedido, orientações comerciais, chamada final e movimentos leves durante a rolagem.
+- Os cards das categorias de Produtos mantêm a mesma altura dentro de cada linha no desktop, sem fazer uma linha aumentar a outra, e os botões ficam alinhados na base. Os conteúdos de Embalagens em Branco e Solapas foram equilibrados para evitar espaços excessivos. No celular, cada card conserva sua altura natural.
 - Hero da página Produtos com vídeo real do processo de produção, controles nativos, autoplay mudo e thumbnail local.
 - Página Estrutura completa e alinhada ao mockup `docs/mock-estrutura.png`, com hero panorâmico, acompanhamento próximo, seis etapas produtivas, equipamentos, qualidade, galeria de fotos, quatro vídeos e chamada comercial.
 - Página Contato com hero dedicado aos canais de atendimento, três telefones identificados por setor, nova fotografia da equipe, formulário de orçamento e demais canais confirmados.
+- Banners finais das cinco páginas principais atualizados com a imagem real `assets/images/banner-arco-iris.png`, em formato mais alto e ocupando toda a largura útil da página, sem faixas brancas laterais, película, sombra, máscara, recorte da arte ou rolagem horizontal. Em celulares, a imagem permanece inteira no topo e o conteúdo segue abaixo para não deformá-la.
 - Cabeçalho compartilhado e menu móvel acessível.
+- Botões de contato padronizados com o texto “Fale com nossa equipe”.
+- O botão de contato do banner final da Home utiliza texto preto sobre fundo branco.
 - Hero com a imagem final da máquina de impressão.
+- Textos institucionais da Home revisados conforme conteúdo aprovado, com “Indústria Gráfica” identificado abaixo do logo no cabeçalho da página.
+- No desktop, a imagem do hero da Home se estende do conteúdo central até a borda direita da tela; em telas menores, permanece contida e empilhada.
+- A faixa verde dos indicadores da Home ocupa toda a largura da tela, enquanto os quatro números permanecem alinhados ao container central.
 - Cards de produtos em destaque.
 - Seção institucional com a fotografia real da fachada.
 - Indicadores, diferenciais, missão, visão e valores.
