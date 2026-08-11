@@ -646,6 +646,41 @@ if (!target) {
     if (!validSubmission.pending.submitDisabled || validSubmission.pending.submitLabel !== "Enviando…" || !validSubmission.pending.status.includes("Enviando") || validSubmission.pending.statusState !== "pending") failures.push(`contato ${width}px: estado de envio pendente incorreto`);
     if (validSubmission.fetchRequest?.url !== "https://formsubmit.co/ajax/printgrafik@printgrafik.com.br" || validSubmission.fetchRequest?.method !== "POST" || validSubmission.fetchRequest?.headers?.["Content-Type"] !== "application/json" || validSubmission.fetchRequest?.body?.nome !== "Cliente Teste" || validSubmission.fetchRequest?.body?.consentimento !== "Aceito" || !validSubmission.fetchRequest?.body?._subject?.includes("Cliente Teste")) failures.push(`contato ${width}px: requisição ao serviço de formulário incorreta`);
     if (validSubmission.submitDisabled || validSubmission.submitLabel !== "Enviar solicitação" || !validSubmission.status.includes("Solicitação enviada") || validSubmission.statusState !== "success" || validSubmission.visibleErrors !== 0 || validSubmission.clearedName !== "") failures.push(`contato ${width}px: confirmação do envio válido falhou`);
+    if (width === 1440) {
+      const activationEvaluation = await send("Runtime.evaluate", {
+        awaitPromise: true,
+        returnByValue: true,
+        expression: `(async () => {
+          const form = document.querySelector('[data-contact-form]');
+          form.elements.nome.value = 'Cliente Teste';
+          form.elements.telefone.value = '(19) 99999-9999';
+          form.elements.email.value = 'cliente@example.com';
+          form.elements.produto.value = 'Caixas Display';
+          form.elements.mensagem.value = 'Mensagem de teste para validar o retorno de ativação.';
+          form.elements.consentimento.checked = true;
+          const originalFetch = window.fetch;
+          window.fetch = async () => ({
+            ok: true,
+            json: async () => ({
+              success: 'false',
+              message: 'This form needs Activation. Click the Activate Form link.'
+            })
+          });
+          form.requestSubmit();
+          await new Promise((resolve) => setTimeout(resolve, 0));
+          await new Promise((resolve) => setTimeout(resolve, 0));
+          const result = {
+            status: form.querySelector('[data-form-status]').textContent.trim(),
+            statusState: form.querySelector('[data-form-status]').dataset.state,
+            retainedName: form.elements.nome.value
+          };
+          window.fetch = originalFetch;
+          return result;
+        })()`
+      });
+      const activation = activationEvaluation.result.value;
+      if (!activation.status.includes("aguarda ativação") || activation.statusState !== "error" || activation.retainedName !== "Cliente Teste") failures.push("contato 1440px: aviso de ativação pendente incorreto");
+    }
     if (width === 1440 || width === 375) {
       await send("Runtime.evaluate", {
         expression: `(() => {

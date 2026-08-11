@@ -323,6 +323,14 @@ const pgInitContactForm = () => {
       return;
     }
 
+    if (!/^https?:$/.test(window.location.protocol)) {
+      if (status) {
+        status.textContent = "Para enviar, abra o site por um servidor local ou pelo endereço publicado. O formulário não funciona quando o HTML é aberto diretamente como arquivo.";
+        status.dataset.state = "error";
+      }
+      return;
+    }
+
     const formData = new FormData(form);
     const valueOrNotInformed = (name) => String(formData.get(name) || "").trim() || "Não informado";
     const company = valueOrNotInformed("empresa");
@@ -352,7 +360,10 @@ const pgInitContactForm = () => {
       });
       const result = await response.json().catch(() => null);
       if (!response.ok || result?.success === false || result?.success === "false") {
-        throw new Error("FormSubmit recusou a solicitação.");
+        const serviceMessage = typeof result?.message === "string" ? result.message : "";
+        const error = new Error("FormSubmit recusou a solicitação.");
+        error.formActivationRequired = /needs activation|activate form/i.test(serviceMessage);
+        throw error;
       }
 
       form.reset();
@@ -361,9 +372,11 @@ const pgInitContactForm = () => {
         status.textContent = "Solicitação enviada. Nossa equipe receberá os dados por e-mail.";
         status.dataset.state = "success";
       }
-    } catch {
+    } catch (error) {
       if (status) {
-        status.textContent = "Não foi possível enviar agora. Tente novamente ou use um dos canais de atendimento.";
+        status.textContent = error?.formActivationRequired
+          ? "O formulário aguarda ativação. A PrintGráfik precisa confirmar o link enviado ao e-mail da empresa."
+          : "Não foi possível enviar agora. Tente novamente ou use um dos canais de atendimento.";
         status.dataset.state = "error";
       }
     } finally {

@@ -150,9 +150,9 @@ O formulário de `contato.html` solicita somente os dados necessários para a an
 - Os dados não são armazenados no navegador nem registrados no console.
 - Um campo honeypot oculto oferece uma barreira antispam simples.
 
-O envio é realizado diretamente por AJAX para o endpoint do [FormSubmit](https://formsubmit.co/documentation), configurado em `js/main.js`, e não abre o aplicativo de e-mail do visitante. A interface apresenta estado de envio, sucesso somente após uma resposta positiva do serviço e uma mensagem de erro quando a requisição falha. Os testes automatizados simulam essa resposta e não enviam mensagens reais.
+O envio é realizado diretamente por AJAX para o endpoint do [FormSubmit](https://formsubmit.co/documentation), configurado em `js/main.js`, e não abre o aplicativo de e-mail do visitante. A interface apresenta estado de envio, sucesso somente após uma resposta positiva do serviço, aviso específico quando a ativação estiver pendente e uma mensagem de erro quando a requisição falha. Os testes automatizados simulam essas respostas e não enviam mensagens reais.
 
-No primeiro envio real, o FormSubmit encaminhará uma mensagem de ativação para `printgrafik@printgrafik.com.br`. É necessário abrir esse e-mail e confirmar o formulário; segundo a documentação do serviço, submissões anteriores à ativação ficam retidas e são encaminhadas após a confirmação. O FormSubmit também informa que mantém submissões no arquivo do serviço por até 30 dias, ponto que deve constar na validação jurídica final da Política de Privacidade.
+O primeiro envio técnico pelo site publicado foi realizado em 10/08/2026 e o FormSubmit confirmou o encaminhamento da mensagem de ativação para `printgrafik@printgrafik.com.br`. É necessário abrir esse e-mail e clicar em `Activate Form`; segundo a documentação do serviço, submissões anteriores à ativação ficam retidas e são encaminhadas após a confirmação. O FormSubmit também informa que mantém submissões no arquivo do serviço por até 30 dias, ponto que deve constar na validação jurídica final da Política de Privacidade.
 
 Enquanto o WhatsApp não for confirmado, os contatos inteligentes das demais páginas direcionam para a página Contato. Nela, os três telefones confirmados ficam disponíveis diretamente no hero. WhatsApp e horário permanecem ocultos nos demais canais; Facebook e LinkedIn aparecem no rodapé como ícones desativados, sem links inventados.
 
@@ -162,7 +162,7 @@ O hero da página Produtos utiliza o novo registro `assets/estrutura/WhatsApp Vi
 
 ## Executar localmente
 
-O site pode ser aberto diretamente pelo arquivo `index.html`. Para reproduzir um ambiente HTTP local, na raiz do projeto execute:
+As páginas podem ser visualizadas abrindo `index.html` diretamente, mas o envio pelo FormSubmit exige HTTP ou HTTPS. Para testar o formulário localmente, na raiz do projeto execute:
 
 ```bash
 python3 -m http.server 8000
