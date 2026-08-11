@@ -341,6 +341,8 @@ if (!target) {
         menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
         activePage: document.querySelector('.pg-nav__link[aria-current="page"]')?.getAttribute('href'),
         productCards: document.querySelectorAll('.pg-product-detail').length,
+        displayImage: document.querySelector('#caixas-display .pg-product-detail__image')?.getAttribute('src'),
+        blisterImage: document.querySelector('#cartelas-blister .pg-product-detail__image')?.getAttribute('src'),
         contactFallbacks: [...document.querySelectorAll('.pg-product-detail [data-smart-contact]')].every((link) => link.getAttribute('href') === 'contato.html'),
         finalCtaButtons: document.querySelectorAll('.pg-products-cta .pg-button').length,
         videoPresent: Boolean(document.querySelector('.pg-product-hero-media .pg-product-hero-video')),
@@ -361,9 +363,10 @@ if (!target) {
     if (result.brokenImages.length) failures.push(`produtos ${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
     if (result.activePage !== "produtos.html") failures.push(`produtos ${width}px: estado ativo da navegação incorreto`);
     if (result.productCards !== 5) failures.push(`produtos ${width}px: quantidade de categorias inválida (${result.productCards})`);
+    if (result.displayImage !== "assets/produtos/caixas-display.jpeg" || result.blisterImage !== "assets/produtos/cartela-blister.jpeg") failures.push(`produtos ${width}px: fotos reais de caixas display ou cartelas blister incorretas`);
     if (!result.contactFallbacks) failures.push(`produtos ${width}px: fallback de contato incorreto`);
     if (result.finalCtaButtons !== 0) failures.push(`produtos ${width}px: o CTA final não deve possuir botões`);
-    if (!result.videoPresent || result.videoSource !== "assets/estrutura/WhatsApp Video 2026-08-07 at 10.45.40.mp4") failures.push(`produtos ${width}px: vídeo real do hero ausente ou com caminho incorreto`);
+    if (!result.videoPresent || result.videoSource !== "assets/estrutura/WhatsApp Video 2026-08-07 at 09.52.14.mp4") failures.push(`produtos ${width}px: vídeo real do hero ausente ou com caminho incorreto`);
     if (result.videoPoster !== "assets/estrutura/impressora-offset-man-roland.jpg" || !result.videoControls || !result.videoAutoplay || !result.videoMuted) failures.push(`produtos ${width}px: configuração do vídeo ou do thumbnail incorreta`);
     if (result.videoPaused) failures.push(`produtos ${width}px: autoplay do vídeo não iniciou`);
     if (result.videoError !== null) failures.push(`produtos ${width}px: navegador reportou erro ${result.videoError} ao carregar o vídeo`);
@@ -452,7 +455,8 @@ if (!target) {
             poster: video.getAttribute('poster'),
             controls: video.controls,
             autoplay: video.autoplay,
-            preload: video.preload
+            preload: video.preload,
+            caption: video.closest('.pg-structure-video-card')?.querySelector('figcaption')?.textContent.trim()
           })),
           contactFallbacks: [...document.querySelectorAll('.pg-structure-page [data-smart-contact]')].every((link) => link.getAttribute('href') === 'contato.html'),
           hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
@@ -469,9 +473,12 @@ if (!target) {
     if (result.factoryAreaMentions !== 1 || result.repeatedInstitutionalNumbers !== 0) failures.push(`estrutura ${width}px: dados institucionais repetidos além da área fabril`);
     if (!result.allPhotosLazy) failures.push(`estrutura ${width}px: fotografias abaixo do hero devem usar carregamento tardio`);
     if (result.pageTitle !== "Estrutura") failures.push(`estrutura ${width}px: título principal incorreto`);
-    if (result.heroSource !== "assets/estrutura/panoramica-parque-grafico.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`estrutura ${width}px: configuração da panorâmica no hero incorreta`);
+    if (result.heroSource !== "assets/estrutura/impressora-offset-man-roland.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`estrutura ${width}px: configuração da imagem no hero incorreta`);
     if (result.heroButtons !== 2 || result.finalCtaButtons !== 0 || !result.contactFallbacks) failures.push(`estrutura ${width}px: CTAs ou fallback de contato incorretos`);
     if (result.videos.length !== 4 || result.videos.some((video) => !video.source || !video.poster || !video.controls || video.autoplay || video.preload !== "metadata")) failures.push(`estrutura ${width}px: configuração da galeria de vídeos incorreta`);
+    if (result.videos[0]?.caption !== "Coladeira funcionando") failures.push(`estrutura ${width}px: legenda do primeiro vídeo incorreta`);
+    if (result.videos[1]?.source !== "assets/estrutura/WhatsApp Video 2026-08-07 at 09.52.14.mp4") failures.push(`estrutura ${width}px: vídeo de equipamentos de impressão incorreto`);
+    if (result.videos[1]?.caption !== "Equipamentos de impressão Roland 305 L") failures.push(`estrutura ${width}px: legenda do vídeo da Roland 305 L incorreta`);
     if (result.hiddenReveals.length !== 0) failures.push(`estrutura ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`estrutura ${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
@@ -555,6 +562,7 @@ if (!target) {
           focusedField: document.activeElement?.id,
           productOptions,
           deliveryMethod: form.dataset.deliveryMethod,
+          deliveryNotePresent: Boolean(form.querySelector('.pg-contact-form__delivery-note')),
           formStatus: document.querySelector('[data-form-status]')?.textContent.trim(),
           emailHref: document.querySelector('.pg-contact-channels [data-contact-item="email"] a')?.getAttribute('href'),
           addressText: document.querySelector('.pg-contact-channels [data-contact-item="address"] [data-contact-value]')?.textContent.trim(),
@@ -589,6 +597,7 @@ if (!target) {
     if (!result.formStatus.includes("Revise os campos")) failures.push(`contato ${width}px: resumo de validação ausente`);
     if (result.productOptions.includes("Caixinhas Display") || !result.productOptions.includes("Caixas Display") || result.productOptions[0] !== "Selecione uma opção") failures.push(`contato ${width}px: opções de produto incorretas`);
     if (result.deliveryMethod !== "formsubmit-ajax") failures.push(`contato ${width}px: método de envio não documentado no formulário`);
+    if (result.deliveryNotePresent) failures.push(`contato ${width}px: texto técnico de envio não deve aparecer abaixo do formulário`);
     if (result.emailHref !== "mailto:printgrafik@printgrafik.com.br" || !result.addressText.includes("Rodovia Antonio Forti") || result.instagramHref !== "https://www.instagram.com/printgrafik_industriagrafica/" || result.instagramText !== "@printgrafik_industriagrafica") failures.push(`contato ${width}px: canais confirmados incorretos`);
     if (JSON.stringify(result.footerSocials) !== JSON.stringify(["facebook", "instagram", "linkedin"])) failures.push(`contato ${width}px: redes sociais do rodapé incompletas`);
     if (result.whatsappVisible || result.hoursVisible) failures.push(`contato ${width}px: canais pendentes não devem ser exibidos`);

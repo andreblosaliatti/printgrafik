@@ -80,20 +80,21 @@ site-printgrafik/
 
 Na página Estrutura, as novas mídias foram distribuídas assim:
 
-- `panoramica-parque-grafico.jpg`: hero panorâmico.
-- `impressora-offset-man-roland.jpg`, `equipamento-corte-vinco.jpg`, `area-corte-vinco-acabamento.jpg` e `visao-geral-area-producao.jpg`: cards de equipamentos e processos.
+- `impressora-offset-man-roland.jpg`: hero da página Estrutura e card da impressora offset Roland 300.
+- `equipamento-corte-vinco.jpg`, `area-corte-vinco-acabamento.jpg` e `visao-geral-area-producao.jpg`: cards de equipamentos e processos.
+- `panoramica-parque-grafico.jpg`: poster do vídeo da coladeira.
 - `controle-qualidade-impressao.jpg`: bloco de controle de qualidade.
 - `desenvolvimento-tecnico-embalagem.jpg`, `unidades-impressao-offset-cores.jpg`, `setor-corte-vinco.jpg` e `fachada-lateral-por-do-sol.jpg`: galeria fotográfica.
-- Quatro vídeos MP4 selecionados: galeria “Bastidores da produção”, todos com controles nativos, `playsinline`, `preload="metadata"`, poster local e sem autoplay.
+- Quatro vídeos MP4 selecionados: galeria “Bastidores da produção”, todos com controles nativos, `playsinline`, `preload="metadata"`, poster local e sem autoplay. O primeiro card é identificado como “Coladeira funcionando”; o card “Equipamentos de impressão Roland 305 L” utiliza o mesmo registro `WhatsApp Video 2026-08-07 at 09.52.14.mp4` do hero de Produtos.
 
 Os arquivos foram mantidos no formato e na qualidade fornecidos. As fotos ocupam aproximadamente 260 KB a 560 KB; os vídeos selecionados totalizam cerca de 16 MB, mas não são baixados integralmente antes da interação porque usam apenas pré-carregamento de metadados.
 
 ## Placeholders
 
+As fotografias finais de Caixas Display e Cartelas Blister estão em `assets/produtos/caixas-display.jpeg` e `assets/produtos/cartela-blister.jpeg` e já são usadas nos respectivos cards.
+
 As fotografias finais abaixo ainda não foram fornecidas e usam SVGs locais claramente identificados:
 
-- Caixas Display.
-- Cartelas Blister.
 - Embalagens Personalizadas.
 - Embalagens em Branco.
 - Solapas e materiais gráficos para embalagens.
@@ -159,13 +160,15 @@ O formulário de `contato.html` solicita somente os dados necessários para a an
 
 O envio é realizado diretamente por AJAX para o endpoint do [FormSubmit](https://formsubmit.co/documentation), configurado em `js/main.js`, e não abre o aplicativo de e-mail do visitante. A interface apresenta estado de envio, sucesso somente após uma resposta positiva do serviço, aviso específico quando a ativação estiver pendente e uma mensagem de erro quando a requisição falha. Os testes automatizados simulam essas respostas e não enviam mensagens reais.
 
+Os detalhes técnicos do serviço de envio ficam documentados apenas neste README e não são exibidos abaixo do formulário.
+
 O primeiro envio técnico pelo site publicado foi realizado em 10/08/2026 e o FormSubmit confirmou o encaminhamento da mensagem de ativação para `printgrafik@printgrafik.com.br`. É necessário abrir esse e-mail e clicar em `Activate Form`; segundo a documentação do serviço, submissões anteriores à ativação ficam retidas e são encaminhadas após a confirmação. O FormSubmit também informa que mantém submissões no arquivo do serviço por até 30 dias, ponto que deve constar na validação jurídica final da Política de Privacidade.
 
 Enquanto o WhatsApp não for confirmado, os contatos inteligentes das demais páginas direcionam para a página Contato. Nela, os três telefones confirmados ficam disponíveis diretamente no hero. WhatsApp e horário permanecem ocultos nos demais canais; Facebook e LinkedIn aparecem no rodapé como ícones desativados, sem links inventados.
 
 ## Vídeo do hero de Produtos
 
-O hero da página Produtos utiliza o novo registro `assets/estrutura/WhatsApp Video 2026-08-07 at 10.45.40.mp4`, com a fotografia `assets/estrutura/impressora-offset-man-roland.jpg` como poster. O vídeo possui controles nativos, autoplay mudo, `playsinline`, `preload="metadata"` e fallback textual. O autoplay permanece mudo para ser aceito pelos navegadores e não interromper o visitante com áudio inesperado.
+O hero da página Produtos utiliza o registro `assets/estrutura/WhatsApp Video 2026-08-07 at 09.52.14.mp4`, com a fotografia `assets/estrutura/impressora-offset-man-roland.jpg` como poster. O vídeo possui controles nativos, autoplay mudo, `playsinline`, `preload="metadata"` e fallback textual. O autoplay permanece mudo para ser aceito pelos navegadores e não interromper o visitante com áudio inesperado.
 
 ## Executar localmente
 

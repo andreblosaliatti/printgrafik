@@ -325,12 +325,6 @@
   color: var(--pg-green-700);
 }
 
-.pg-contact-form__delivery-note {
-  margin: var(--pg-space-2) 0 0;
-  color: var(--pg-text-muted);
-  font-size: var(--pg-fs-12);
-}
-
 .pg-contact-channels__list {
   display: grid;
 }
