@@ -173,6 +173,11 @@ if (!target) {
         heroImage: document.querySelector('.pg-hero__image')?.currentSrc,
         menuButtonVisible: getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
         finalCtaButtons: document.querySelectorAll('.pg-cta .pg-button').length,
+        displayImage: document.querySelector('.pg-product-card:first-child .pg-product-card__image')?.getAttribute('src'),
+        blisterImage: document.querySelector('.pg-product-card:nth-child(2) .pg-product-card__image')?.getAttribute('src'),
+        personalizedImage: document.querySelector('.pg-product-card:nth-child(3) .pg-product-card__image')?.getAttribute('src'),
+        blankImage: document.querySelector('.pg-product-card:nth-child(4) .pg-product-card__image')?.getAttribute('src'),
+        blisterFit: getComputedStyle(document.querySelector('.pg-product-card:nth-child(2) .pg-product-card__image')).objectFit,
         realStructurePhotos: document.querySelectorAll('.pg-gallery__image[src^="assets/estrutura/"]').length,
         structurePlaceholders: [...document.querySelectorAll('.pg-gallery__image[src^="assets/placeholders/estrutura-"]')].map((img) => img.getAttribute('src'))
       }))()`
@@ -184,6 +189,8 @@ if (!target) {
     const expectedHeroImage = width <= 820 ? "hero-impressao-mobile.jpg" : "hero-impressao-printgrafik.jpg";
     if (!result.heroImage?.endsWith(expectedHeroImage)) failures.push(`${width}px: imagem incorreta no hero da Home (${result.heroImage})`);
     if (result.finalCtaButtons !== 1) failures.push(`${width}px: somente o CTA final da Home deve possuir um botão`);
+    if (result.displayImage !== "assets/produtos/caixas-display.jpeg" || result.blisterImage !== "assets/produtos/cartela-blister.jpeg" || result.blisterFit !== "contain") failures.push(`${width}px: fotos reais de produtos incorretas na Home`);
+    if (result.personalizedImage !== "assets/produtos/embalagens-personalizadas.png" || result.blankImage !== "assets/produtos/embalagem-em-branco.png") failures.push(`${width}px: fotos de embalagens personalizadas ou em branco incorretas na Home`);
     if (result.realStructurePhotos !== 5) failures.push(`${width}px: a galeria da Home deve possuir cinco fotografias reais da estrutura`);
     if (result.structurePlaceholders.length !== 0) failures.push(`${width}px: a galeria da Home não deve manter placeholders de estrutura`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`${width}px: botão do menu móvel não está visível`);
@@ -343,6 +350,8 @@ if (!target) {
         productCards: document.querySelectorAll('.pg-product-detail').length,
         displayImage: document.querySelector('#caixas-display .pg-product-detail__image')?.getAttribute('src'),
         blisterImage: document.querySelector('#cartelas-blister .pg-product-detail__image')?.getAttribute('src'),
+        personalizedImage: document.querySelector('#embalagens-personalizadas .pg-product-detail__image')?.getAttribute('src'),
+        blankImage: document.querySelector('#embalagens-em-branco .pg-product-detail__image')?.getAttribute('src'),
         contactFallbacks: [...document.querySelectorAll('.pg-product-detail [data-smart-contact]')].every((link) => link.getAttribute('href') === 'contato.html'),
         finalCtaButtons: document.querySelectorAll('.pg-products-cta .pg-button').length,
         videoPresent: Boolean(document.querySelector('.pg-product-hero-media .pg-product-hero-video')),
@@ -364,6 +373,7 @@ if (!target) {
     if (result.activePage !== "produtos.html") failures.push(`produtos ${width}px: estado ativo da navegação incorreto`);
     if (result.productCards !== 5) failures.push(`produtos ${width}px: quantidade de categorias inválida (${result.productCards})`);
     if (result.displayImage !== "assets/produtos/caixas-display.jpeg" || result.blisterImage !== "assets/produtos/cartela-blister.jpeg") failures.push(`produtos ${width}px: fotos reais de caixas display ou cartelas blister incorretas`);
+    if (result.personalizedImage !== "assets/produtos/embalagens-personalizadas.png" || result.blankImage !== "assets/produtos/embalagem-em-branco.png") failures.push(`produtos ${width}px: fotos de embalagens personalizadas ou em branco incorretas`);
     if (!result.contactFallbacks) failures.push(`produtos ${width}px: fallback de contato incorreto`);
     if (result.finalCtaButtons !== 0) failures.push(`produtos ${width}px: o CTA final não deve possuir botões`);
     if (!result.videoPresent || result.videoSource !== "assets/estrutura/WhatsApp Video 2026-08-07 at 09.52.14.mp4") failures.push(`produtos ${width}px: vídeo real do hero ausente ou com caminho incorreto`);

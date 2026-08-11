@@ -91,12 +91,10 @@ Os arquivos foram mantidos no formato e na qualidade fornecidos. As fotos ocupam
 
 ## Placeholders
 
-As fotografias finais de Caixas Display e Cartelas Blister estão em `assets/produtos/caixas-display.jpeg` e `assets/produtos/cartela-blister.jpeg` e já são usadas nos respectivos cards.
+As fotografias finais de Caixas Display, Cartelas Blister, Embalagens Personalizadas e Embalagens em Branco estão em `assets/produtos/` e já são usadas nos respectivos cards da Home e da página Produtos. Na Home, a foto vertical da Cartela Blister usa enquadramento integral para evitar cortes.
 
 As fotografias finais abaixo ainda não foram fornecidas e usam SVGs locais claramente identificados:
 
-- Embalagens Personalizadas.
-- Embalagens em Branco.
 - Solapas e materiais gráficos para embalagens.
 - Atendimento pessoal da equipe.
 
