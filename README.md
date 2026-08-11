@@ -17,7 +17,7 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 - Botões de contato padronizados com o texto “Fale com nossa equipe”.
 - O botão de contato do banner final da Home utiliza texto preto sobre fundo branco.
 - Hero com a imagem final da máquina de impressão.
-- Textos institucionais da Home revisados conforme conteúdo aprovado, com “Indústria Gráfica” identificado abaixo do logo no cabeçalho da página.
+- Textos institucionais da Home revisados conforme conteúdo aprovado, com “Indústria Gráfica” identificado abaixo do logo no cabeçalho de todas as páginas e um pequeno respiro entre logo e identificação.
 - No desktop, a imagem do hero da Home se estende do conteúdo central até a borda direita da tela; em telas menores, permanece contida e empilhada.
 - A faixa verde dos indicadores da Home ocupa toda a largura da tela, enquanto os quatro números permanecem alinhados ao container central.
 - Cards de produtos em destaque.
@@ -80,22 +80,22 @@ site-printgrafik/
 
 Na página Estrutura, as novas mídias foram distribuídas assim:
 
-- `impressora-offset-man-roland.jpg`: hero da página Estrutura e card da impressora offset Roland 300.
+- `setor-corte-vinco.jpg`: hero da página Estrutura, priorizando uma visão ampla do espaço, e item da galeria fotográfica.
+- `impressora-offset-man-roland.jpg`: card da impressora offset Roland 300 e poster de vídeo.
 - `equipamento-corte-vinco.jpg`, `area-corte-vinco-acabamento.jpg` e `visao-geral-area-producao.jpg`: cards de equipamentos e processos.
 - `panoramica-parque-grafico.jpg`: poster do vídeo da coladeira.
 - `controle-qualidade-impressao.jpg`: bloco de controle de qualidade.
-- `desenvolvimento-tecnico-embalagem.jpg`, `unidades-impressao-offset-cores.jpg`, `setor-corte-vinco.jpg` e `fachada-lateral-por-do-sol.jpg`: galeria fotográfica.
+- `desenvolvimento-tecnico-embalagem.jpg`, `unidades-impressao-offset-cores.jpg` e `fachada-lateral-por-do-sol.jpg`: galeria fotográfica.
 - Quatro vídeos MP4 selecionados: galeria “Bastidores da produção”, todos com controles nativos, `playsinline`, `preload="metadata"`, poster local e sem autoplay. O primeiro card é identificado como “Coladeira funcionando”; o card “Equipamentos de impressão Roland 305 L” utiliza o mesmo registro `WhatsApp Video 2026-08-07 at 09.52.14.mp4` do hero de Produtos.
 
 Os arquivos foram mantidos no formato e na qualidade fornecidos. As fotos ocupam aproximadamente 260 KB a 560 KB; os vídeos selecionados totalizam cerca de 16 MB, mas não são baixados integralmente antes da interação porque usam apenas pré-carregamento de metadados.
 
 ## Placeholders
 
-As fotografias finais de Caixas Display, Cartelas Blister, Embalagens Personalizadas e Embalagens em Branco estão em `assets/produtos/` e já são usadas nos respectivos cards da Home e da página Produtos. Na Home, a foto vertical da Cartela Blister usa enquadramento integral para evitar cortes.
+As fotografias finais de Caixas Display, Cartelas Blister, Embalagens Personalizadas, Embalagens em Branco e Solapas estão em `assets/produtos/` e já são usadas nos respectivos cards. A Embalagem em Branco utiliza a versão `embalagem-em-branco.jpeg`. As quatro primeiras aparecem na Home e na página Produtos; a Solapa aparece em sua categoria na página Produtos. As fotos verticais usam enquadramento integral para evitar cortes.
 
 As fotografias finais abaixo ainda não foram fornecidas e usam SVGs locais claramente identificados:
 
-- Solapas e materiais gráficos para embalagens.
 - Atendimento pessoal da equipe.
 
 Os arquivos estão em `assets/placeholders/` e `assets/produtos/` e podem ser substituídos sem alterar a estrutura das páginas.

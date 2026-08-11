@@ -13,6 +13,7 @@ const localReferencePattern = /(?:href|src)="([^"]+)"/g;
 for (const htmlFile of htmlFiles) {
   const html = readFileSync(join(root, htmlFile), "utf8");
   if ((html.match(/<h1\b/g) || []).length !== 1) failures.push(`${htmlFile}: deve possuir exatamente um h1`);
+  if (!html.includes('class="pg-logo-link pg-logo-link--tagged"') || !html.includes('<span class="pg-logo-tagline">Indústria Gráfica</span>')) failures.push(`${htmlFile}: identificação Indústria Gráfica ausente no cabeçalho`);
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
   if (duplicateIds.length) failures.push(`${htmlFile}: IDs duplicados: ${[...new Set(duplicateIds)].join(", ")}`);
@@ -190,7 +191,7 @@ if (!target) {
     if (!result.heroImage?.endsWith(expectedHeroImage)) failures.push(`${width}px: imagem incorreta no hero da Home (${result.heroImage})`);
     if (result.finalCtaButtons !== 1) failures.push(`${width}px: somente o CTA final da Home deve possuir um botão`);
     if (result.displayImage !== "assets/produtos/caixas-display.jpeg" || result.blisterImage !== "assets/produtos/cartela-blister.jpeg" || result.blisterFit !== "contain") failures.push(`${width}px: fotos reais de produtos incorretas na Home`);
-    if (result.personalizedImage !== "assets/produtos/embalagens-personalizadas.png" || result.blankImage !== "assets/produtos/embalagem-em-branco.png") failures.push(`${width}px: fotos de embalagens personalizadas ou em branco incorretas na Home`);
+    if (result.personalizedImage !== "assets/produtos/embalagens-personalizadas.png" || result.blankImage !== "assets/produtos/embalagem-em-branco.jpeg") failures.push(`${width}px: fotos de embalagens personalizadas ou em branco incorretas na Home`);
     if (result.realStructurePhotos !== 5) failures.push(`${width}px: a galeria da Home deve possuir cinco fotografias reais da estrutura`);
     if (result.structurePlaceholders.length !== 0) failures.push(`${width}px: a galeria da Home não deve manter placeholders de estrutura`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`${width}px: botão do menu móvel não está visível`);
@@ -352,6 +353,7 @@ if (!target) {
         blisterImage: document.querySelector('#cartelas-blister .pg-product-detail__image')?.getAttribute('src'),
         personalizedImage: document.querySelector('#embalagens-personalizadas .pg-product-detail__image')?.getAttribute('src'),
         blankImage: document.querySelector('#embalagens-em-branco .pg-product-detail__image')?.getAttribute('src'),
+        flapImage: document.querySelector('#solapas .pg-product-detail__image')?.getAttribute('src'),
         contactFallbacks: [...document.querySelectorAll('.pg-product-detail [data-smart-contact]')].every((link) => link.getAttribute('href') === 'contato.html'),
         finalCtaButtons: document.querySelectorAll('.pg-products-cta .pg-button').length,
         videoPresent: Boolean(document.querySelector('.pg-product-hero-media .pg-product-hero-video')),
@@ -373,7 +375,8 @@ if (!target) {
     if (result.activePage !== "produtos.html") failures.push(`produtos ${width}px: estado ativo da navegação incorreto`);
     if (result.productCards !== 5) failures.push(`produtos ${width}px: quantidade de categorias inválida (${result.productCards})`);
     if (result.displayImage !== "assets/produtos/caixas-display.jpeg" || result.blisterImage !== "assets/produtos/cartela-blister.jpeg") failures.push(`produtos ${width}px: fotos reais de caixas display ou cartelas blister incorretas`);
-    if (result.personalizedImage !== "assets/produtos/embalagens-personalizadas.png" || result.blankImage !== "assets/produtos/embalagem-em-branco.png") failures.push(`produtos ${width}px: fotos de embalagens personalizadas ou em branco incorretas`);
+    if (result.personalizedImage !== "assets/produtos/embalagens-personalizadas.png" || result.blankImage !== "assets/produtos/embalagem-em-branco.jpeg") failures.push(`produtos ${width}px: fotos de embalagens personalizadas ou em branco incorretas`);
+    if (result.flapImage !== "assets/produtos/solapa.jpeg") failures.push(`produtos ${width}px: foto real da solapa incorreta`);
     if (!result.contactFallbacks) failures.push(`produtos ${width}px: fallback de contato incorreto`);
     if (result.finalCtaButtons !== 0) failures.push(`produtos ${width}px: o CTA final não deve possuir botões`);
     if (!result.videoPresent || result.videoSource !== "assets/estrutura/WhatsApp Video 2026-08-07 at 09.52.14.mp4") failures.push(`produtos ${width}px: vídeo real do hero ausente ou com caminho incorreto`);
@@ -483,7 +486,7 @@ if (!target) {
     if (result.factoryAreaMentions !== 1 || result.repeatedInstitutionalNumbers !== 0) failures.push(`estrutura ${width}px: dados institucionais repetidos além da área fabril`);
     if (!result.allPhotosLazy) failures.push(`estrutura ${width}px: fotografias abaixo do hero devem usar carregamento tardio`);
     if (result.pageTitle !== "Estrutura") failures.push(`estrutura ${width}px: título principal incorreto`);
-    if (result.heroSource !== "assets/estrutura/impressora-offset-man-roland.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`estrutura ${width}px: configuração da imagem no hero incorreta`);
+    if (result.heroSource !== "assets/estrutura/setor-corte-vinco.jpg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`estrutura ${width}px: configuração da imagem no hero incorreta`);
     if (result.heroButtons !== 2 || result.finalCtaButtons !== 0 || !result.contactFallbacks) failures.push(`estrutura ${width}px: CTAs ou fallback de contato incorretos`);
     if (result.videos.length !== 4 || result.videos.some((video) => !video.source || !video.poster || !video.controls || video.autoplay || video.preload !== "metadata")) failures.push(`estrutura ${width}px: configuração da galeria de vídeos incorreta`);
     if (result.videos[0]?.caption !== "Coladeira funcionando") failures.push(`estrutura ${width}px: legenda do primeiro vídeo incorreta`);
