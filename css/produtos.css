@@ -222,7 +222,7 @@
   height: 210px;
   margin-block: var(--pg-space-5);
   border-radius: var(--pg-radius-md);
-  background: var(--pg-gray-50);
+  background: var(--pg-white);
   object-fit: contain;
 }
 

@@ -5,16 +5,19 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 ## Implementado
 
 - Home responsiva completa.
-- Página A Empresa completa e alinhada ao mockup `docs/empresa-mock.png`, com texto institucional aprovado no hero, história, soluções, atendimento, princípios, localização, chamada comercial e movimentos leves durante a rolagem.
+- Página A Empresa completa e alinhada ao mockup `docs/empresa-mock.png`, com texto institucional aprovado no hero, história, soluções, fotografias de montagem de embalagem e atendimento, princípios, localização, chamada comercial e movimentos leves durante a rolagem.
 - Localização da empresa com dados oficiais e mapa incorporado do Google Maps.
-- Página Produtos completa e alinhada ao mockup `docs/mock-produtos.png`, com cinco categorias, materiais, processo do pedido, orientações comerciais, chamada final e movimentos leves durante a rolagem.
+- Página Produtos completa e alinhada ao mockup `docs/mock-produtos.png`, com seis categorias — incluindo Cintas —, materiais, processo do pedido, orientações comerciais, chamada final e movimentos leves durante a rolagem.
+- Na página Produtos, Cintas ocupa a quarta posição e Embalagens em Branco encerra a lista de categorias.
 - Os cards das categorias de Produtos mantêm a mesma altura dentro de cada linha no desktop, sem fazer uma linha aumentar a outra, e os botões ficam alinhados na base. Os conteúdos de Embalagens em Branco e Solapas foram equilibrados para evitar espaços excessivos. No celular, cada card conserva sua altura natural.
+- As áreas das fotos na página Produtos usam o mesmo fundo branco dos cards. Na Home, os PNGs transparentes aparecem sobre um verde acinzentado muito discreto para destacar os recortes sem pesar no layout.
 - Hero da página Produtos com vídeo real do processo de produção, controles nativos, autoplay mudo e thumbnail local.
-- Página Estrutura completa e alinhada ao mockup `docs/mock-estrutura.png`, com hero panorâmico, acompanhamento próximo, seis etapas produtivas, equipamentos, qualidade, galeria de fotos, quatro vídeos e chamada comercial.
-- Página Contato com hero dedicado aos canais de atendimento, três telefones identificados por setor, nova fotografia da equipe, formulário de orçamento e demais canais confirmados.
+- Página Estrutura completa e alinhada ao mockup `docs/mock-estrutura.png`, com a fotografia panorâmica atual do parque gráfico no hero, acompanhamento próximo, seis etapas produtivas, equipamentos, qualidade, galeria de fotos, quatro vídeos e chamada comercial.
+- Página Contato com hero dedicado aos canais de atendimento, fotografia da secretária, três telefones identificados por setor, formulário de orçamento e demais canais confirmados.
 - Banners finais das cinco páginas principais atualizados com a imagem real `assets/images/banner-arco-iris.png`, em formato mais alto e ocupando toda a largura útil da página, sem faixas brancas laterais, película, sombra, máscara, recorte da arte ou rolagem horizontal. Em celulares, a imagem permanece inteira no topo e o conteúdo segue abaixo para não deformá-la.
 - Cabeçalho compartilhado e menu móvel acessível.
 - Botões de contato padronizados com o texto “Fale com nossa equipe”.
+- Botões de WhatsApp direcionados ao telefone do Diretor, `(19) 99144-0661`, com mensagem inicial contextual.
 - O botão de contato do banner final da Home utiliza texto preto sobre fundo branco.
 - Hero com a imagem final da máquina de impressão.
 - Textos institucionais da Home revisados conforme conteúdo aprovado, com “Indústria Gráfica” identificado abaixo do logo no cabeçalho de todas as páginas e um pequeno respiro entre logo e identificação.
@@ -75,12 +78,17 @@ site-printgrafik/
 - `assets/produtos/producao.mp4`: vídeo anterior preservado como alternativa para a página Produtos.
 - `assets/produtos/hero-produtos.jpg`: thumbnail anterior preservado como alternativa local.
 - `assets/produtos/video-caixa-placeholder.svg`: placeholder anterior preservado como alternativa local.
-- `assets/estrutura/`: quinze fotografias reais e oito vídeos da fábrica, dos equipamentos, da equipe e das áreas produtivas.
+- `assets/estrutura/`: dezenove fotografias reais e oito vídeos da fábrica, dos equipamentos, da equipe e das áreas produtivas.
+- `assets/estrutura/parque-grafico.jpeg`: fotografia panorâmica atual usada no hero da página Estrutura.
+- `assets/estrutura/montagem-caixa.jpeg`: fotografia usada no bloco de produtos da página Empresa.
+- `assets/estrutura/atendente.jpeg`: fotografia usada no bloco de atendimento da página Empresa.
+- `assets/estrutura/secretaria.jpeg`: fotografia usada no hero da página Contato.
 - Os arquivos fornecidos originalmente permanecem preservados em `assets/images/`.
 
 Na página Estrutura, as novas mídias foram distribuídas assim:
 
-- `setor-corte-vinco.jpg`: hero da página Estrutura, priorizando uma visão ampla do espaço, e item da galeria fotográfica.
+- `parque-grafico.jpeg`: hero da página Estrutura, priorizando uma visão panorâmica atual do espaço e da equipe em atividade.
+- `setor-corte-vinco.jpg`: item da galeria fotográfica.
 - `impressora-offset-man-roland.jpg`: card da impressora offset Roland 300 e poster de vídeo.
 - `equipamento-corte-vinco.jpg`, `area-corte-vinco-acabamento.jpg` e `visao-geral-area-producao.jpg`: cards de equipamentos e processos.
 - `panoramica-parque-grafico.jpg`: poster do vídeo da coladeira.
@@ -92,11 +100,11 @@ Os arquivos foram mantidos no formato e na qualidade fornecidos. As fotos ocupam
 
 ## Placeholders
 
-As fotografias finais de Caixas Display, Cartelas Blister, Embalagens Personalizadas, Embalagens em Branco e Solapas estão em `assets/produtos/` e já são usadas nos respectivos cards. A Embalagem em Branco utiliza a versão `embalagem-em-branco.jpeg`. As quatro primeiras aparecem na Home e na página Produtos; a Solapa aparece em sua categoria na página Produtos. As fotos verticais usam enquadramento integral para evitar cortes.
+Os PNGs transparentes finais de Caixas Display, Cartelas Blister, Embalagens Personalizadas, Embalagens em Branco, Solapas e Cintas estão em `assets/produtos/` e são usados na página Produtos. A Home destaca Caixas Display, Cartelas Blister, Embalagens Personalizadas e Cintas. As fotos usam enquadramento integral para evitar cortes.
 
 As fotografias finais abaixo ainda não foram fornecidas e usam SVGs locais claramente identificados:
 
-- Atendimento pessoal da equipe.
+- Fotografias reais dos produtos em uso, quando houver novos registros aprovados.
 
 Os arquivos estão em `assets/placeholders/` e `assets/produtos/` e podem ser substituídos sem alterar a estrutura das páginas.
 
@@ -134,15 +142,14 @@ Dados de contato confirmados:
 
 Itens marcados com `TODO` no objeto de configuração e que precisam de confirmação:
 
-- WhatsApp.
 - Horário de atendimento.
 - URLs oficiais de Facebook e LinkedIn.
 
-Enquanto WhatsApp estiver ausente, os botões correspondentes levam para a página interna de contato. Facebook e LinkedIn permanecem visualmente desativados.
+Os botões de contato abrem diretamente o WhatsApp do Diretor. Facebook e LinkedIn permanecem visualmente desativados.
 
 Também permanecem pendentes:
 
-- Fotografias reais dos produtos e de um operador trabalhando.
+- Fotografias reais adicionais dos produtos em uso.
 - Ativação do formulário FormSubmit pelo link que será enviado para `printgrafik@printgrafik.com.br` na primeira submissão real.
 - Texto jurídico final da Política de Privacidade.
 
@@ -162,7 +169,7 @@ Os detalhes técnicos do serviço de envio ficam documentados apenas neste READM
 
 O primeiro envio técnico pelo site publicado foi realizado em 10/08/2026 e o FormSubmit confirmou o encaminhamento da mensagem de ativação para `printgrafik@printgrafik.com.br`. É necessário abrir esse e-mail e clicar em `Activate Form`; segundo a documentação do serviço, submissões anteriores à ativação ficam retidas e são encaminhadas após a confirmação. O FormSubmit também informa que mantém submissões no arquivo do serviço por até 30 dias, ponto que deve constar na validação jurídica final da Política de Privacidade.
 
-Enquanto o WhatsApp não for confirmado, os contatos inteligentes das demais páginas direcionam para a página Contato. Nela, os três telefones confirmados ficam disponíveis diretamente no hero. WhatsApp e horário permanecem ocultos nos demais canais; Facebook e LinkedIn aparecem no rodapé como ícones desativados, sem links inventados.
+Os contatos inteligentes das páginas abrem o WhatsApp do Diretor no número `(19) 99144-0661`. Na página Contato, os três telefones confirmados continuam disponíveis diretamente no hero e o WhatsApp também aparece entre os demais canais. O horário permanece oculto; Facebook e LinkedIn aparecem no rodapé como ícones desativados, sem links inventados.
 
 ## Vídeo do hero de Produtos
 
@@ -196,7 +203,7 @@ O teste verifica:
 - Carregamento das imagens requisitadas.
 - Funcionamento do menu móvel, `aria-expanded`, tecla `Escape` e retorno de foco.
 - Responsividade, imagens, navegação ativa e fallback de contato da página A Empresa.
-- Responsividade, cinco categorias, imagens, navegação ativa, fallback de contato, CTA sem botões e movimentos da página Produtos.
+- Responsividade, seis categorias, imagens, navegação ativa, fallback de contato, CTA sem botões e movimentos da página Produtos.
 - Responsividade, fotografias reais, vídeos, navegação ativa, carregamento tardio e movimentos da página Estrutura.
 - Presença das seis etapas produtivas, seis itens de acompanhamento, oito critérios de qualidade e CTAs com fallback da página Estrutura.
 - Ausência de repetição do resumo numérico institucional em Empresa e, em Estrutura, presença apenas da área fabril.
@@ -204,7 +211,7 @@ O teste verifica:
 - Presença de quatro vídeos na página Estrutura, com poster local, controles, pré-carregamento de metadados e sem autoplay.
 - Presença e carregamento do vídeo real, thumbnail, controles e autoplay mudo no hero de Produtos.
 - Responsividade, nova fotografia do hero, três telefones setoriais, navegação ativa, labels, campos obrigatórios, validação acessível, foco no primeiro erro e canais confirmados da página Contato.
-- Ausência de WhatsApp e horário não confirmados na página Contato, além do envio AJAX simulado nos testes, com estados de progresso, sucesso e erro sem abrir aplicativo externo.
+- WhatsApp do Diretor configurado nos botões e na página Contato, além do envio AJAX simulado nos testes, com estados de progresso, sucesso e erro sem abrir aplicativo externo.
 - Erros no console do navegador.
 
 Capturas visuais temporárias são geradas fora do repositório durante o teste.

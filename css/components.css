@@ -241,6 +241,12 @@
   --pg-card-accent: var(--pg-purple-500);
 }
 
+.pg-tone-cyan {
+  --pg-icon-color: #087f99;
+  --pg-icon-bg: #e5f9fd;
+  --pg-card-accent: var(--pg-cyan-500);
+}
+
 .pg-header {
   position: sticky;
   z-index: 100;

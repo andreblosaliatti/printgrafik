@@ -17,7 +17,7 @@ const PG_SITE_CONFIG = Object.freeze({
   contacts: Object.freeze({
     phone: PG_CONTACT_PHONES.director,
     phones: PG_CONTACT_PHONES,
-    whatsapp: null,
+    whatsapp: PG_CONTACT_PHONES.director,
     email: "printgrafik@printgrafik.com.br",
     formEndpoint: "https://formsubmit.co/ajax/printgrafik@printgrafik.com.br",
     address: "Rodovia Antonio Forti, nº 2400 — Bairro Morro Amarelo — Capivari/SP",
@@ -39,7 +39,12 @@ const PG_SOCIAL_ICONS = Object.freeze({
 
 const pgFormatWhatsAppUrl = (number, message) => {
   const digits = String(number).replace(/\D/g, "");
-  return digits ? `https://wa.me/${digits}?text=${encodeURIComponent(message)}` : null;
+  const internationalDigits = digits.length === 10 || digits.length === 11
+    ? `55${digits}`
+    : digits;
+  return internationalDigits
+    ? `https://wa.me/${internationalDigits}?text=${encodeURIComponent(message)}`
+    : null;
 };
 
 const pgApplyInstitutionalData = () => {
@@ -74,7 +79,10 @@ const pgApplyContacts = () => {
     }
 
     if (whatsappUrl) {
-      link.href = whatsappUrl;
+      link.href = pgFormatWhatsAppUrl(
+        contacts.whatsapp,
+        link.dataset.contactText || contacts.whatsappMessage
+      );
       link.target = "_blank";
       link.rel = "noopener noreferrer";
     }
