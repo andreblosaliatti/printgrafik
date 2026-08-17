@@ -8,12 +8,33 @@ const root = resolve(import.meta.dirname, "..");
 const htmlFiles = readdirSync(root).filter((name) => name.endsWith(".html"));
 const widths = [1440, 1280, 1024, 768, 480, 375, 320];
 const failures = [];
+const expectedFooterProducts = [
+  "produtos.html#caixas-display",
+  "produtos.html#cartelas-blister",
+  "produtos.html#embalagens-personalizadas",
+  "produtos.html#cintas",
+  "produtos.html#solapas",
+  "produtos.html#embalagens-em-branco"
+];
+let canonicalFooter = null;
 
 const localReferencePattern = /(?:href|src)="([^"]+)"/g;
 for (const htmlFile of htmlFiles) {
   const html = readFileSync(join(root, htmlFile), "utf8");
   if ((html.match(/<h1\b/g) || []).length !== 1) failures.push(`${htmlFile}: deve possuir exatamente um h1`);
   if (!html.includes('class="pg-logo-link pg-logo-link--tagged"') || !html.includes('<span class="pg-logo-tagline">Indústria Gráfica</span>')) failures.push(`${htmlFile}: identificação Indústria Gráfica ausente no cabeçalho`);
+  const footer = html.match(/<footer class="pg-footer">[\s\S]*?<\/footer>/)?.[0];
+  if (!footer) {
+    failures.push(`${htmlFile}: rodapé ausente`);
+  } else {
+    const normalizedFooter = footer.replace(/ aria-current="page"/g, "").replace(/>\s+</g, "><").trim();
+    canonicalFooter ??= normalizedFooter;
+    if (normalizedFooter !== canonicalFooter) failures.push(`${htmlFile}: rodapé diferente das demais páginas`);
+    const footerProducts = [...footer.matchAll(/href="(produtos\.html#[^"]+)"/g)].map((match) => match[1]);
+    if (JSON.stringify(footerProducts) !== JSON.stringify(expectedFooterProducts)) failures.push(`${htmlFile}: o rodapé deve listar os seis produtos`);
+    const footerPhones = [...footer.matchAll(/data-contact-item="([^"]+Phone)"/g)].map((match) => match[1]);
+    if (JSON.stringify(footerPhones) !== JSON.stringify(["directorPhone", "salesPhone", "companyPhone"])) failures.push(`${htmlFile}: o rodapé deve listar os três telefones`);
+  }
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
   if (duplicateIds.length) failures.push(`${htmlFile}: IDs duplicados: ${[...new Set(duplicateIds)].join(", ")}`);
@@ -179,8 +200,15 @@ if (!target) {
         personalizedImage: document.querySelector('.pg-product-card:nth-child(3) .pg-product-card__image')?.getAttribute('src'),
         beltsImage: document.querySelector('.pg-product-card:nth-child(4) .pg-product-card__image')?.getAttribute('src'),
         fourthProductTitle: document.querySelector('.pg-product-card:nth-child(4) .pg-card__title')?.textContent.trim(),
+        blisterInset: document.querySelector('.pg-product-card:nth-child(2) .pg-product-card__image')?.classList.contains('pg-product-image--inset'),
+        beltsInset: document.querySelector('.pg-product-card:nth-child(4) .pg-product-card__image')?.classList.contains('pg-product-image--inset'),
+        beltsTone: document.querySelector('.pg-product-card:nth-child(4)')?.classList.contains('pg-tone-purple'),
         productMediaBackground: getComputedStyle(document.querySelector('.pg-product-card__image')).backgroundColor,
         blisterFit: getComputedStyle(document.querySelector('.pg-product-card:nth-child(2) .pg-product-card__image')).objectFit,
+        parkPhoto: document.querySelector('.pg-gallery__item--factory .pg-gallery__image')?.getAttribute('src'),
+        statIconBackgrounds: [...document.querySelectorAll('.pg-stat .pg-icon')].map((icon) => getComputedStyle(icon).backgroundColor),
+        statIconBorders: [...document.querySelectorAll('.pg-stat .pg-icon')].map((icon) => getComputedStyle(icon).borderTopWidth),
+        footerPhones: [...document.querySelectorAll('.pg-footer [data-contact-item$="Phone"]')].map((item) => ({ hidden: item.hidden, href: item.querySelector('a')?.getAttribute('href') })),
         realStructurePhotos: document.querySelectorAll('.pg-gallery__image[src^="assets/estrutura/"]').length,
         structurePlaceholders: [...document.querySelectorAll('.pg-gallery__image[src^="assets/placeholders/estrutura-"]')].map((img) => img.getAttribute('src'))
       }))()`
@@ -192,9 +220,14 @@ if (!target) {
     const expectedHeroImage = width <= 820 ? "hero-impressao-mobile.jpg" : "hero-impressao-printgrafik.jpg";
     if (!result.heroImage?.endsWith(expectedHeroImage)) failures.push(`${width}px: imagem incorreta no hero da Home (${result.heroImage})`);
     if (result.finalCtaButtons !== 1) failures.push(`${width}px: somente o CTA final da Home deve possuir um botão`);
-    if (result.displayImage !== "assets/produtos/caixas-display.png" || result.blisterImage !== "assets/produtos/cartelas-blister.png" || result.blisterFit !== "contain") failures.push(`${width}px: PNGs transparentes de produtos incorretos na Home`);
-    if (result.personalizedImage !== "assets/produtos/embalagens-personalizadas.png" || result.beltsImage !== "assets/produtos/cintas.png" || result.fourthProductTitle !== "Cintas") failures.push(`${width}px: produto Cintas ou imagem personalizada incorretos na Home`);
+    if (result.displayImage !== "assets/produtos/embalagens-personalizadas.png" || result.blisterImage !== "assets/produtos/cartelas-blister.png" || result.blisterFit !== "contain") failures.push(`${width}px: imagens de Caixas Display ou Cartelas Blister incorretas na Home`);
+    if (result.personalizedImage !== "assets/produtos/caixas-display.png" || result.beltsImage !== "assets/produtos/cintas.png" || result.fourthProductTitle !== "Cintas") failures.push(`${width}px: produto Cintas ou imagem personalizada incorretos na Home`);
+    if (!result.blisterInset || !result.beltsInset) failures.push(`${width}px: imagens verticais sem respiro superior e inferior na Home`);
+    if (!result.beltsTone) failures.push(`${width}px: detalhes do card de Cintas devem ser roxos na Home`);
     if (result.productMediaBackground === "rgb(255, 255, 255)" || result.productMediaBackground === "rgba(0, 0, 0, 0)") failures.push(`${width}px: fundo das imagens da Home deve ser discretamente diferente de branco`);
+    if (result.parkPhoto !== "assets/estrutura/parque-grafico.jpeg") failures.push(`${width}px: foto do parque gráfico com lona ainda está na Home`);
+    if (JSON.stringify(result.statIconBackgrounds) !== JSON.stringify(["rgb(127, 63, 229)", "rgb(22, 135, 255)", "rgb(255, 212, 0)", "rgb(240, 38, 134)"]) || result.statIconBorders.some((border) => border !== "2px")) failures.push(`${width}px: círculos dos indicadores sem o destaque de cor esperado`);
+    if (JSON.stringify(result.footerPhones) !== JSON.stringify([{ hidden: false, href: "tel:19991440661" }, { hidden: false, href: "tel:19994253333" }, { hidden: false, href: "tel:19992464807" }])) failures.push(`${width}px: telefones do rodapé incorretos`);
     if (result.realStructurePhotos !== 5) failures.push(`${width}px: a galeria da Home deve possuir cinco fotografias reais da estrutura`);
     if (result.structurePlaceholders.length !== 0) failures.push(`${width}px: a galeria da Home não deve manter placeholders de estrutura`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`${width}px: botão do menu móvel não está visível`);
@@ -277,6 +310,7 @@ if (!target) {
         instagramHref: document.querySelector('[data-social="instagram"]')?.getAttribute('href'),
         repeatedInstitutionalNumbers: document.querySelectorAll('[data-institution="historyYears"], [data-institution="factoryArea"], [data-institution="services"], [data-institution="clients"]').length,
         productsImage: document.querySelector('.pg-company-products-visual img')?.getAttribute('src'),
+        productsImageFit: getComputedStyle(document.querySelector('.pg-company-products-visual img')).objectFit,
         serviceImage: document.querySelector('.pg-company-service__media img')?.getAttribute('src'),
         companyPhotosAccessible: [...document.querySelectorAll('.pg-company-products-visual img, .pg-company-service__media img')].every((img) => img.loading === 'lazy' && Boolean(img.getAttribute('alt'))),
         hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
@@ -293,7 +327,7 @@ if (!target) {
     if (result.emailHref !== "mailto:printgrafik@printgrafik.com.br") failures.push(`empresa ${width}px: e-mail oficial incorreto`);
     if (result.instagramHref !== "https://www.instagram.com/printgrafik_industriagrafica/") failures.push(`empresa ${width}px: Instagram oficial incorreto`);
     if (result.repeatedInstitutionalNumbers !== 0) failures.push(`empresa ${width}px: resumo numérico institucional repetido fora da Home`);
-    if (result.productsImage !== "assets/estrutura/montagem-caixa.jpeg" || result.serviceImage !== "assets/estrutura/atendente.jpeg" || !result.companyPhotosAccessible) failures.push(`empresa ${width}px: fotografias de produtos ou atendimento incorretas`);
+    if (result.productsImage !== "assets/estrutura/montagem-caixa-enquadramento-completo.png" || result.productsImageFit !== "cover" || result.serviceImage !== "assets/estrutura/atendente.jpeg" || !result.companyPhotosAccessible) failures.push(`empresa ${width}px: fotografias de produtos ou atendimento incorretas`);
     if (result.hiddenReveals.length !== 0) failures.push(`empresa ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`empresa ${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
@@ -363,6 +397,10 @@ if (!target) {
         blankImage: document.querySelector('#embalagens-em-branco .pg-product-detail__image')?.getAttribute('src'),
         flapImage: document.querySelector('#solapas .pg-product-detail__image')?.getAttribute('src'),
         beltsImage: document.querySelector('#cintas .pg-product-detail__image')?.getAttribute('src'),
+        blisterInset: document.querySelector('#cartelas-blister .pg-product-detail__image')?.classList.contains('pg-product-image--inset'),
+        beltsInset: document.querySelector('#cintas .pg-product-detail__image')?.classList.contains('pg-product-image--inset'),
+        beltsTone: document.querySelector('#cintas')?.classList.contains('pg-tone-purple'),
+        flapTone: document.querySelector('#solapas')?.classList.contains('pg-tone-cyan'),
         productMediaMatchesCard: [...document.querySelectorAll('.pg-product-detail')].every((card) => getComputedStyle(card.querySelector('.pg-product-detail__image')).backgroundColor === getComputedStyle(card).backgroundColor),
         whatsappLinks: [...document.querySelectorAll('.pg-product-detail [data-smart-contact]')].every((link) => link.href.startsWith('https://wa.me/5519991440661?text=') && link.target === '_blank'),
         finalCtaButtons: document.querySelectorAll('.pg-products-cta .pg-button').length,
@@ -385,9 +423,12 @@ if (!target) {
     if (result.activePage !== "produtos.html") failures.push(`produtos ${width}px: estado ativo da navegação incorreto`);
     if (result.productCards !== 6) failures.push(`produtos ${width}px: quantidade de categorias inválida (${result.productCards})`);
     if (JSON.stringify(result.productOrder) !== JSON.stringify(["caixas-display", "cartelas-blister", "embalagens-personalizadas", "cintas", "solapas", "embalagens-em-branco"])) failures.push(`produtos ${width}px: ordem das categorias incorreta`);
-    if (result.displayImage !== "assets/produtos/caixas-display.png" || result.blisterImage !== "assets/produtos/cartelas-blister.png") failures.push(`produtos ${width}px: PNGs transparentes de caixas display ou cartelas blister incorretos`);
-    if (result.personalizedImage !== "assets/produtos/embalagens-personalizadas.png" || result.blankImage !== "assets/produtos/embalagen-em-branco.png") failures.push(`produtos ${width}px: PNGs de embalagens personalizadas ou em branco incorretos`);
+    if (result.displayImage !== "assets/produtos/embalagens-personalizadas.png" || result.blisterImage !== "assets/produtos/cartelas-blister.png") failures.push(`produtos ${width}px: imagens de caixas display ou cartelas blister incorretas`);
+    if (result.personalizedImage !== "assets/produtos/caixas-display.png" || result.blankImage !== "assets/produtos/embalagen-em-branco.png") failures.push(`produtos ${width}px: imagens de embalagens personalizadas ou em branco incorretas`);
     if (result.flapImage !== "assets/produtos/solapas.png" || result.beltsImage !== "assets/produtos/cintas.png") failures.push(`produtos ${width}px: PNGs de solapas ou cintas incorretos`);
+    if (!result.blisterInset || !result.beltsInset) failures.push(`produtos ${width}px: imagens verticais sem respiro superior e inferior`);
+    if (!result.beltsTone) failures.push(`produtos ${width}px: detalhes do card de Cintas devem ser roxos`);
+    if (!result.flapTone) failures.push(`produtos ${width}px: detalhes do card de Solapas devem ser cianos`);
     if (!result.productMediaMatchesCard) failures.push(`produtos ${width}px: fundo da área das fotos deve acompanhar o fundo dos cards`);
     if (!result.whatsappLinks) failures.push(`produtos ${width}px: botões não direcionam ao WhatsApp do Diretor`);
     if (result.finalCtaButtons !== 0) failures.push(`produtos ${width}px: o CTA final não deve possuir botões`);
@@ -475,6 +516,9 @@ if (!target) {
           heroPriority: document.querySelector('.pg-structure-hero__image')?.getAttribute('fetchpriority'),
           heroButtons: document.querySelectorAll('.pg-structure-hero__actions .pg-button').length,
           finalCtaButtons: document.querySelectorAll('.pg-structure-cta .pg-button').length,
+          videosTitle: document.querySelector('#titulo-videos-estrutura')?.textContent.trim(),
+          videoCards: document.querySelectorAll('.pg-structure-video-card').length,
+          videoSlots: document.querySelectorAll('.pg-structure-video-card--slot').length,
           videos: [...document.querySelectorAll('.pg-structure-video-card video')].map((video) => ({
             source: video.querySelector('source')?.getAttribute('src'),
             poster: video.getAttribute('poster'),
@@ -500,10 +544,14 @@ if (!target) {
     if (result.pageTitle !== "Estrutura") failures.push(`estrutura ${width}px: título principal incorreto`);
     if (result.heroSource !== "assets/estrutura/parque-grafico.jpeg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`estrutura ${width}px: configuração da imagem no hero incorreta`);
     if (result.heroButtons !== 2 || result.finalCtaButtons !== 0 || !result.whatsappLinks) failures.push(`estrutura ${width}px: CTAs ou links do WhatsApp incorretos`);
+    if (result.videosTitle !== "Área fabril em produção") failures.push(`estrutura ${width}px: título da área de vídeos incorreto`);
+    if (result.videoCards !== 6 || result.videoSlots !== 2) failures.push(`estrutura ${width}px: devem existir quatro vídeos e dois espaços reservados`);
     if (result.videos.length !== 4 || result.videos.some((video) => !video.source || !video.poster || !video.controls || video.autoplay || video.preload !== "metadata")) failures.push(`estrutura ${width}px: configuração da galeria de vídeos incorreta`);
     if (result.videos[0]?.caption !== "Coladeira funcionando") failures.push(`estrutura ${width}px: legenda do primeiro vídeo incorreta`);
     if (result.videos[1]?.source !== "assets/estrutura/WhatsApp Video 2026-08-07 at 09.52.14.mp4") failures.push(`estrutura ${width}px: vídeo de equipamentos de impressão incorreto`);
     if (result.videos[1]?.caption !== "Equipamentos de impressão Roland 305 L") failures.push(`estrutura ${width}px: legenda do vídeo da Roland 305 L incorreta`);
+    if (result.videos[2]?.source !== "assets/estrutura/acabamento-corte-e-vinco.mp4" || result.videos[2]?.caption !== "Acabamento, corte e vinco") failures.push(`estrutura ${width}px: vídeo de acabamento, corte e vinco incorreto`);
+    if (result.videos[3]?.caption !== "Projeto em execução") failures.push(`estrutura ${width}px: legenda do quarto vídeo incorreta`);
     if (result.hiddenReveals.length !== 0) failures.push(`estrutura ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);
     if (width <= 768 && !result.menuButtonVisible) failures.push(`estrutura ${width}px: botão do menu móvel não está visível`);
     if (width === 375) {
@@ -567,6 +615,9 @@ if (!target) {
           heroSource: document.querySelector('.pg-contact-hero__image')?.getAttribute('src'),
           heroLoading: document.querySelector('.pg-contact-hero__image')?.getAttribute('loading'),
           heroPriority: document.querySelector('.pg-contact-hero__image')?.getAttribute('fetchpriority'),
+          heroImageFit: getComputedStyle(document.querySelector('.pg-contact-hero__image')).objectFit,
+          heroImageRatio: document.querySelector('.pg-contact-hero__image').clientWidth / document.querySelector('.pg-contact-hero__image').clientHeight,
+          heroImageBackground: getComputedStyle(document.querySelector('.pg-contact-hero__image')).backgroundColor,
           heroTitle: document.querySelector('.pg-contact-hero h1')?.textContent.trim(),
           heroSmartContacts: document.querySelectorAll('.pg-contact-hero [data-smart-contact]').length,
           phoneChannels: ['directorPhone', 'salesPhone', 'companyPhone'].map((key) => {
@@ -575,7 +626,8 @@ if (!target) {
               key,
               label: item?.querySelector('span')?.textContent.trim(),
               text: item?.querySelector('a')?.textContent.trim(),
-              href: item?.querySelector('a')?.getAttribute('href')
+              href: item?.querySelector('a')?.getAttribute('href'),
+              target: item?.querySelector('a')?.getAttribute('target')
             };
           }),
           emailActionPresent: Boolean(document.querySelector('[data-contact-action="email"]')),
@@ -594,9 +646,7 @@ if (!target) {
           instagramHref: document.querySelector('.pg-contact-channels [data-social-profile="instagram"]')?.getAttribute('href'),
           instagramText: document.querySelector('.pg-contact-channels [data-social-profile="instagram"]')?.textContent.trim(),
           footerSocials: [...document.querySelectorAll('.pg-contact-page .pg-footer .pg-social')].map((item) => item.dataset.social),
-          whatsappVisible: getComputedStyle(document.querySelector('.pg-contact-channels [data-contact-item="whatsapp"]')).display !== 'none',
-          whatsappText: document.querySelector('.pg-contact-channels [data-contact-item="whatsapp"] [data-contact-value]')?.textContent.trim(),
-          whatsappHref: document.querySelector('.pg-contact-channels [data-contact-item="whatsapp"] [data-contact-value]')?.getAttribute('href'),
+          whatsappChannelPresent: Boolean(document.querySelector('.pg-contact-channels [data-contact-item="whatsapp"]')),
           hoursVisible: getComputedStyle(document.querySelector('.pg-contact-channels [data-contact-item="businessHours"]')).display !== 'none',
           finalButtons: document.querySelectorAll('.pg-contact-note .pg-button').length,
           hiddenReveals: [...document.querySelectorAll('.pg-reveal:not(.pg-reveal--visible)')].map((item) => item.className)
@@ -609,12 +659,12 @@ if (!target) {
     if (result.h1Count !== 1) failures.push(`contato ${width}px: quantidade de h1 inválida`);
     if (result.activePage !== "contato.html") failures.push(`contato ${width}px: estado ativo da navegação incorreto`);
     if (result.brokenImages.length) failures.push(`contato ${width}px: imagens quebradas: ${result.brokenImages.join(", ")}`);
-    if (result.heroSource !== "assets/estrutura/secretaria.jpeg" || result.heroLoading !== null || result.heroPriority !== "high") failures.push(`contato ${width}px: configuração da foto no hero incorreta`);
+    if (result.heroSource !== "assets/estrutura/secretaria.jpeg" || result.heroLoading !== null || result.heroPriority !== "high" || result.heroImageFit !== "cover" || Math.abs(result.heroImageRatio - 1.5) > 0.02 || result.heroImageBackground !== "rgba(0, 0, 0, 0)") failures.push(`contato ${width}px: configuração da foto no hero incorreta`);
     if (result.heroTitle !== "Canais de atendimento" || result.heroSmartContacts !== 0) failures.push(`contato ${width}px: conteúdo principal do hero incorreto`);
     const expectedPhones = [
-      { key: "directorPhone", label: "Diretor", text: "(19) 99144-0661", href: "tel:19991440661" },
-      { key: "salesPhone", label: "Vendas", text: "(19) 99425-3333", href: "tel:19994253333" },
-      { key: "companyPhone", label: "Empresa", text: "(19) 99246-4807", href: "tel:19992464807" }
+      { key: "directorPhone", label: "Diretor", text: "(19) 99144-0661", href: "https://wa.me/5519991440661?text=Ol%C3%A1!%20Acessei%20o%20site%20da%20PrintGr%C3%A1fik%20e%20gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20embalagens%20para%20minha%20empresa.", target: "_blank" },
+      { key: "salesPhone", label: "Vendas", text: "(19) 99425-3333", href: "https://wa.me/5519994253333?text=Ol%C3%A1!%20Acessei%20o%20site%20da%20PrintGr%C3%A1fik%20e%20gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20embalagens%20para%20minha%20empresa.", target: "_blank" },
+      { key: "companyPhone", label: "Empresa", text: "(19) 99246-4807", href: "https://wa.me/5519992464807?text=Ol%C3%A1!%20Acessei%20o%20site%20da%20PrintGr%C3%A1fik%20e%20gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20embalagens%20para%20minha%20empresa.", target: "_blank" }
     ];
     if (JSON.stringify(result.phoneChannels) !== JSON.stringify(expectedPhones)) failures.push(`contato ${width}px: telefones de atendimento incorretos`);
     if (result.emailActionPresent) failures.push(`contato ${width}px: o hero não deve possuir botão de e-mail`);
@@ -627,7 +677,7 @@ if (!target) {
     if (result.deliveryNotePresent) failures.push(`contato ${width}px: texto técnico de envio não deve aparecer abaixo do formulário`);
     if (result.emailHref !== "mailto:printgrafik@printgrafik.com.br" || !result.addressText.includes("Rodovia Antonio Forti") || result.instagramHref !== "https://www.instagram.com/printgrafik_industriagrafica/" || result.instagramText !== "@printgrafik_industriagrafica") failures.push(`contato ${width}px: canais confirmados incorretos`);
     if (JSON.stringify(result.footerSocials) !== JSON.stringify(["facebook", "instagram", "linkedin"])) failures.push(`contato ${width}px: redes sociais do rodapé incompletas`);
-    if (!result.whatsappVisible || result.whatsappText !== "(19) 99144-0661" || !result.whatsappHref?.startsWith("https://wa.me/5519991440661?text=")) failures.push(`contato ${width}px: WhatsApp do Diretor incorreto`);
+    if (result.whatsappChannelPresent) failures.push(`contato ${width}px: WhatsApp não deve ser repetido em Outros canais`);
     if (result.hoursVisible) failures.push(`contato ${width}px: horário pendente não deve ser exibido`);
     if (result.finalButtons !== 0) failures.push(`contato ${width}px: bloco final não deve possuir botões`);
     if (result.hiddenReveals.length !== 0) failures.push(`contato ${width}px: elementos animados não revelados (${result.hiddenReveals.join(" | ")})`);

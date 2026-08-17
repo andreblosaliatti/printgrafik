@@ -168,10 +168,15 @@
   border-left: 1px solid rgb(255 255 255 / 0.2);
 }
 
-.pg-stat:nth-child(1) .pg-icon { color: var(--pg-white); background: rgb(127 63 229 / 0.35); }
-.pg-stat:nth-child(2) .pg-icon { color: var(--pg-white); background: rgb(22 135 255 / 0.35); }
-.pg-stat:nth-child(3) .pg-icon { color: var(--pg-white); background: rgb(255 212 0 / 0.38); }
-.pg-stat:nth-child(4) .pg-icon { color: var(--pg-white); background: rgb(10 155 80 / 0.38); }
+.pg-stat .pg-icon {
+  border: 2px solid rgb(255 255 255 / 0.72);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.2), 0 0 0 4px rgb(255 255 255 / 0.1);
+}
+
+.pg-stat:nth-child(1) .pg-icon { color: var(--pg-white); background: var(--pg-purple-500); }
+.pg-stat:nth-child(2) .pg-icon { color: var(--pg-white); background: var(--pg-blue-500); }
+.pg-stat:nth-child(3) .pg-icon { color: #594500; background: var(--pg-yellow-500); }
+.pg-stat:nth-child(4) .pg-icon { color: var(--pg-white); background: var(--pg-magenta-500); }
 
 .pg-stat__value {
   display: block;

@@ -121,8 +121,17 @@ const pgApplyContacts = () => {
       const target = item.querySelector("[data-contact-value]") || item;
       target.textContent = settings.text;
       if (target instanceof HTMLAnchorElement && settings.href) {
-        target.href = settings.href;
-        if (settings.external) {
+        const whatsappTarget = target.hasAttribute("data-contact-whatsapp");
+        const targetHref = whatsappTarget
+          ? pgFormatWhatsAppUrl(settings.text, contacts.whatsappMessage)
+          : settings.href;
+        const opensExternally = whatsappTarget || settings.external;
+        target.href = targetHref || settings.href;
+        if (whatsappTarget) {
+          const channelLabel = item.querySelector("span")?.textContent.trim() || "Telefone";
+          target.setAttribute("aria-label", `${channelLabel}: ${settings.text} — abrir no WhatsApp`);
+        }
+        if (opensExternally) {
           target.target = "_blank";
           target.rel = "noopener noreferrer";
         }
