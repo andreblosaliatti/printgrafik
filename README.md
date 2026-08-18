@@ -103,7 +103,7 @@ Na página Estrutura, as novas mídias foram distribuídas assim:
 - `setor-corte-vinco.jpg`: item da galeria fotográfica.
 - `impressora-offset-man-roland.jpg`: card da impressora offset Roland 300 e poster de vídeo.
 - `equipamento-corte-vinco.jpg`, `area-corte-vinco-acabamento.jpg` e `visao-geral-area-producao.jpg`: cards de equipamentos e processos.
-- `panoramica-parque-grafico.jpg`: poster do vídeo da coladeira.
+- `parque-grafico.jpeg`: poster do vídeo da coladeira, com vista do parque gráfico sem a lona no primeiro plano.
 - `controle-qualidade-impressao.jpg`: bloco de controle de qualidade.
 - `desenvolvimento-tecnico-embalagem.jpg`, `unidades-impressao-offset-cores.jpg` e `fachada-lateral-por-do-sol.jpg`: galeria fotográfica.
 - Quatro vídeos MP4 selecionados na galeria “Área fabril em produção”, todos com controles nativos, `playsinline`, `preload="metadata"`, poster local e sem autoplay, além de dois espaços reservados para novas mídias. O arquivo `acabamento-corte-e-vinco.mp4` aparece no terceiro card e o quarto vídeo é identificado como “Projeto em execução”.
