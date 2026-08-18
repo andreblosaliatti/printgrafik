@@ -1,11 +1,47 @@
 import { spawn } from "node:child_process";
 import { createServer } from "node:http";
-import { mkdtempSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { extname, join, normalize, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
-const htmlFiles = readdirSync(root).filter((name) => name.endsWith(".html"));
+const officialOrigin = "https://www.printgrafik.com.br";
+const socialImage = `${officialOrigin}/assets/hero/hero-impressao-printgrafik.jpg`;
+const expectedSeo = {
+  "index.html": {
+    title: "PrintGráfik | Embalagens em Papel Cartão",
+    description: "A PrintGráfik produz embalagens em papel cartão, caixas display, cartelas blister e soluções personalizadas para empresas em Capivari, Piracicaba e interior de São Paulo.",
+    socialDescription: "Embalagens em papel cartão, caixas display, cartelas blister e soluções personalizadas para empresas.",
+    canonical: `${officialOrigin}/`
+  },
+  "empresa.html": {
+    title: "A Empresa | PrintGráfik",
+    description: "Conheça a história, a estrutura e os diferenciais da PrintGráfik, indústria gráfica especializada em embalagens em papel cartão.",
+    canonical: `${officialOrigin}/empresa.html`
+  },
+  "produtos.html": {
+    title: "Embalagens e Produtos | PrintGráfik",
+    description: "Conheça as soluções da PrintGráfik em caixas display, cartelas blister, embalagens personalizadas e embalagens em branco.",
+    canonical: `${officialOrigin}/produtos.html`
+  },
+  "estrutura.html": {
+    title: "Estrutura e Parque Gráfico | PrintGráfik",
+    description: "Conheça a estrutura da PrintGráfik, seus equipamentos, processos de impressão, corte, acabamento e produção de embalagens em papel cartão.",
+    canonical: `${officialOrigin}/estrutura.html`
+  },
+  "contato.html": {
+    title: "Contato e Orçamento | PrintGráfik",
+    description: "Solicite um orçamento de embalagens em papel cartão e fale diretamente com a equipe da PrintGráfik.",
+    canonical: `${officialOrigin}/contato.html`
+  },
+  "politica-de-privacidade.html": {
+    title: "Política de Privacidade | PrintGráfik",
+    description: "Consulte a Política de Privacidade da PrintGráfik e saiba como os dados enviados pelo site são tratados.",
+    canonical: `${officialOrigin}/politica-de-privacidade.html`
+  }
+};
+const publicHtmlFiles = Object.keys(expectedSeo);
+const htmlFiles = [...publicHtmlFiles, "404.html"];
 const widths = [1440, 1280, 1024, 768, 480, 375, 320];
 const failures = [];
 const expectedFooterProducts = [
@@ -17,23 +53,96 @@ const expectedFooterProducts = [
   "produtos.html#embalagens-em-branco"
 ];
 let canonicalFooter = null;
+const seenTitles = new Set();
+const seenDescriptions = new Set();
+
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const getMetaContents = (html, attribute, key) => {
+  const pattern = new RegExp(`<meta\\s+[^>]*${attribute}="${escapeRegex(key)}"[^>]*content="([^"]*)"[^>]*>`, "gi");
+  return [...html.matchAll(pattern)].map((match) => match[1]);
+};
+
+const hasValidHeadingSequence = (html) => {
+  const levels = [...html.matchAll(/<h([1-6])\b/gi)].map((match) => Number(match[1]));
+  return levels.every((level, index) => index === 0 || level - levels[index - 1] <= 1);
+};
+
+const hasBalancedXmlTags = (xml) => {
+  const stack = [];
+  const body = xml.replace(/<\?xml[\s\S]*?\?>/g, "").replace(/<!--[\s\S]*?-->/g, "");
+  for (const match of body.matchAll(/<\/?([A-Za-z_][\w:.-]*)(?:\s[^<>]*?)?\s*\/?>/g)) {
+    const token = match[0];
+    const name = match[1];
+    if (token.startsWith("</")) {
+      if (stack.pop() !== name) return false;
+    } else if (!token.endsWith("/>")) {
+      stack.push(name);
+    }
+  }
+  return stack.length === 0;
+};
 
 const localReferencePattern = /(?:href|src)="([^"]+)"/g;
 for (const htmlFile of htmlFiles) {
   const html = readFileSync(join(root, htmlFile), "utf8");
   if ((html.match(/<h1\b/g) || []).length !== 1) failures.push(`${htmlFile}: deve possuir exatamente um h1`);
+  if (!hasValidHeadingSequence(html)) failures.push(`${htmlFile}: sequência de headings possui salto de nível`);
+  if (!/<html\s+lang="pt-BR">/i.test(html)) failures.push(`${htmlFile}: lang deve ser pt-BR`);
+  if ((html.match(/<meta\s+charset="UTF-8">/gi) || []).length !== 1) failures.push(`${htmlFile}: charset UTF-8 ausente ou duplicado`);
+  if ((html.match(/<meta\s+name="viewport"\s+content="width=device-width, initial-scale=1">/gi) || []).length !== 1) failures.push(`${htmlFile}: viewport ausente ou duplicado`);
+  const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+  if (imageTags.some((tag) => !/\balt="[^"]*"/i.test(tag))) failures.push(`${htmlFile}: imagem sem atributo alt`);
   if (!html.includes('class="pg-logo-link pg-logo-link--tagged"') || !html.includes('<span class="pg-logo-tagline">Indústria Gráfica</span>')) failures.push(`${htmlFile}: identificação Indústria Gráfica ausente no cabeçalho`);
-  const footer = html.match(/<footer class="pg-footer">[\s\S]*?<\/footer>/)?.[0];
-  if (!footer) {
-    failures.push(`${htmlFile}: rodapé ausente`);
-  } else {
-    const normalizedFooter = footer.replace(/ aria-current="page"/g, "").replace(/>\s+</g, "><").trim();
-    canonicalFooter ??= normalizedFooter;
-    if (normalizedFooter !== canonicalFooter) failures.push(`${htmlFile}: rodapé diferente das demais páginas`);
-    const footerProducts = [...footer.matchAll(/href="(produtos\.html#[^"]+)"/g)].map((match) => match[1]);
-    if (JSON.stringify(footerProducts) !== JSON.stringify(expectedFooterProducts)) failures.push(`${htmlFile}: o rodapé deve listar os seis produtos`);
-    const footerPhones = [...footer.matchAll(/data-contact-item="([^"]+Phone)"/g)].map((match) => match[1]);
-    if (JSON.stringify(footerPhones) !== JSON.stringify(["directorPhone", "salesPhone", "companyPhone"])) failures.push(`${htmlFile}: o rodapé deve listar os três telefones`);
+  if (publicHtmlFiles.includes(htmlFile)) {
+    const footer = html.match(/<footer class="pg-footer">[\s\S]*?<\/footer>/)?.[0];
+    if (!footer) {
+      failures.push(`${htmlFile}: rodapé ausente`);
+    } else {
+      const normalizedFooter = footer.replace(/ aria-current="page"/g, "").replace(/>\s+</g, "><").trim();
+      canonicalFooter ??= normalizedFooter;
+      if (normalizedFooter !== canonicalFooter) failures.push(`${htmlFile}: rodapé diferente das demais páginas`);
+      const footerProducts = [...footer.matchAll(/href="(produtos\.html#[^"]+)"/g)].map((match) => match[1]);
+      if (JSON.stringify(footerProducts) !== JSON.stringify(expectedFooterProducts)) failures.push(`${htmlFile}: o rodapé deve listar os seis produtos`);
+      const footerPhones = [...footer.matchAll(/data-contact-item="([^"]+Phone)"/g)].map((match) => match[1]);
+      if (JSON.stringify(footerPhones) !== JSON.stringify(["directorPhone", "salesPhone", "companyPhone"])) failures.push(`${htmlFile}: o rodapé deve listar os três telefones`);
+    }
+
+    const expected = expectedSeo[htmlFile];
+    const titles = [...html.matchAll(/<title>([^<]+)<\/title>/gi)].map((match) => match[1]);
+    const descriptions = getMetaContents(html, "name", "description");
+    const canonicals = [...html.matchAll(/<link\s+[^>]*rel="canonical"[^>]*href="([^"]+)"[^>]*>/gi)].map((match) => match[1]);
+    const socialDescription = expected.socialDescription || expected.description;
+    if (titles.length !== 1 || titles[0] !== expected.title) failures.push(`${htmlFile}: title incorreto ou duplicado`);
+    if (descriptions.length !== 1 || descriptions[0] !== expected.description) failures.push(`${htmlFile}: meta description incorreta ou duplicada`);
+    if (canonicals.length !== 1 || canonicals[0] !== expected.canonical) failures.push(`${htmlFile}: canonical incorreta ou duplicada`);
+    if (seenTitles.has(expected.title)) failures.push(`${htmlFile}: title duplicado entre páginas`);
+    if (seenDescriptions.has(expected.description)) failures.push(`${htmlFile}: meta description duplicada entre páginas`);
+    seenTitles.add(expected.title);
+    seenDescriptions.add(expected.description);
+    const expectedSocialMeta = [
+      ["property", "og:type", "website"],
+      ["property", "og:site_name", "PrintGráfik"],
+      ["property", "og:locale", "pt_BR"],
+      ["property", "og:title", expected.title],
+      ["property", "og:description", socialDescription],
+      ["property", "og:url", expected.canonical],
+      ["property", "og:image", socialImage],
+      ["name", "twitter:card", "summary_large_image"],
+      ["name", "twitter:title", expected.title],
+      ["name", "twitter:description", socialDescription],
+      ["name", "twitter:image", socialImage]
+    ];
+    for (const [attribute, key, value] of expectedSocialMeta) {
+      const contents = getMetaContents(html, attribute, key);
+      if (contents.length !== 1 || contents[0] !== value) failures.push(`${htmlFile}: metadado ${key} incorreto ou duplicado`);
+    }
+    for (const favicon of ["favicon.ico", "favicon-32x32.png", "apple-touch-icon.png"]) {
+      if ((html.match(new RegExp(`href="${escapeRegex(favicon)}"`, "g")) || []).length !== 1) failures.push(`${htmlFile}: referência de favicon ausente ou duplicada (${favicon})`);
+    }
+    const head = html.match(/<head>[\s\S]*?<\/head>/i)?.[0] || "";
+    if (/localhost|github\.io/i.test(head)) failures.push(`${htmlFile}: head contém URL temporária ou local`);
+  } else if (/<link\s+[^>]*rel="canonical"/i.test(html)) {
+    failures.push("404.html: não deve possuir canonical nem entrar no sitemap");
   }
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
@@ -58,6 +167,25 @@ for (const htmlFile of htmlFiles) {
   }
 }
 
+const robots = readFileSync(join(root, "robots.txt"), "utf8").replace(/\r\n/g, "\n").trim();
+const expectedRobots = `User-agent: *\nAllow: /\n\nSitemap: ${officialOrigin}/sitemap.xml`;
+if (robots !== expectedRobots) failures.push("robots.txt: conteúdo diferente do esperado");
+
+const sitemap = readFileSync(join(root, "sitemap.xml"), "utf8");
+const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+const expectedSitemapUrls = publicHtmlFiles.map((htmlFile) => expectedSeo[htmlFile].canonical);
+if (!sitemap.startsWith('<?xml version="1.0" encoding="UTF-8"?>') || !/<urlset\s+xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/.test(sitemap) || !hasBalancedXmlTags(sitemap)) failures.push("sitemap.xml: XML inválido");
+if (JSON.stringify(sitemapUrls) !== JSON.stringify(expectedSitemapUrls)) failures.push("sitemap.xml: URLs públicas incorretas ou incompletas");
+if (/github\.io|localhost|404\.html|<lastmod>|<changefreq>|<priority>/i.test(sitemap)) failures.push("sitemap.xml: contém URL ou metadado não permitido");
+
+for (const requiredFile of ["robots.txt", "sitemap.xml", "404.html", "favicon.ico", "favicon-32x32.png", "apple-touch-icon.png"]) {
+  try {
+    if (!statSync(join(root, requiredFile)).isFile()) failures.push(`${requiredFile}: arquivo ausente`);
+  } catch {
+    failures.push(`${requiredFile}: arquivo ausente`);
+  }
+}
+
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -66,15 +194,14 @@ const mimeTypes = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
-  ".mp4": "video/mp4"
+  ".mp4": "video/mp4",
+  ".ico": "image/x-icon",
+  ".txt": "text/plain; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8"
 };
 
 const server = createServer((request, response) => {
   const requested = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
-  if (requested === "/favicon.ico") {
-    response.writeHead(204).end();
-    return;
-  }
   const relative = requested === "/" ? "index.html" : requested.replace(/^\//, "");
   const filePath = normalize(resolve(root, relative));
   if (!filePath.startsWith(root)) {
@@ -92,6 +219,29 @@ const server = createServer((request, response) => {
 
 await new Promise((resolveListen) => server.listen(0, "127.0.0.1", resolveListen));
 const sitePort = server.address().port;
+const technicalEndpoints = [
+  ["/robots.txt", "text/plain"],
+  ["/sitemap.xml", "application/xml"],
+  ["/404.html", "text/html"],
+  ["/favicon.ico", "image/x-icon"],
+  ["/favicon-32x32.png", "image/png"],
+  ["/apple-touch-icon.png", "image/png"]
+];
+for (const [pathname, expectedType] of technicalEndpoints) {
+  const response = await fetch(`http://127.0.0.1:${sitePort}${pathname}`);
+  if (!response.ok || !response.headers.get("content-type")?.startsWith(expectedType)) failures.push(`${pathname}: resposta HTTP ou Content-Type incorreto`);
+}
+
+if (process.argv.includes("--seo-only")) {
+  server.close();
+  if (failures.length) {
+    console.error(failures.join("\n"));
+    process.exit(1);
+  }
+  console.log(`OK: SEO técnico validado em ${publicHtmlFiles.length} páginas públicas + 404.`);
+  process.exit(0);
+}
+
 const browserPort = 9333;
 const profile = mkdtempSync(join(tmpdir(), "printgrafik-edge-"));
 const screenshotDir = mkdtempSync(join(tmpdir(), "printgrafik-shots-"));
@@ -810,6 +960,37 @@ if (!target) {
     }
   }
 
+  for (const width of [1440, 375]) {
+    await send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 480 });
+    await send("Page.navigate", { url: `http://127.0.0.1:${sitePort}/404.html` });
+    await delay(550);
+    const page404Result = await send("Runtime.evaluate", {
+      returnByValue: true,
+      expression: `(() => ({
+        title: document.title,
+        h1: document.querySelector('h1')?.textContent.trim(),
+        canonicalCount: document.querySelectorAll('link[rel="canonical"]').length,
+        homeHref: document.querySelector('a[href="index.html"]')?.getAttribute('href'),
+        contactHref: document.querySelector('a[href="contato.html"]')?.getAttribute('href'),
+        brokenImages: [...document.images].filter((image) => !image.complete || image.naturalWidth === 0).map((image) => image.src),
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
+      }))()`
+    });
+    const page404 = page404Result.result.value;
+    if (page404.title !== "Página não encontrada | PrintGráfik" || page404.h1 !== "Página não encontrada") failures.push(`404 ${width}px: título ou h1 incorreto`);
+    if (page404.canonicalCount !== 0) failures.push(`404 ${width}px: não deve possuir canonical`);
+    if (page404.homeHref !== "index.html" || page404.contactHref !== "contato.html") failures.push(`404 ${width}px: links de retorno incorretos`);
+    if (page404.brokenImages.length) failures.push(`404 ${width}px: imagens quebradas: ${page404.brokenImages.join(", ")}`);
+    if (page404.overflow) failures.push(`404 ${width}px: rolagem horizontal indevida`);
+    const metrics = await send("Page.getLayoutMetrics");
+    const capture = await send("Page.captureScreenshot", {
+      format: "png",
+      captureBeyondViewport: true,
+      clip: { x: 0, y: 0, width: metrics.cssContentSize.width, height: metrics.cssContentSize.height, scale: 1 }
+    });
+    writeFileSync(join(screenshotDir, `404-${width}.png`), Buffer.from(capture.data, "base64"));
+  }
+
   if (consoleErrors.length) failures.push(`Console do navegador: ${consoleErrors.join(" | ")}`);
   socket.close();
 }
@@ -821,6 +1002,6 @@ if (failures.length) {
   console.error(failures.join("\n"));
   process.exitCode = 1;
 } else {
-  console.log(`OK: ${htmlFiles.length} páginas, ${widths.length} larguras, links, imagens, menu e console.`);
+  console.log(`OK: ${publicHtmlFiles.length} páginas públicas + 404, ${widths.length} larguras, SEO, links, imagens, menu e console.`);
   console.log(`Capturas: ${screenshotDir}`);
 }

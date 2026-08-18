@@ -36,18 +36,25 @@ Primeira etapa do novo site institucional da PrintGráfik, construída como site
 - Telefone, e-mail, endereço e Instagram oficiais exibidos nos pontos de contato do site.
 - Página de Política de Privacidade mantida como estrutura temporária até a validação do texto jurídico.
 - Suporte a navegação por teclado, foco visível e `prefers-reduced-motion`.
+- Preparação técnica inicial de SEO com metadados únicos, canonicals do domínio oficial, Open Graph, Twitter Card, favicons, `robots.txt`, `sitemap.xml` e página 404.
 - Teste automatizado local de links, imagens, console, menu móvel e responsividade.
 
 ## Estrutura
 
 ```text
 site-printgrafik/
+├── 404.html
 ├── index.html
 ├── empresa.html
 ├── produtos.html
 ├── estrutura.html
 ├── contato.html
 ├── politica-de-privacidade.html
+├── robots.txt
+├── sitemap.xml
+├── favicon.ico
+├── favicon-32x32.png
+├── apple-touch-icon.png
 ├── css/
 │   ├── tokens.css
 │   ├── components.css
@@ -180,6 +187,69 @@ Os contatos inteligentes das páginas abrem o WhatsApp do Diretor no número `(1
 
 O hero da página Produtos utiliza o registro `assets/estrutura/WhatsApp Video 2026-08-07 at 09.52.14.mp4`, com a fotografia `assets/estrutura/impressora-offset-man-roland.jpg` como poster. O vídeo possui controles nativos, autoplay mudo, `playsinline`, `preload="metadata"` e fallback textual. O autoplay permanece mudo para ser aceito pelos navegadores e não interromper o visitante com áudio inesperado.
 
+## SEO técnico
+
+O domínio oficial definido para a preparação de SEO é `https://www.printgrafik.com.br`. O GitHub Pages é ambiente temporário de homologação. As URLs canônicas apontam para o domínio oficial da PrintGráfik.
+
+A homologação temporária está disponível em `https://andreblosaliatti.github.io/printgrafik/`, mas essa URL não é usada em canonical, Open Graph ou sitemap. Na verificação realizada durante esta etapa, o endereço com `www` do domínio oficial redirecionava para `https://printgrafik.com.br/`, sem `www`. A configuração de hospedagem e DNS deverá definir um único host definitivo antes da publicação; os arquivos do projeto seguem o host com `www` solicitado para esta etapa.
+
+### Canonicals e sitemap
+
+As páginas públicas usam uma única canonical absoluta:
+
+- `https://www.printgrafik.com.br/`
+- `https://www.printgrafik.com.br/empresa.html`
+- `https://www.printgrafik.com.br/produtos.html`
+- `https://www.printgrafik.com.br/estrutura.html`
+- `https://www.printgrafik.com.br/contato.html`
+- `https://www.printgrafik.com.br/politica-de-privacidade.html`
+
+Essas mesmas seis URLs compõem `sitemap.xml`. A página `404.html` não possui canonical e não entra no sitemap. Não foram adicionados `lastmod`, `changefreq` ou `priority` sem dados confirmados.
+
+O arquivo `robots.txt` permite o rastreamento das páginas e dos recursos públicos e informa `https://www.printgrafik.com.br/sitemap.xml`. Não há bloqueio global nem metatag `noindex` aplicada às páginas públicas.
+
+### Compartilhamento e ícones
+
+Todas as páginas públicas possuem title e meta description únicos, Open Graph básico e Twitter Card `summary_large_image`. A imagem real `assets/hero/hero-impressao-printgrafik.jpg` é reutilizada por URL absoluta em `og:image` e `twitter:image`. Uma arte social dedicada em proporção 1200 × 630 pode ser preparada futuramente, mas não é necessária para que os metadados atuais funcionem.
+
+Os arquivos `favicon.ico`, `favicon-32x32.png` e `apple-touch-icon.png` foram derivados do logo oficial sem alterar os arquivos de origem. As seis páginas públicas e a página 404 referenciam os três ícones.
+
+### Página 404
+
+`404.html` é uma página estática, responsiva e independente de backend. Ela informa que o endereço não foi encontrado e oferece links para a Home e para Contato.
+
+### Pendências para publicação
+
+- Publicar o site no domínio oficial.
+- Confirmar se o host definitivo será com ou sem `www` e configurar o redirecionamento correspondente.
+- Confirmar HTTPS em todas as páginas e recursos.
+- Validar o carregamento público de `robots.txt`, `sitemap.xml`, favicons e imagem social.
+- Opcionalmente preparar uma imagem social dedicada em 1200 × 630.
+
+O Google Search Console não foi configurado nesta etapa. Depois da publicação no domínio oficial:
+
+1. Adicionar a propriedade do domínio no Google Search Console.
+2. Verificar o domínio.
+3. Enviar `https://www.printgrafik.com.br/sitemap.xml`.
+4. Testar a Home com a inspeção de URL.
+5. Solicitar a indexação da Home.
+6. Acompanhar cobertura, páginas indexadas e eventuais erros.
+
+### Checklist do dia da publicação
+
+- [ ] Confirmar HTTPS.
+- [ ] Confirmar o domínio e o host canônico definitivo.
+- [ ] Abrir `/robots.txt`.
+- [ ] Abrir `/sitemap.xml`.
+- [ ] Testar as canonicals das seis páginas públicas.
+- [ ] Abrir e revisar todas as páginas, inclusive `/404.html`.
+- [ ] Verificar o Google Search Console.
+- [ ] Enviar o sitemap.
+- [ ] Solicitar a indexação da Home.
+- [ ] Conferir a versão mobile.
+- [ ] Conferir o console do navegador.
+- [ ] Testar os links de WhatsApp e o formulário.
+
 ## Executar localmente
 
 As páginas podem ser visualizadas abrindo `index.html` diretamente, mas o envio pelo FormSubmit exige HTTP ou HTTPS. Para testar o formulário localmente, na raiz do projeto execute:
@@ -198,9 +268,22 @@ Com Node.js 22 ou superior e Microsoft Edge instalado no caminho padrão do Wind
 node tests/site-check.mjs
 ```
 
+Para validar somente a preparação técnica de SEO, sem executar a matriz visual completa:
+
+```bash
+node tests/site-check.mjs --seo-only
+```
+
 O teste verifica:
 
 - Existência dos destinos de links e imagens locais.
+- Existência e resposta HTTP de `robots.txt`, `sitemap.xml`, `404.html` e dos três favicons.
+- XML balanceado, namespace e conjunto exato de URLs públicas do sitemap.
+- `lang="pt-BR"`, charset UTF-8 e viewport em todas as páginas HTML.
+- Titles e meta descriptions únicos e corretos nas seis páginas públicas.
+- Uma única canonical correta por página, sem URLs do GitHub Pages ou localhost.
+- Open Graph, Twitter Card e imagem social absoluta nas páginas públicas.
+- Presença de `alt` em todas as imagens e sequência de headings sem saltos de nível.
 - Existência das âncoras da página Produtos.
 - Ausência de IDs duplicados em cada documento HTML.
 - Um único `h1` em cada página.
